@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  model-service:
+    image: ghcr.io/doda2025-team22/model-service:latest
+    environment:
+      - PORT=8081
+  
+  app-service:
+    image:  ghcr.io/doda2025-team22/app-service:latest
+    environment:
+      - PORT=8080
+      - MODEL_SERVICE_URL=http://model-service:8081
+    ports:
+      - "8080:8080"
