@@ -9,4 +9,4 @@ Than you run the following commands:
 
 `docker compose up`
 
-Open http://localhost:8081/apidocs/
+Open http://localhost:8080/sms
