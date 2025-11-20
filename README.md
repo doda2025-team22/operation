@@ -9,6 +9,4 @@ Than you run the following commands:
 
 `docker compose up`
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 Open http://localhost:8080/sms
