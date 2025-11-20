@@ -4,10 +4,12 @@ services:
   model-service:
     image: ghcr.io/doda2025-team22/model-service:latest
     environment:
-      - PORT=8081
+      - BACKEND_PORT=8081
+    ports:
+      - "8081:8081"
   
   app-service:
-    image:  ghcr.io/doda2025-team22/app-service:latest
+    image:  ghcr.io/doda2025-team22/app:latest
     environment:
       - PORT=8080
       - MODEL_SERVICE_URL=http://model-service:8081
