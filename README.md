@@ -9,4 +9,8 @@ Than you run the following commands:
 
 `docker compose up`
 
+<<<<<<< HEAD
 Open http://localhost:8080/sms
+=======
+Open http://localhost:8081/apidocs/
+>>>>>>> 4656f843af2052a79d6bd068167be170343d73cf
