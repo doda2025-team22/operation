@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   model-service:
     image: ghcr.io/doda2025-team22/model-service:latest
@@ -7,11 +5,19 @@ services:
       - BACKEND_PORT=8081
     ports:
       - "8081:8081"
-  
+    networks:
+      - sms-app-network
+
   app-service:
-    image:  ghcr.io/doda2025-team22/app:latest
+    image: ghcr.io/doda2025-team22/app:latest
     environment:
       - PORT=8080
-      - MODEL_SERVICE_URL=http://model-service:8081
+      - MODEL_HOST=http://model-service:8081
     ports:
       - "8080:8080"
+    networks:
+      - sms-app-network
+
+networks:
+  sms-app-network:
+    driver: bridge
