@@ -1,0 +1,7 @@
+operation: https://github.com/doda2025-team22/operation/releases/tag/a1
+app: https://github.com/doda2025-team22/app/releases/tag/a1
+frontend: https://github.com/doda2025-team22/model-service/releases/tag/a1
+lib: https://github.com/doda2025-team22/lib-version/releases/tag/a1
+
+## Comments for A1:
+To our knowledge, we inplemented everything from the assignment description.
