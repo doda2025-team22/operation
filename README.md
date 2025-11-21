@@ -27,3 +27,6 @@ Than you run the following commands:
 `docker compose up`
 
 Open http://localhost:8080/sms
+
+Troubleshooting Tips:
+- In case of errors pulling from the registry, please make sure your PAT is configured and you have logged into ghcr.io.
