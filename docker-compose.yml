@@ -1,8 +1,12 @@
 services:
   model-service:
     image: ghcr.io/doda2025-team22/model-service:latest
+    restart: unless-stopped
     environment:
       - BACKEND_PORT=8081
+      - OUTPUT_DIR=/app/output
+    volumes:
+      - ./banana:/app/output
     ports:
       - "8081:8081"
     networks:
@@ -10,8 +14,9 @@ services:
 
   app-service:
     image: ghcr.io/doda2025-team22/app:latest
+    restart: unless-stopped
     environment:
-      - PORT=8080
+      - FRONTEND_PORT=8080
       - MODEL_HOST=http://model-service:8081
     ports:
       - "8080:8080"
