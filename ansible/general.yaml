@@ -1,0 +1,200 @@
+- name: General setup for all nodes
+  hosts: all
+  become: true
+  tasks:
+    # Step 4: Register ssh keys
+    # Creates/ensures that .ssh directory exists and registers all ssh keys in the ssh_keys directory
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/file_module.html and
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/posix/authorized_key_module.html
+    - name: Create .ssh directory
+      ansible.builtin.file:
+        path: /home/vagrant/.ssh
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: "0700"
+
+    - name: Register SSH Keys from Computer User
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('file', item)}}"
+      loop: "{{ lookup('fileglob', '~/.ssh/*.pub', wantlist = True) }}"
+
+    # Step 5: Disable SWAP
+    # Disables SWAP via 'swapoff -a" and removes swap from '/etc/fstab'
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/command_module.html and
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    - name: Disable SWAP
+      ansible.builtin.command: swapoff -a
+      register: swap_status
+      changed_when: false
+
+    - name: Remove SWAP
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: '^\s*([^#].*\s+swap\s+.*)$'
+        state: absent
+      become: true
+
+    # Step 6: Create k8s.conf, load br_netfilter and overlay
+    # Creates the required file k8s.conf, copies the overlay and br_netfilter modules into the file for automated loading, then
+    # load the modules
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/copy_module.html and
+    # https://docs.ansible.com/projects/ansible/latest/collections/community/general/modprobe_module.html
+    - name: Register automated load
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/k8s.conf
+        content: |
+          overlay
+          br_netfilter
+        owner: root
+        group: root
+        mode: "0644"
+      become: true
+
+    - name: Load br_netfilter
+      community.general.modprobe:
+        name: br_netfilter
+        state: present
+      become: true
+
+    - name: Load overlay
+      community.general.modprobe:
+        name: overlay
+        state: present
+      become: true
+
+    # Step 7: Enable IPv4 forwarding
+    # Enable the kernel properties net.ipv4.ip_forward, net.bridge.bridge-nf-call-iptables and net.bridge.bridge-nf-call-ip6tables
+    # on all nodes for transparent IP forwarding of packets (net.ipv4) and bridges (net.bridge)
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/posix/sysctl_module.html
+    - name: Enable IPv4 forwarding
+      ansible.posix.sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        state: present
+      loop:
+        - { name: net.ipv4.ip_forward, value: 1 }
+        - { name: net.bridge.bridge-nf-call-iptables, value: 1 }
+        - { name: net.bridge.bridge-nf-call-ip6tables, value: 1 }
+      become: true
+
+    # Step 8: Manage /etc/hosts
+    # Instead of using a hardcoded file, uses the WORKER_COUNT variable from the vagrant file to generate the file during provisioning
+    # Achieved through a Jinja2 loop, where the contents of the "block" parameter inserted to the "/etc/hosts" file.
+    # The Jinja2 loop inside the "block" parameter writes the IPv4 addresses and names of the ctrl node and each worker node,
+    # dynamically generated via the WORKER_COUNT variable
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/blockinfile_module.html
+    - name: Manage hosts
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        block: |
+          192.168.56.100 ctrl
+          {% for i in range(1, worker_count + 1) %}
+          192.168.56.{{ 100 + i }} node-{{ i }}
+          {% endfor %}
+
+    # Step 9: Kubernetes repository
+    # Gets the official release repo by adding the signing key to GPG and then adding the kubernetes repo as a package source.
+    # Finally updates the cache so APT can recognize the added repo
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_key_module.html,
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_repository_module.html and
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_module.html
+    - name: Add Kubernetes key
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+        state: present
+
+    - name: Add Kubernetes repo
+      ansible.builtin.apt_repository:
+        repo: "deb https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /"
+        state: present
+        filename: kubernetes
+
+    - name: Update cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    # Step 10: Install k8 tools
+    # Installs containerd-1.7.24, runc-1.1.12, kubelet-1.32.4, kubeadm-1.32.4, and kubectl-1.32.4.
+    # Container runtime are downloaded seperately as they need to be downgraded and do not come from the kubernetes repo
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_module.html
+    - name: Install container runtime
+      ansible.builtin.apt:
+        name:
+          - containerd=1.7.24-0ubuntu1~24.04.2
+          - runc=1.1.12-0ubuntu3
+        state: present
+        allow_downgrade: true
+
+    - name: Install kubernetes tools
+      ansible.builtin.apt:
+        name:
+          - kubelet=1.32.4-1.1
+          - kubeadm=1.32.4-1.1
+          - kubectl=1.32.4-1.1
+        state: present
+
+    # Step 11: Configure containerd
+    # First ensure the config file's directory exists, then dumps the contents of the default containerd config file and
+    # writes (copies) the contents to the proper location and file (/etc/containerd/config.toml). After the file in the
+    # proper location has ben written, the three required settings are changed as instructed:
+    # disable_apparmor = true, sandbox_image = "registry.k8s.io/pause:3.10", SystemdCgroup = true.
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/file_module.html,
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/command_module.html,
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/copy_module.html and
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    - name: Ensure config directory exists
+      ansible.builtin.file:
+        path: /etc/containerd
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Dump default containerd config
+      ansible.builtin.command: containerd config default
+      register: containerd_default_config
+      changed_when: false
+
+    - name: Write default config to config.toml
+      ansible.builtin.copy:
+        dest: /etc/containerd/config.toml
+        content: "{{ containerd_default_config.stdout }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Disable AppArmor
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: '^\s*disable_apparmor\s*='
+        line: "          disable_apparmor = true"
+
+    - name: Update sandbox image
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: '^\s*sandbox_image\s*='
+        line: '          sandbox_image = "registry.k8s.io/pause:3.10"'
+
+    - name: Set SystemdCgroup to true
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: '^\s*SystemdCgroup\s*='
+        line: "          SystemdCgroup = true"
+
+    # Step 12: (Auto)Start Kubelet
+    # Restarts the containerd and kubelet services, and registers kubelet for autostart on future system boots by setting
+    # the enabled parameter to true.
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/service_module.html
+    - name: Restart service
+      ansible.builtin.service:
+        name: containerd
+        state: restarted
+
+    - name: Auto-start Kubelet
+      ansible.builtin.service:
+        name: kubelet
+        state: started
+        enabled: true
