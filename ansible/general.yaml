@@ -1,10 +1,9 @@
-- name: General setup for all nodes
-  hosts: all
+- hosts: all
   become: true
   tasks:
     # Step 4: Register ssh keys
     # Creates/ensures that .ssh directory exists and registers all ssh keys in the ssh_keys directory
-    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/file_module.html and
+    # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/file_module.html and 
     # https://docs.ansible.com/projects/ansible/latest/collections/ansible/posix/authorized_key_module.html
     - name: Create .ssh directory
       ansible.builtin.file:
@@ -14,12 +13,12 @@
         group: vagrant
         mode: "0700"
 
-    - name: Register SSH Keys from Computer User
-      ansible.posix.authorized_key:
+    - name: Register SSH Keys
+      ansible.builtin.authorized_key:
         user: vagrant
         state: present
         key: "{{ lookup('file', item)}}"
-      loop: "{{ lookup('fileglob', '~/.ssh/*.pub', wantlist = True) }}"
+      loop: "{{ lookup('fileglob', playbook_dir + '/ssh_keys/*.pub', wantlist = True) }}"
 
     # Step 5: Disable SWAP
     # Disables SWAP via 'swapoff -a" and removes swap from '/etc/fstab'
@@ -54,23 +53,23 @@
       become: true
 
     - name: Load br_netfilter
-      community.general.modprobe:
+      ansible.builtin.modprobe:
         name: br_netfilter
         state: present
       become: true
 
     - name: Load overlay
-      community.general.modprobe:
+      ansible.builtin.modprobe:
         name: overlay
         state: present
       become: true
 
     # Step 7: Enable IPv4 forwarding
-    # Enable the kernel properties net.ipv4.ip_forward, net.bridge.bridge-nf-call-iptables and net.bridge.bridge-nf-call-ip6tables
+    # Enable the kernel properties net.ipv4.ip_forward, net.bridge.bridge-nf-call-iptables and net.bridge.bridge-nf-call-ip6tables 
     # on all nodes for transparent IP forwarding of packets (net.ipv4) and bridges (net.bridge)
     # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/posix/sysctl_module.html
     - name: Enable IPv4 forwarding
-      ansible.posix.sysctl:
+      ansible.builtin.sysctl:
         name: "{{ item.name }}"
         value: "{{ item.value }}"
         state: present
@@ -114,8 +113,8 @@
 
     - name: Update cache
       ansible.builtin.apt:
-        update_cache: true
-
+        update_cache: yes
+    
     # Step 10: Install k8 tools
     # Installs containerd-1.7.24, runc-1.1.12, kubelet-1.32.4, kubeadm-1.32.4, and kubectl-1.32.4.
     # Container runtime are downloaded seperately as they need to be downgraded and do not come from the kubernetes repo
@@ -126,8 +125,8 @@
           - containerd=1.7.24-0ubuntu1~24.04.2
           - runc=1.1.12-0ubuntu3
         state: present
-        allow_downgrade: true
-
+        allow_downgrade: yes
+    
     - name: Install kubernetes tools
       ansible.builtin.apt:
         name:
@@ -170,20 +169,20 @@
       ansible.builtin.lineinfile:
         path: /etc/containerd/config.toml
         regexp: '^\s*disable_apparmor\s*='
-        line: "          disable_apparmor = true"
+        line: '          disable_apparmor = true'
 
     - name: Update sandbox image
       ansible.builtin.lineinfile:
         path: /etc/containerd/config.toml
         regexp: '^\s*sandbox_image\s*='
         line: '          sandbox_image = "registry.k8s.io/pause:3.10"'
-
+      
     - name: Set SystemdCgroup to true
       ansible.builtin.lineinfile:
         path: /etc/containerd/config.toml
         regexp: '^\s*SystemdCgroup\s*='
-        line: "          SystemdCgroup = true"
-
+        line: '          SystemdCgroup = true'
+    
     # Step 12: (Auto)Start Kubelet
     # Restarts the containerd and kubelet services, and registers kubelet for autostart on future system boots by setting
     # the enabled parameter to true.
