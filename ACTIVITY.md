@@ -38,3 +38,8 @@
   - https://github.com/doda2025-team22/lib-version/pull/3
   - https://github.com/doda2025-team22/lib-version/pull/4
   - https://github.com/doda2025-team22/lib-version/pull/5
+
+### Week 3
+
+- Gonenc:
+  Worked on all steps of 1.1, which the entire team did as well. The final PR can can be found as https://github.com/doda2025-team22/operation/pull/26 and my individual branch can be found as https://github.com/doda2025-team22/operation/tree/gt/1.1.

@@ -42,7 +42,7 @@
         mode: "0644"
 
     - name: Apply Kube-flannel Network Configuration
-      ansible.builtin.command: kubectl apply -f /home/vagrant/kube/kube-flannel.yml
+      ansible.builtin.command: kubectl apply -f /home/vagrant/kube-flannel.yml
 
     - name: Install Helm Dependencies
       become: true
