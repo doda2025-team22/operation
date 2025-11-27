@@ -1,0 +1,10 @@
+---
+# Master playbook that runs all individual playbooks in order
+
+- import_playbook: general.yaml
+
+- import_playbook: ctrl.yaml
+
+- import_playbook: node.yaml
+
+- import_playbook: finalization.yaml
