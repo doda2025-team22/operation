@@ -2,4 +2,33 @@
   hosts: all
   become: true
   tasks:
-    # todo: add 1.4 tasks here
+    - name: Install MetalLB required CRDs
+      when: "'k8_master' in group_names"
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', metallb/metallb-native.yaml) }}"
+
+    - name: Add MetalLB IPAddressPool
+      when: "'k8_master' in group_names"
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', metallb/ippool.yml) }}"
+
+    - name: Configure MetalLB L2Advertisement
+      when: "'k8_master' in group_names"
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', metallb/l2advertisement.yml) }}"
+
+    - name: Wait step
+      when: "'k8_master' in group_names"
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: metallb-system
+        label_selectors:
+          - "app=metallb"
+          - "component=controller"
+      register: metallb_controller_pods
+      until: metallb_controller_pods.resources | length > 0 and metallb_controller_pods.resources[0].status.phase == "Running"
+      retries: 12
+      delay: 5
