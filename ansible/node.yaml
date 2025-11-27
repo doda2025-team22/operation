@@ -1,13 +1,10 @@
-- name: Kubernetes Node Setup
-  hosts: nodes
+- hosts: all
+  become: true
   tasks:
-    - name: Get Kubeadm Join Command
-      ansible.builtin.command: kubeadm token create --print-join-command
-      delegate_to: vagrant@192.168.56.100
-      register: join_command
-
-    - name: Join Node
-      become: true
-      ansible.builtin.command:
-        cmd: "{{ join_command.stdout }}"
-        creates: /etc/kubernetes/kubelet.conf
+    - name: Create .ssh directory
+      ansible.builtin.file:
+        path: /home/vagrant/.ssh
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: "0700"
