@@ -1,0 +1,27 @@
+# ctrl.yaml
+--- 
+- hosts: all 
+  tasks: 
+    - name: Retrieve admin.conf status 
+      ansible.builtin.stat: 
+        path: /etc/kubernetes/admin.conf
+      register: admin
+
+
+    - name: Setup kubeadm if not already 
+      shell: | 
+          kubeadm init \
+            --apiserver-advertise-address=192.168.56.100 \
+            --node-name ctrl \
+            --pod-network-cidr=10.244.0.0/16 \
+            --ignore-preflight-errors=NumCPU #Ignoring the CPU numbers to comply with assignment setup
+      become: yes
+      when: not admin.stat.exists 
+      
+
+    - name: Copy admin.conf to .kube 
+      ansible.builtin.copy: 
+        src: /etc/kubernetes/admin.conf
+        dest: /etc/vagrant/.kube/
+
+    - name: Copy admin.conf to 

@@ -1,0 +1,164 @@
+# general.yml
+--- 
+- hosts: all 
+  become: true 
+  vars: 
+    nodes: 1
+
+  tasks: 
+    - name: Set authorized key taken from file 
+      authorized_key: 
+        user: vagrant 
+        state: present
+        key: "{{ lookup('file', '/home/frranccis/.ssh/id_ed25519.pub') }}"
+
+
+
+    - name: Remove swapfile form /etc/fstab
+      lineinfile: 
+        path: /etc/fstab/swap
+        state: absent 
+        regexp: '/swap.img'
+
+
+    - name: Disable SWAP 
+      shell: 
+        cmd: swapoff -a
+        
+
+
+    - name: Copy br_netfilter and overlay into k8s.conf
+      copy: 
+        dest: /etc/modules-load.d/k8s.conf
+        content: | 
+          overlay
+          br_netfilter
+
+    - name: Load br_netfilter
+      modprobe: 
+        name: br_netfilter
+
+
+    - name: Load overlay 
+      modprobe: 
+        name: overlay
+
+
+    - name: Enable ipv4 forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: true
+
+
+    - name: enable bridge call iptables
+      ansible.posix.sysctl: 
+        name: net.bridge.bridge-nf-call-iptables
+        value: '1'
+        sysctl_set: true
+
+    - name: enable bridge ipv6tables
+      ansible.posix.sysctl: 
+        name: net.bridge.bridge-nf-call-ip6tables
+        value: '1' 
+        sysctl_set: true
+
+
+
+    - name: Manage /etc/hosts ctrl 
+      blockinfile: 
+        path: /etc/hosts
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - CTRL" 
+        block: 192.168.56.100       ctrl 
+
+
+    - name: Manage /etc/hosts nodes 
+      blockinfile: 
+        path: /etc/hosts 
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - NODES" 
+        block: | 
+          {% for n in range(1, nodes + 1) %}
+            192.168.56.{{100 + n}}      node-{{n}}
+          {% endfor %}
+
+
+
+    - name: Add apt key for kubernetes repository
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key #Taken from: https://v1-33.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
+
+
+    - name: Add kubernetes repository to source list
+      ansible.builtin.apt_repository:
+        repo: "deb https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /"
+        state: present
+  
+    - name: update apt cache after adding kubernetes to source
+      ansible.builtin.apt:
+        update_cache: true
+
+
+    - name: Install containerd, runc, kubeadm, kubelet, kubectl
+      ansible.builtin.apt: 
+        name: "{{ packages }}"
+      vars: 
+        packages: 
+          - containerd
+          - runc
+          - kubeadm
+          - kubelet
+          - kubectl
+  
+
+    - name: Crate containerd directory 
+      ansible.builtin.file: 
+        path: /etc/containerd
+        state: directory
+
+    - name: Register the new file as a stat
+      ansible.builtin.stat: 
+        path: /etc/containerd/config.toml
+      register: con
+
+    - name: add default to /etc/containerd/config.toml 
+      shell: containerd config default > /etc/containerd/config.toml
+      when: not con.stat.exists
+
+
+
+    - name: Configure containerd apparmor 
+      ansible.builtin.lineinfile: 
+        path: /etc/containerd/config.toml 
+        regexp: 'disable_apparmor'
+        line: '    disable_apparmor = true' 
+
+
+
+    - name: Configure containerd update sandbox image version 
+      ansible.builtin.lineinfile: 
+        path: /etc/containerd/config.toml
+        regexp: 'sandbox_image'
+        line: '    sandbox_image = "registry.k8s.io/pause:3.10"'
+
+
+  
+    - name: Configure containerd systemdCgroup 
+      ansible.builtin.lineinfile: 
+        path: /etc/containerd/config.toml 
+        regexp: 'SystemdCgroup' 
+        line: '            SystemdCgroup = true'
+
+
+    - name: Restart Containerd Service 
+      ansible.builtin.service: 
+        name: containerd
+        state: restarted
+
+
+
+    
+    - name: Start Kubelet and register it for auto-start for future boots 
+      ansible.builtin.service: 
+        name: kubelet
+        state: started
+        enabled: true

@@ -1,0 +1,7 @@
+# node.yaml
+---
+- hosts: all 
+  tasks: 
+    - name: Echo user 
+      shell: echo "I am a Node!"
+
