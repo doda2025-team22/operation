@@ -12,17 +12,8 @@ Vagrant.configure("2") do |config|
             vb.cpus = 2
         end
         ctrl.vm.provision "ansible" do |ansible|
-            ansible.playbook = "ansible/general.yaml"
+            ansible.playbook = "ansible/master.yaml"
             ansible.extra_vars = { role: "controller", worker_count: WORKER_COUNT}
-            ansible.groups = {
-                "controller"        => ["ctrl"],
-                "nodes"             => NODES,
-                "cluster:children"  => ["controller", "nodes"]
-            }
-        end
-        ctrl.vm.provision "ansible" do |ansible|
-            ansible.playbook = "ansible/ctrl.yaml"
-            ansible.extra_vars = { role: "controller"}
             ansible.groups = {
                 "controller"        => ["ctrl"],
                 "nodes"             => NODES,
@@ -40,17 +31,8 @@ Vagrant.configure("2") do |config|
                 vb.cpus = 2
             end
             node.vm.provision "ansible" do |ansible|
-                ansible.playbook = "ansible/general.yaml"
+                ansible.playbook = "ansible/master.yaml"
                 ansible.extra_vars = { role: "node", worker_count: WORKER_COUNT}
-                ansible.groups = {
-                    "controller"        => ["ctrl"],
-                    "nodes"             => NODES,
-                    "cluster:children"  => ["controller", "nodes"]
-                }
-            end
-            node.vm.provision "ansible" do |ansible|
-                ansible.playbook = "ansible/node.yaml"
-                ansible.extra_vars = { role: "node"}
                 ansible.groups = {
                     "controller"        => ["ctrl"],
                     "nodes"             => NODES,
