@@ -4,12 +4,15 @@ Quick guide on how to use currently implemented steps.
 
 ## Initialization
 
-Make sure you have ssh keys set up on your device. The playbook will copy all the public keys present on your ~/.ssh directory to the autorised keys of all the VM's
+First of all, you can create a new public key (also can do without a passphrase for convenience sake) with the command(s):
 
-Also make sure to install the nessesary plugins for Ansible
-``` bash
-ansible-galaxy collection install kubernetes.core
-```
+-ssh-keygen -t ed25519 -f ~/.ssh/(NAME OF KEY) -N "" (no passphrase)
+
+-ssh-keygen -t ed25519 -f ~/.ssh/(NAME OF KEY) (with passphrase)
+
+You can also use already existing keys but starting out with a fresh key was how the steps were implemented and tested.
+
+After the keys are created, go to the "~/.ssh/" directory and copy the newly generated public key, which has the .pub extension, into the ssh_keys directory. Do NOT copy the key without the .pub extension; which is the private key and should remain that way.
 
 ## Steps 1-3
 
