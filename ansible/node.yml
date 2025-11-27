@@ -1,0 +1,10 @@
+---
+- name: Register worker nodes to the cluster
+  hosts: node
+  become: yes
+
+  tasks:
+    - name: Join cluster
+      shell: bash /vagrant/join.sh
+      args:
+        creates: /etc/kubernetes/kubelet.conf
