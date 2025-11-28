@@ -6,7 +6,7 @@ services:
       - BACKEND_PORT=8081
       - OUTPUT_DIR=/app/output
     volumes:
-      - ./banana:/app/output
+      - ./model:/app/output
     ports:
       - "8081:8081"
     networks:
