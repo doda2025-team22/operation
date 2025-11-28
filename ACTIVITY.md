@@ -56,3 +56,7 @@
   - https://github.com/doda2025-team22/app/pull/10
   - https://github.com/doda2025-team22/model-service/pull/12
   - https://github.com/doda2025-team22/model-service/pull/11
+
+
+- Thomas: 
+    Worked on 1.1 along with the rest of the team, branch can be found under the following link (https://github.com/doda2025-team22/operation/tree/ftb/a2-1.1). I also started working on step 23, however errors prevented me from completing it. 
