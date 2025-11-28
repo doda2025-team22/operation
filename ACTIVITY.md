@@ -42,7 +42,7 @@
 ### Week 3
 
 - Gonenc:
-  Worked on all steps of 1.1, which the entire team did as well. The final PR can can be found as https://github.com/doda2025-team22/operation/pull/26 and my individual branch can be found as https://github.com/doda2025-team22/operation/tree/gt/1.1.
+  Worked on all steps of 1.1, which the entire team did as well. The final PR can can be found as https://github.com/doda2025-team22/operation/pull/26 and my individual branch can be found as https://github.com/doda2025-team22/operation/tree/gt/1.1; also worked on step 20: https://github.com/doda2025-team22/operation/pull/33
 
 - Ada:
   Also worked on all steps of 1.1, along with the entire team. The branch with my individual process can eb found in: https://github.com/doda2025-team22/lib-version/tree/at/provisioning, the changes were moved to operation later. The final PR can be found in: https://github.com/doda2025-team22/operation/pull/26. Additionally, I made some alterations to the base playbooks which can be found in: https://github.com/doda2025-team22/operation/pull/28 , https://github.com/doda2025-team22/operation/pull/30 ,  and https://github.com/doda2025-team22/operation/pull/29. I additionally worked on step 22 on A2, which can be found in: https://github.com/doda2025-team22/operation/pull/32
