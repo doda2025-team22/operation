@@ -46,3 +46,13 @@
 
 - Ada:
   Also worked on all steps of 1.1, along with the entire team. The branch with my individual process can eb found in: https://github.com/doda2025-team22/lib-version/tree/at/provisioning, the changes were moved to operation later. The final PR can be found in: https://github.com/doda2025-team22/operation/pull/26. Additionally, I made some alterations to the base playbooks which can be found in: https://github.com/doda2025-team22/operation/pull/28 , https://github.com/doda2025-team22/operation/pull/30 ,  and https://github.com/doda2025-team22/operation/pull/29. I additionally worked on step 22 on A2, which can be found in: https://github.com/doda2025-team22/operation/pull/32
+
+- Emre:
+  Worked on 1.2 and 1.3 for A2 and integrated Gonenc's 1.1 for the rest of the assingments. Also helped Gonenc do Metallb, Ada with nginx ingress and implemented k8n dashboard. For last weeks assingment changed the repos app and model-service to make them version tag indipendent and also implemented some fixes to make it a higher grade version. Also fixed an issue related to versioning of app jar file.
+  - https://github.com/doda2025-team22/operation/pull/36
+  - https://github.com/doda2025-team22/operation/pull/26
+  - https://github.com/doda2025-team22/app/pull/12
+  - https://github.com/doda2025-team22/app/pull/11
+  - https://github.com/doda2025-team22/app/pull/10
+  - https://github.com/doda2025-team22/model-service/pull/12
+  - https://github.com/doda2025-team22/model-service/pull/11
