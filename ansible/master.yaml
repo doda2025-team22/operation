@@ -1,10 +1,11 @@
 ---
 # Master playbook that runs all individual playbooks in order
 
-- import_playbook: general.yaml
+- name: General setup for cluster
+  import_playbook: general.yaml
 
-- import_playbook: ctrl.yaml
+- name: Setting up the Controller Node
+  import_playbook: ctrl.yaml
 
-- import_playbook: node.yaml
-
-- import_playbook: finalization.yaml
+- name: Setting up the Worker Nodes
+  import_playbook: node.yaml
