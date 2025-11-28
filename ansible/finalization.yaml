@@ -1,5 +1,5 @@
 - name: Finalizing the Cluster Setup
-  hosts: all
+  hosts: controller
   tasks:
     # Step 20: Install MetalLB
     # Takes the required files (CRD, IPAddressPool, L2Advertisement) and loads them into the control node,
@@ -29,13 +29,10 @@
         cmd: kubectl apply -f metallb-native.yaml
       args:
         chdir: ~/metallb/
-      register: metallb_crd_apply
-      changed_when: metallb_crd_apply.rc != 0
 
     - name: Wait step
       ansible.builtin.command:
         cmd: kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=60s
-        removes: ~/metallb/metallb-native.yaml
       register: metallb_wait
       retries: 5
       delay: 10
@@ -46,13 +43,9 @@
         cmd: kubectl apply -f ippool.yml
       args:
         chdir: ~/metallb/
-      register: ippool_apply
-      changed_when: ippool_apply.rc != 0
 
     - name: Configure L2Advertisement
       ansible.builtin.command:
         cmd: kubectl apply -f l2advertisement.yml
       args:
         chdir: ~/metallb/
-      register: l2adv_apply
-      changed_when: l2adv_apply.rc != 0
