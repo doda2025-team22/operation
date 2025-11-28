@@ -56,3 +56,7 @@
   - https://github.com/doda2025-team22/app/pull/10
   - https://github.com/doda2025-team22/model-service/pull/12
   - https://github.com/doda2025-team22/model-service/pull/11
+
+  Thomas: 
+    I worked on steps 1.1 alongside the team. I started work on steps 22 and 23 but encountered system errors preventing me from finishing them.
+    - https://github.com/doda2025-team22/operation/tree/ftb/a2-1.1
