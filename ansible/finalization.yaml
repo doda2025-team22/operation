@@ -1,9 +1,6 @@
 - name: Finalizing the Cluster Setup
-  hosts: controller
+  hosts: controller, 192.168.56.100
   tasks:
-    # Step 20: Install MetalLB
-    # Takes the required files (CRD, IPAddressPool, L2Advertisement) and loads them into the control node,
-    # Applies(downloads) the files onto the control node (removes tains and waits after CRD as instructed in assignment)
     - name: Ensure /tmp/metallb directory exists
       ansible.builtin.file:
         path: ~/metallb
@@ -66,3 +63,72 @@
           controller:
             service:
               type: LoadBalancer
+
+    - name: Add kubernetes-dashboard Helm repo
+      kubernetes.core.helm_repository:
+        name: kubernetes-dashboard
+        repo_url: "https://kubernetes.github.io/dashboard"
+
+    - name: Deploy Kubernetes Dashboard via Helm
+      kubernetes.core.helm:
+        name: kubernetes-dashboard
+        chart_ref: kubernetes-dashboard/kubernetes-dashboard
+        namespace: kubernetes-dashboard
+        create_namespace: true
+        state: present
+
+    - name: Create admin-user ServiceAccount for Dashboard
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: admin-user
+            namespace: kubernetes-dashboard
+
+    - name: Bind admin-user to cluster-admin role
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: admin-user-cluster-admin
+          subjects:
+            - kind: ServiceAccount
+              name: admin-user
+              namespace: kubernetes-dashboard
+          roleRef:
+            kind: ClusterRole
+            name: cluster-admin
+            apiGroup: rbac.authorization.k8s.io
+
+    - name: Create Ingress for Kubernetes Dashboard
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: networking.k8s.io/v1
+          kind: Ingress
+          metadata:
+            name: kubernetes-dashboard
+            namespace: kubernetes-dashboard
+            annotations:
+              nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          spec:
+            ingressClassName: nginx
+            tls:
+              - hosts:
+                  - dashboard.192-168-56-90.sslip.io
+                secretName: dashboard-tls
+            rules:
+              - host: "dashboard.192-168-56-90.sslip.io"
+                http:
+                  paths:
+                    - path: /
+                      pathType: Prefix
+                      backend:
+                        service:
+                          name: kubernetes-dashboard-kong-proxy
+                          port:
+                            number: 443
