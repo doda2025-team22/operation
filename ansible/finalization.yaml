@@ -1,60 +1,58 @@
 - name: Finalizing the Cluster Setup
   hosts: all
-  become: true
   tasks:
-      # Step 20: Install MetalLB
-      # Takes the required files (CRD, IPAddressPool, L2Advertisement) and loads them into the control node,
-      # Applies(downloads) the files onto the control node (removes tains and waits after CRD as instructed in assignment)
+    # Step 20: Install MetalLB
+    # Takes the required files (CRD, IPAddressPool, L2Advertisement) and loads them into the control node,
+    # Applies(downloads) the files onto the control node (removes tains and waits after CRD as instructed in assignment)
     - name: Ensure /tmp/metallb directory exists
-      when: "'controller' in group_names"
       ansible.builtin.file:
-        path: /tmp/metallb
+        path: ~/metallb
         state: directory
-        mode: '0755'
+        group: vagrant
+        owner: vagrant
+        mode: "0755"
 
     - name: Loop over MetalLB files and download
-      when: "'controller' in group_names"
       ansible.builtin.copy:
         src: "{{ playbook_dir }}/metallb/{{ item }}"
-        dest: "/tmp/metallb/{{ item }}"
+        dest: "~/metallb/{{ item }}"
+        group: vagrant
+        owner: vagrant
+        mode: "0644"
       loop:
         - metallb-native.yaml
         - ippool.yml
         - l2advertisement.yml
 
     - name: Apply MetalLB CRDs
-      when: "'controller' in group_names"
       ansible.builtin.command:
-        cmd: kubectl apply -f /tmp/metallb/metallb-native.yaml --kubeconfig /etc/kubernetes/admin.conf
-
-    - name: Remove control-plane taints
-      when: "'controller' in group_names"
-      ansible.builtin.command: >
-        kubectl taint nodes --all node-role.kubernetes.io/control-plane- --kubeconfig /etc/kubernetes/admin.conf
-      ignore_errors: yes
-
-    - name: Remove master taints
-      when: "'controller' in group_names"
-      ansible.builtin.command: >
-        kubectl taint nodes --all node-role.kubernetes.io/master- --kubeconfig /etc/kubernetes/admin.conf
-      ignore_errors: yes
+        cmd: kubectl apply -f metallb-native.yaml
+      args:
+        chdir: ~/metallb/
+      register: metallb_crd_apply
+      changed_when: metallb_crd_apply.rc != 0
 
     - name: Wait step
-      when: "'controller' in group_names"
-      ansible.builtin.command: >
-        kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=60s --kubeconfig /etc/kubernetes/admin.conf
+      ansible.builtin.command:
+        cmd: kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=60s
+        removes: ~/metallb/metallb-native.yaml
       register: metallb_wait
       retries: 5
       delay: 10
       until: metallb_wait.rc == 0
 
     - name: Add IPAddressPool
-      when: "'controller' in group_names"
       ansible.builtin.command:
-        cmd: kubectl apply -f /tmp/metallb/ippool.yml --kubeconfig /etc/kubernetes/admin.conf
+        cmd: kubectl apply -f ippool.yml
+      args:
+        chdir: ~/metallb/
+      register: ippool_apply
+      changed_when: ippool_apply.rc != 0
 
     - name: Configure L2Advertisement
-      when: "'controller' in group_names"
       ansible.builtin.command:
-        cmd: kubectl apply -f /tmp/metallb/l2advertisement.yml --kubeconfig /etc/kubernetes/admin.conf
-      # End of Step 20: Install MetalLB.
+        cmd: kubectl apply -f l2advertisement.yml
+      args:
+        chdir: ~/metallb/
+      register: l2adv_apply
+      changed_when: l2adv_apply.rc != 0
