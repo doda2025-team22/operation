@@ -1,5 +1,5 @@
 - name: Finalizing the Cluster Setup
-  hosts: controller, 192.168.56.100
+  hosts: controller, 192.168.56.10
   tasks:
     - name: Ensure /tmp/metallb directory exists
       ansible.builtin.file:
