@@ -1,0 +1,79 @@
+# Kubernetes equivalent to the docker-compose
+
+# Use a deployment to create pods for model-service and app-service
+# Use a serivce to connect the front-end with the backend
+# Use the ingress to connect the service to the internet through an ip?
+# Use the configMap for Volume, api endpoints
+# Use the secrets for passwords, api keys etc.
+
+
+# Create a deployment for model-service
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: model-service
+spec: 
+    replicas: 1
+    selector:
+        matchLabels:
+            app: model-service # links to the template below
+    template:
+        metadata:
+            labels:
+                app: model-service
+        spec:
+            containers:
+            -   name: model-service
+                image: ghcr.io/doda2025-team22/model-service:latest
+                ports:
+                -   containerPort: 8081
+---
+# Create a deployment for app-serice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: app-service
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: app-service
+    template:
+        metadata:
+            labels:
+                app: app-service
+        spec:
+            containers:
+            -   name: app-service
+                image: ghcr.io/doda2025-team22/app:latest
+                ports:
+                -   containerPort: 8080
+
+---
+# Create a Service for the fronend
+#! Still needs to communicate with the backend service apparently. Try to find the docs for it.
+apiVersion: v1
+kind: Service
+metadata:
+    name: app-service
+spec:
+    type: ClusterIP
+    selector:
+        app: app-service
+    ports:
+        -   port: 8080 # Exposed Port
+            targetPort: 8080 # forward port
+
+---
+# Create a Service for the backend
+apiVersion: v1
+kind: Service
+metadata:
+    name: model-service
+spec:
+    type: ClusterIP
+    selector:
+        app: model-service
+    ports:
+        -   port: 8081 # Exposed Port
+            targetPort: 8081 # forward port
