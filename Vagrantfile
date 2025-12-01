@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.define "ctrl" do |ctrl|  
-    ctrl.vm.network "private_network", ip: "192.168.56.100"
+    ctrl.vm.network "private_network", ip: "192.168.56.10"
     ctrl.vm.provision :ansible do |a| 
       a.compatibility_mode = "2.0" 
       a.playbook = "kubernetes-setup/ctrl.yaml" 
@@ -35,8 +35,8 @@ Vagrant.configure("2") do |config|
   (1..Nodes).each do |n|
     config.vm.define "node-#{n}" do |node| 
       node.vm.network "private_network", ip: "192.168.56.10#{+n}" 
-      node.vm.provision :ansible do |a| 
-        a.compatibility_mode = "2.0" 
+      node.vm.provision :ansible do |a|
+        a.compatibility_mode = "2.0"
         a.playbook = "kubernetes-setup/node.yaml"
       end
       node.vm.provider "virtualbox" do |v| 
