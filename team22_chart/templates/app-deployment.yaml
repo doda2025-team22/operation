@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: app
-          image: "{{ .Values.app.image.repository }}:{{ Values.app.image.tag }}"
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
           ports:
             - containerPort: {{ .Values.app.port }}
           env:
             - name: MODEL-SERVICE_URL
-              value: "http://model-service:{{ .Values.model-service.port }}"
+              value: "http://modelservice:{{ .Values.modelservice.port }}"

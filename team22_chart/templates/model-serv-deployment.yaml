@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-service
+  name: modelservice
 spec:
-  replicas: {{ .Values.model-service.replicaCount }}
+  replicas: {{ .Values.modelservice.replicaCount }}
   selector:
     matchLabels:
-      app: model-service
+      app: modelservice
   template:
     metadata:
       labels:
-        app: model-service
+        app: modelservice
     spec:
       containers:
-        - name: model-service
-          image: "{{ .Values.model-service.image.repository }}:{{ .Values.model-service.image.tag }}"
+        - name: modelservice
+          image: "{{ .Values.modelservice.image.repository }}:{{ .Values.modelservice.image.tag }}"
           ports:
-            - containerPorts: {{ .Values.model-service.port }}
+            - containerPort: {{ .Values.modelservice.port }}
           env:
             - name: API_TIMEOUT_MS
               value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"

@@ -11,7 +11,7 @@ spec:
         paths:
           - path: /
             pathType: Prefix
-            model-service:
+            backend:
               service:
                 name: app
                 port:
@@ -21,7 +21,7 @@ spec:
         paths:
           - path: /
             pathType: Prefix
-            model-service:
+            backend:
               service:
                 name: app
                 port:
