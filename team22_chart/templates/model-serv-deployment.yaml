@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-service
+spec:
+  replicas: {{ .Values.model-service.replicaCount }}
+  selector:
+    matchLabels:
+      app: model-service
+  template:
+    metadata:
+      labels:
+        app: model-service
+    spec:
+      containers:
+        - name: model-service
+          image: "{{ .Values.model-service.image.repository }}:{{ .Values.model-service.image.tag }}"
+          ports:
+            - containerPorts: {{ .Values.model-service.port }}
+          env:
+            - name: API_TIMEOUT_MS
+              value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+            - name: FEATURE_FLAG_TEST
+              value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
