@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: team22-ingress
+  annotations:
+    kubernetes.io/ingress.class: istio
+spec:
+  rules:
+    - host: "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            model-service:
+              service:
+                name: app
+                port:
+                  number: {{ .Values.app.port }}
+    - host: "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            model-service:
+              service:
+                name: app
+                port:
+                  number: {{ .Values.app.port }}
