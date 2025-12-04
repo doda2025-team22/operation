@@ -9,8 +9,8 @@ spec:
     selector:
         app: app-service
     ports:
-        -   port: 8080 # Exposed Port
-            targetPort: 8080 # forward port
+        -   port: {{ .Values.app.port }} # Exposed Port
+            targetPort: {{ .Values.app.port }} # forward port
 
 ---
 # Create a Service for the backend
@@ -23,5 +23,5 @@ spec:
     selector:
         app: model-service
     ports:
-        -   port: 8081 # Exposed Port
-            targetPort: 8081 # forward port
+        -   port: {{ .Values.modelservice.port }} # Exposed Port
+            targetPort: {{ .Values.modelservice.port }} # forward port
