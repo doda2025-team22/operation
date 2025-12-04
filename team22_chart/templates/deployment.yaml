@@ -1,0 +1,50 @@
+# Create a deployment for model-service
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: model-service
+spec: 
+    replicas: {{ .Values.modelservice.replicaCount }}
+    selector:
+        matchLabels:
+            app: model-service # links to the template below
+    template:
+        metadata:
+            labels:
+                app: model-service
+        spec:
+            containers:
+            -   name: model-service
+                image: "{{ .Values.modelservice.image.repository }}:{{ .Values.modelservice.image.tag }}"
+                ports:
+                -   containerPort: {{ .Values.modelservice.port }}
+                env:
+                -   name: API_TIMEOUT_MS
+                    value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+                -   name: FEATURE_FLAG_TEST
+                    value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+---
+# Create a deployment for app-serice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: app-service
+spec:
+    replicas: {{ .Values.app.replicaCount }}
+    selector:
+        matchLabels:
+            app: app-service
+    template:
+        metadata:
+            labels:
+                app: app-service
+        spec:
+            containers:
+            -   name: app-service
+                image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+                ports:
+                -   containerPort: {{ .Values.app.port }}
+                env:
+                -   name: MODEL_HOST
+                    value: "http://modelservice:{{ .Values.modelservice.port }}"
+
