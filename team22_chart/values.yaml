@@ -22,6 +22,10 @@ config:
     FEATURE_FLAG_TEST: "true"
     API_TIMEOUT_MS: "5000"
 
+monitoring:
+  enabled: true
+  prometheusRelease: myprom
+
 secret:
   smtp:
     username: "usrnm"
