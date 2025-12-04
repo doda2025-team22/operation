@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: team22-ingress
   annotations:
-    kubernetes.io/ingress.class: istio
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
     - host: "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
@@ -13,7 +13,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app
+                name: app-svc
                 port:
                   number: {{ .Values.app.port }}
     - host: "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
@@ -23,6 +23,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app
+                name: app-svc
                 port:
                   number: {{ .Values.app.port }}

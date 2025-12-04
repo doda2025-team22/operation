@@ -1,5 +1,5 @@
 global:
-  domain: ".com"
+  domain: "local"
   stableSubdomain: "team22"
   prereleaseSubdomain: "team22-dev"
 

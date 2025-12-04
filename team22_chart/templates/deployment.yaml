@@ -46,5 +46,5 @@ spec:
                 -   containerPort: {{ .Values.app.port }}
                 env:
                 -   name: MODEL_HOST
-                    value: "http://modelservice:{{ .Values.modelservice.port }}"
+                    value: "http://model-svc:{{ .Values.modelservice.port }}"
 
