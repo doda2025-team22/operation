@@ -4,7 +4,7 @@
     - name: Initialize Kubernetes Control Plane
       become: true
       ansible.builtin.command:
-        cmd: kubeadm init --apiserver-advertise-address=192.168.560.100 --node-name ctrl --pod-network-cidr=10.244.0.0/16
+        cmd: kubeadm init --apiserver-advertise-address=192.168.56.100 --node-name ctrl --pod-network-cidr=10.244.0.0/16
         creates: /etc/kubernetes/admin.conf
 
     - name: Create directories for persistence
