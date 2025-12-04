@@ -1,0 +1,38 @@
+{{- if .Values.monitoring.enabled }}
+
+# ServiceMonitor for App
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: app-monitor-sm
+  labels:
+    release: {{ .Values.monitoring.prometheusRelease }}
+spec:
+  selector:
+    matchLabels:
+      app: app
+  endpoints:
+    - port: http
+      interval: 1s
+      path: /metrics
+---
+
+# ServiceMonitor for model service
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: modelservice-monitor-sm
+  labels:
+    release: {{ .Values.monitoring.prometheusRelease }}
+spec:
+  selector:
+    matchLabels:
+      app: modelservice
+  endpoints:
+    - port: http
+      interval: 1s
+      path: /metrics
+
+  {{- end }}
