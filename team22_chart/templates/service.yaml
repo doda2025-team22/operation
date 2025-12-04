@@ -1,0 +1,27 @@
+# Create a Service for the fronend
+#! Still needs to communicate with the backend service apparently. Try to find the docs for it.
+apiVersion: v1
+kind: Service
+metadata:
+    name: app-svc
+spec:
+    type: ClusterIP
+    selector:
+        app: app-service
+    ports:
+        -   port: 8080 # Exposed Port
+            targetPort: 8080 # forward port
+
+---
+# Create a Service for the backend
+apiVersion: v1
+kind: Service
+metadata:
+    name: model-svc
+spec:
+    type: ClusterIP
+    selector:
+        app: model-service
+    ports:
+        -   port: 8081 # Exposed Port
+            targetPort: 8081 # forward port
