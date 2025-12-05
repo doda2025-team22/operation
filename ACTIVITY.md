@@ -73,3 +73,7 @@
   Worked on creating a helm chart and then putting the kubernetes migration into the helm chart, as well as implementing (minimal) ConfigMag and Secret playbooks:
   - https://github.com/doda2025-team22/operation/pull/39
   - https://github.com/doda2025-team22/operation/pull/40
+
+- Emre:
+  Worked limitedly on the grafana dashboard but due to lack of implementation of monitoring only deployed it to an ip adress. Also fixed an issue from the A2 where vagrantfile was incorrecly provisioning the nodes. Also added a basic version of istio to the k8n cluster. Also did networking for the ingress controller so it will use the clusters default instead of hardcoding a ingress.
+  - https://github.com/doda2025-team22/operation/pull/44
