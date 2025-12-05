@@ -1,48 +1,26 @@
-### Using with 'minikube tunnel' + nginx
-1- Start your cluster
-If you want to start your cluster through minikube please run
+## Usage
+The helm chart uses the default ingress provider. To be able to access the apps without setting hosts yourself use sslip.io. In the example below we are using `nginx` with it pointing to ip `192.168.56.90`. Thus in this situation the global domain becomes `192-168-56-90.sslip.io`. Adjust it during deployment to fit your use case.
+
+1. Install dependencies:
+```bash
+helm dependency build ./team22_chart
 ```
-minikube start
-minikube addons enable ingress
+
+2. Install the helm chart
+```bash
+helm upgrade --install team22 ./team22_chart \
+  --namespace team22 \
+  --create-namespace \
+  --set global.domain=192-168-56-90.sslip.io \
+  --set global.stableSubdomain=team22 \
+  --set global.prereleaseSubdomain=team22-dev \
+  --set monitoring.enable=true
 ```
 
-2- Configure hosts file
-Be sure to execute:
-
-- 'sudo nano /etc/hosts'
-
-or find your /etc/hosts file and add the following two lines to the file:
-
-- 192.168.49.2    team22.local team22-dev.local
-- 127.0.0.1    team22.local team22-dev.local
-
-I am not sure if both is required or which one is correct so just add both and save yourself the headache.
-
-3- Install Helm Chart
-After these are added, you can run:
-
-- 'helm install CHARTNAME team22_chart' to download
-- 'helm delete CHARTNAME' to delete
-
-and finally, run:
-
-- 'sudo minikube tunnel'
-
-After which you can visit http://team22.local (and http://team22-dev.local) to use the application.
-
-### Prometheus Monitoring
-
-After your helm chart is installed. You can run the following commands for the Prometheus setup for monitoring.
-
-```
-helm repo add prom-repo https://prometheus-community.github.io/helm-charts
-helm repo update
-helm install myprom prom-repo/kube-prometheus-stack
-```
-then apply
-```
-kubectl apply -f monitoring.yml
-```
-the metrics and the dashboard should be available at /metrics
+This will allow you to acces the services with the URL's:
+- http://team22.192-168-56-90.sslip.io
+- http://team22-dev.192-168-56-90.sslip.io
+- http://prometheus.192-168-56-90.sslip.io
+- http://prometheus.192-168-56-90.sslip.io
 
 
