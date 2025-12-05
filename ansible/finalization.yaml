@@ -132,3 +132,66 @@
                           name: kubernetes-dashboard-kong-proxy
                           port:
                             number: 443
+
+    - name: Ensure Istio directory exists
+      ansible.builtin.file:
+        path: /home/vagrant/istio
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: "0755"
+
+    # IMPORTANT: The Istio version and download link should match. Adjust accordingly.
+    - name: Download Istio 1.25.2 archive
+      ansible.builtin.get_url:
+        url: "https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-arm64.tar.gz"
+        dest: /home/vagrant/istio/istio-1.25.2-linux-arm64.tar.gz
+        mode: "0644"
+        owner: vagrant
+        group: vagrant
+
+    - name: Extract Istio 1.25.2
+      ansible.builtin.unarchive:
+        src: /home/vagrant/istio/istio-1.25.2-linux-arm64.tar.gz
+        dest: /home/vagrant/istio
+        remote_src: true
+        owner: vagrant
+        group: vagrant
+        mode: "0755"
+
+    - name: Link istioctl into /usr/local/bin
+      become: true
+      ansible.builtin.file:
+        src: /home/vagrant/istio/istio-1.25.2/bin/istioctl
+        dest: /usr/local/bin/istioctl
+        state: link
+        mode: "0755"
+
+    - name: Create IstioOperator config for ingressgateway LoadBalancer IP
+      ansible.builtin.copy:
+        dest: /home/vagrant/istio/istio-operator.yaml
+        owner: vagrant
+        group: vagrant
+        mode: "0644"
+        content: |
+          apiVersion: install.istio.io/v1alpha1
+          kind: IstioOperator
+          metadata:
+            name: istio-controlplane
+            namespace: istio-system
+          spec:
+            profile: default
+            components:
+              ingressGateways:
+                - name: istio-ingressgateway
+                  enabled: true
+                  k8s:
+                    service:
+                      type: LoadBalancer
+                      loadBalancerIP: 192.168.56.91
+
+    - name: Install Istio control plane
+      ansible.builtin.command:
+        cmd: istioctl install -y -f /home/vagrant/istio/istio-operator.yaml
+      args:
+        chdir: /home/vagrant/istio/

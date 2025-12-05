@@ -30,7 +30,6 @@ Vagrant.configure("2") do |config|
                 vb.memory = 6114
                 vb.cpus = 2
             end
-            if i == WORKER_COUNT
                 node.vm.provision "ansible" do |ansible|
                     ansible.playbook = "ansible/master.yaml"
                     ansible.extra_vars = { role: "node", worker_count: WORKER_COUNT}
@@ -40,6 +39,7 @@ Vagrant.configure("2") do |config|
                         "cluster:children"  => ["controller", "nodes"]
                     }
                 end
+            if i == WORKER_COUNT
                 node.vm.provision "ansible" do |ansible|
                     ansible.playbook = "ansible/finalization.yaml"
                     ansible.limit = "all"
