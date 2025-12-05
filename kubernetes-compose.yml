@@ -27,6 +27,8 @@ spec:
                 image: ghcr.io/doda2025-team22/model-service:latest
                 ports:
                 -   containerPort: 8081
+
+
 ---
 # Create a deployment for app-serice
 apiVersion: apps/v1
@@ -88,6 +90,7 @@ kind: Ingress
 metadata:
     name: ingress
 spec:
+    ingressClassName: nginx
     defaultBackend:
         service:
             name: app-svc
