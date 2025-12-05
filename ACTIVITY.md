@@ -60,3 +60,11 @@
   Thomas: 
     I worked on steps 1.1 alongside the team. I started work on steps 22 and 23 but encountered system errors preventing me from finishing them.
     - https://github.com/doda2025-team22/operation/tree/ftb/a2-1.1
+
+
+### Week 4 
+
+- Thomas 
+    I worked on the migration from docker to kubernetes this week. I also had another look at A1 and fixed a mistake in lib-version that was found. 
+    - https://github.com/doda2025-team22/lib-version/pull/6 
+    - https://github.com/doda2025-team22/operation/pull/38 
