@@ -68,3 +68,8 @@
     This week i was tasked with the migration of the docker compose files to a kubernetes setup. I also took the time to work on an error that was still present in A1. 
     - https://github.com/doda2025-team22/operation/pull/38 
     - https://github.com/doda2025-team22/lib-version/pull/6 
+
+- Gonenc:
+  Worked on creating a helm chart and then putting the kubernetes migration into the helm chart, as well as implementing (minimal) ConfigMag and Secret playbooks:
+  - https://github.com/doda2025-team22/operation/pull/39
+  - https://github.com/doda2025-team22/operation/pull/40
