@@ -39,7 +39,10 @@ helm repo add prom-repo https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install myprom prom-repo/kube-prometheus-stack
 ```
-
+then apply
+```
+kubectl apply -f monitoring.yml
+```
 the metrics and the dashboard should be available at /metrics
 
 
