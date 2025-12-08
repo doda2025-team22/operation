@@ -1,0 +1,61 @@
+# A4 Review Document
+
+## How to review?
+enter description here
+
+
+## Rubric Checklist
+| Rubric item level | Rubric item | Completed? | Link | Description |
+|-------------------|-------------|-------|------|-------------|
+| **Traffic Management** |  |  |  |  |
+| Insufficient | The system does not define a Gateway or a VirtualService. | [ ] |  |  |
+| Poor | The app contains an attempt of using Gateway and VirtualServices, but the app is not accessible. | [ ] |  |  |
+| Poor | The app contains a hard-coded name for the IngressGateway and does not work with other names. | [ ] |  |  |
+| Sufficient | The project resembles the state of the in-class exercise. | [ ] |  |  |
+| Sufficient | The app defines a Gateway and VirtualServices. | [ ] |  |  |
+| Sufficient | The application is accessible through the IngressGateway (i.e., minikube tunnel ). | [ ] |  |  |
+| Sufficient | The IngressGateway is defined outside of the Helm chart. | [ ] |  |  |
+| Sufficient | All aspects are installed through the central Helm chart (see A3). | [ ] |  |  |
+| Good | It uses DestinationRules and weights to enable a 90/10 routing of the app service. | [ ] |  |  |
+| Good | The old/new versions of model-service and app-service are used consistently. For example, no access from the new app-service to the old model service. | [ ] |  |  |
+| Excellent | The project implements )Sticky Sessions, i.e., requests from the same origin have a stable routing. | [ ] |  |  |
+| **Additional Use Case** |  |  |  |  |
+| Insufficient | No additional use case has been realized or its complexity does not compare to the given examples. | [ ] |  |  |
+| Poor | An additional use case has been attempted, but it does not work. | [ ] |  |  |
+| Sufficient | One of the described use cases has been partially realized, with observable effects. | [ ] |  |  |
+| Sufficient | All aspects are installed through the central Helm chart (see A3). | [ ] |  |  |
+| Good | One of the described use cases has been realized. It generally works, but falls short in some aspects. For example, instead of an individual, user-based rate-limit, only a global rate-limit exists that affects everyone. | [ ] |  |  |
+| Excellent | One of the described use cases has been fully realized. | [ ] |  |  |
+| **Continuous Experimentation: (The documentation refers to the docs/continuous-experimentation.md file)** |  |  |  |  |
+| Insufficient | The experiment has severe limits, like lacking a second deployment or relevant metrics. | [ ] |  |  |
+| Poor | An experiment is attempted, but lacks either sufficient documentation or implementation. | [ ] |  |  |
+| Sufficient | The documentation describes the experiment. It explains the implemented changes, the expected effect that gets experimented on, and the relevant metric that is tailored to the experiment. | [ ] |  |  |
+| Sufficient | The experiment involves two deployed versions of at least one container image. | [ ] |  |  |
+| Sufficient | Both component versions are reachable through the deployed experiment. | [ ] |  |  |
+| Sufficient | The system implements the metric that allows exploring the concrete hypothesis. | [ ] |  |  |
+| Sufficient | All aspects are installed through the central Helm chart (see A3). | [ ] |  |  |
+| Good | Prometheus picks up the metric. | [ ] |  |  |
+| Good | Grafana has a dashboard to visualize the differences and support the decision process. | [ ] |  |  |
+| Good | The documentation contains a screenshot of the visualization. | [ ] |  |  |
+| Good | The hostname of the pre-release app can be configured in the value.xml of the Helm chart. To support grading, I want to be able to pick the URLs that I use to access the stable/pre-release versions. | [ ] |  |  |
+| Excellent | The documentation explains the decision process for accepting or rejecting the experiment in details, ie.g., which criteria is used and how the available dashboard supports the decision. | [ ] |  |  |
+| **Deployment Documentation: (The documentation refers to the docs/deployment.md file)** |  |  |  |  |
+| Insufficient | The documentation is incomprehensible or incomplete. | [ ] |  |  |
+| Poor | The documentation is limited to the deployment structure or the data flow. | [ ] |  |  |
+| Sufficient | The documentation describes the deployment structure, i.e., the entities and their connections. | [ ] |  |  |
+| Sufficient | The documentation describes the data flow for incoming requests. Also indicate at which points dynamic routing decisions are taken (e.g., 90/10 split). | [ ] |  |  |
+| Sufficient | The documentation contains visualizations that are connected to the text. | [ ] |  |  |
+| Good | The documentation includes all deployed resource types and their relations. It is unnecessary to include all details for each CRD, but effects and relations should become clear. | [ ] |  |  |
+| Excellent | The documentation is visually appealing and clear. A new team member could contribute in a design discussion after studying the documentation. | [ ] |  |  |
+| **Extension Proposal: (The documentation refers to the docs/extension.md file)** |  |  |  |  |
+| Insufficient | The extension is unrelated to release engineering and focuses on an implementation aspect. | [ ] |  |  |
+| Poor | The extension is trivial, irrelevant for the project, or refers to an unimplemented assessment criterion. | [ ] |  |  |
+| Sufficient | The documentation describes one release-engineering-related shortcoming of the project practices. | [ ] |  |  |
+| Sufficient | A proposed extension addresses the shortcoming and is connected to one of the assignments. For example, the training or release pipelines, contribution process, deployment, or experimentation. | [ ] |  |  |
+| Sufficient | The extension is genuine and has not already been mentioned in any of the assignment rubrics. | [ ] |  |  |
+| Sufficient | The documentation cites external sources that inspired the envisioned extension. | [ ] |  |  |
+| Good | The shortcoming is critically reflected on and its negative effects get elaborated in detail. | [ ] |  |  |
+| Good | The presented extension improves the described shortcoming. | [ ] |  |  |
+| Good | The documentation explains how an improvement could be measured objectively in an experiment. | [ ] |  |  |
+| Excellent | The presented extension is general in nature and applicable beyond the concrete project. | [ ] |  |  |
+| Excellent | The presented extension clearly overcomes the described shortcoming. | [ ] |  |  |
