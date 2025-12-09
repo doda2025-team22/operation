@@ -7,11 +7,20 @@ ingress:
   className: nginx
 
 app:
-  image:
-    repository: ghcr.io/doda2025-team22/app
-    tag: latest
-  replicaCount: 1
-  port: 8080
+  stable:
+    image:
+      repository: ghcr.io/doda2025-team22/app
+      tag: latest
+    replicaCount: 1
+    port: 8080
+  canary:
+    image:
+      repository: ghcr.io/doda2025-team22/app
+      tag: canary
+    replicaCount: 1
+    port: 8080
+    canaryWeight: 10
+    stableWeight: 90
 
 modelservice:
   image:
