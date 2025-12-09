@@ -30,7 +30,7 @@
       become: true
       ansible.builtin.fetch:
         src: /etc/kubernetes/admin.conf
-        dest: ../admin.conf
+        dest: ../admin.conf # == path/to/operation/ (because the playbook is run in ansible we go back by one)   
         flat: true
 
     - name: Copy Kube-flannel Configuration
@@ -54,27 +54,35 @@
           - curl
           - gpg
         state: present
+    
 
-    - name: Import Helm GPG key
+    - name: Unzip helm
       become: true
-      ansible.builtin.apt_key:
-        url: https://packages.buildkite.com/helm-linux/helm-debian/gpgkey
-        state: present
+      ansible.builtin.unarchive: 
+        src: "./helm/helm-v3.19.2-linux-amd64.tar.gz"
+        dest: /usr/local/bin
+        extra_opts: [ --strip-components=1, --show-stored-names, linux-amd64/helm ] 
 
-    - name: Add Helm Repository
-      become: true
-      ansible.builtin.apt_repository:
-        repo: deb https://packages.buildkite.com/helm-linux/helm-debian/any/ any main
-        state: present
-
-    - name: Install Helm
-      become: true
-      ansible.builtin.apt:
-        name:
-          - helm
-        state: present
-        update_cache: true
-
+    # - name: Import Helm GPG key
+    #   become: true
+    #   ansible.builtin.apt_key:
+    #     url: https://packages.buildkite.com/helm-linux/helm-debian/gpgkey
+    #     state: present
+    #
+    # - name: Add Helm Repository
+    #   become: true
+    #   ansible.builtin.apt_repository:
+    #     repo: deb https://packages.buildkite.com/helm-linux/helm-debian/any/ any main
+    #     state: present
+    #
+    # - name: Install Helm
+    #   become: true
+    #   ansible.builtin.apt:
+    #     name:
+    #       - helm
+    #     state: present
+    #     update_cache: true
+    #
     - name: Install Helm Diff plugin
       kubernetes.core.helm_plugin:
         plugin_path: https://github.com/databus23/helm-diff

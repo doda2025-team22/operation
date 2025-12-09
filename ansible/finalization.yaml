@@ -104,6 +104,13 @@
             name: cluster-admin
             apiGroup: rbac.authorization.k8s.io
 
+
+    # Change this to something more dynamic dependig on whether it is ready or not. 
+    - name: Wait for ingess to run 
+      ansible.builtin.wait_for:
+        timeout: 30 # Wait a flat 30 second. 
+
+
     - name: Create Ingress for Kubernetes Dashboard
       kubernetes.core.k8s:
         state: present
@@ -142,30 +149,38 @@
         mode: "0755"
 
     # IMPORTANT: The Istio version and download link should match. Adjust accordingly.
-    - name: Download Istio 1.25.2 archive
-      ansible.builtin.get_url:
-        url: "https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-arm64.tar.gz"
-        dest: /home/vagrant/istio/istio-1.25.2-linux-arm64.tar.gz
-        mode: "0644"
-        owner: vagrant
-        group: vagrant
+    # - name: Download Istio 1.25.2 archive
+    #   ansible.builtin.get_url:
+    #     url: "https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-arm64.tar.gz"
+    #     dest: /home/vagrant/istio/istio-1.25.2-linux-arm64.tar.gz
+    #     mode: "0644"
+    #     owner: vagrant
+    #     group: vagrant
+    #
+    # - name: Extract Istio 1.25.2
+    #   ansible.builtin.unarchive:
+    #     src: /home/vagrant/istio/istio-1.25.2-linux-arm64.tar.gz
+    #     dest: /home/vagrant/istio
+    #     remote_src: true
+    #     owner: vagrant
+    #     group: vagrant
+    #     mode: "0755"
+    #
+    # - name: Link istioctl into /usr/local/bin
+    #   become: true
+    #   ansible.builtin.file:
+    #     src: /home/vagrant/istio/istio-1.25.2/bin/istioctl
+    #     dest: /usr/local/bin/istioctl
+    #     state: link
+    #     mode: "0755"
 
-    - name: Extract Istio 1.25.2
-      ansible.builtin.unarchive:
-        src: /home/vagrant/istio/istio-1.25.2-linux-arm64.tar.gz
-        dest: /home/vagrant/istio
-        remote_src: true
-        owner: vagrant
-        group: vagrant
-        mode: "0755"
 
-    - name: Link istioctl into /usr/local/bin
+    - name: Retrieve Istio binary 
       become: true
-      ansible.builtin.file:
-        src: /home/vagrant/istio/istio-1.25.2/bin/istioctl
-        dest: /usr/local/bin/istioctl
-        state: link
-        mode: "0755"
+      ansible.builtin.unarchive: 
+        src: "./istio/istio-1.25.2-linux-amd64.tar.gz"
+        dest: /usr/local/bin
+        extra_opts: [ --strip-components=2, --show-stored-names, istio-1.25.2/bin/istioctl ]
 
     - name: Create IstioOperator config for ingressgateway LoadBalancer IP
       ansible.builtin.copy:

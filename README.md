@@ -51,12 +51,19 @@ These steps are present in the Vagrantfile; where the default box is specified, 
 
 These steps are present in the `general.yaml` ansible playbook. Specific documentation for each step regarding what they accomplish and which modules they use to do so can also be found in the "general.yaml" playbook.
 
+
+### Ensure setting KUBECONFIG environment variable 
+```bash
+export KUBECONFIG=export KUBECONFIG=$PWD/admin.conf
+``` 
+Note: Ensure you are in the folder that has access to the admin.con. This should be operations root. 
+
 ### Running finalization.yaml Manually
 
 The inventory file is generated automaticly and after running the vagrantfile at least one the inventory file will be saved inside the `.vagrant` folder. To run the `finalization.yaml` playbook manually do:
 
 ```bash
-ansible-playbook -u vagrant -i 192.168.56.100, finalization.yml
+ansible-playbook -u vagrant -i 192.168.56.100, ansible/finalization.yaml 
 ```
 
 For the finalisation playbook the ipadress of the controller is assumbed to be `192.168.56.100`. If you need to change this to get the VM's running make sure to update this on the file too or manually running this notebook might not work.
