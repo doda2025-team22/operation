@@ -9,8 +9,8 @@ spec:
     selector:
         app: app-service
     ports:
-        -   port: {{ .Values.app.port }} # Exposed Port
-            targetPort: {{ .Values.app.port }} # forward port
+        -   port: {{ .Values.app.stable.port }} # Exposed Port
+            targetPort: {{ .Values.app.stable.port }} # forward port
 
 ---
 # Create a Service for the backend
