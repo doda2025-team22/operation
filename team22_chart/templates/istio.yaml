@@ -14,3 +14,28 @@ spec:
       hosts:
         - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
         - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+---
+# Add virtual service
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: app-virtualservice
+spec:
+  hosts:
+    - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
+    - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+  gateways:
+    - team22-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: app-svc
+            subset: stable
+          weight: {{ .Values.app.stableWeight }}
+        - destination:
+            host: app-svc
+            subset: canary
+          weight: {{ .Values.app.canaryWeight }}
