@@ -19,8 +19,8 @@ app:
       tag: canary
     replicaCount: 1
     port: 8080
-    canaryWeight: 10
-    stableWeight: 90
+  canaryWeight: 10
+  stableWeight: 90
 
 modelservice:
   image:
