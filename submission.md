@@ -1,10 +1,10 @@
 # DODA Group 22
 
 ## Repos
-operation: https://github.com/doda2025-team22/operation/releases/tag/a3
-app: https://github.com/doda2025-team22/app/releases/tag/a3
-frontend: https://github.com/doda2025-team22/model-service/releases/tag/a3
-lib: https://github.com/doda2025-team22/lib-version/releases/tag/a3
+operation: https://github.com/doda2025-team22/operation/releases/tag/a4
+app: https://github.com/doda2025-team22/app/releases/tag/a4
+frontend: https://github.com/doda2025-team22/model-service/releases/tag/a4
+lib: https://github.com/doda2025-team22/lib-version/releases/tag/a4
 
 ## Comments for A1
 To our knowledge, we implemented everything from the assignment description.
