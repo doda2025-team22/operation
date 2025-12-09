@@ -24,27 +24,60 @@ spec:
                 -   name: FEATURE_FLAG_TEST
                     value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
 ---
-# Create a deployment for app-serice
+# Create a deployment for app-service stable version
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: app-service
+    name: app-service-stable
+    labels:
+        app: app-service
+        version: stable
 spec:
-    replicas: {{ .Values.app.replicaCount }}
+    replicas: {{ .Values.app.stable.replicaCount }}
     selector:
         matchLabels:
             app: app-service
+            version: stable
     template:
         metadata:
             labels:
                 app: app-service
+                version: stable
         spec:
             containers:
             -   name: app-service
-                image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+                image: "{{ .Values.app.stable.image.repository }}:{{ .Values.app.stable.image.tag }}"
                 ports:
-                -   containerPort: {{ .Values.app.port }}
+                -   containerPort: {{ .Values.app.stable.port }}
                 env:
                 -   name: MODEL_HOST
                     value: "http://model-svc:{{ .Values.modelservice.port }}"
-
+---
+# Create a deployment for app-service canary version
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: app-service-canary
+    labels:
+        app: app-service
+        version: canary
+spec:
+    replicas: {{ .Values.app.canary.replicaCount }}
+    selector:
+        matchLabels:
+            app: app-service
+            version: canary
+    template:
+        metadata:
+            labels:
+                app: app-service
+                version: canary
+        spec:
+            containers:
+            -   name: app-service
+                image: "{{ .Values.app.canary.image.repository }}:{{ .Values.app.canary.image.tag }}"
+                ports:
+                -   containerPort: {{ .Values.app.canary.port }}
+                env:
+                -   name: MODEL_HOST
+                    value: "http://model-svc:{{ .Values.modelservice.port }}"
