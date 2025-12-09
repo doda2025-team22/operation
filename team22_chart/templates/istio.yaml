@@ -39,3 +39,18 @@ spec:
             host: app-svc
             subset: canary
           weight: {{ .Values.app.canaryWeight }}
+---
+# Add destination rule
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: app-dr
+spec:
+  host: app-svc
+  subsets:
+    - name: stable
+      labels:
+        version: stable
+    - name: canary
+      labels:
+        version: canary
