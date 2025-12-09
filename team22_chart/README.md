@@ -17,7 +17,7 @@ helm upgrade --install team22 ./team22_chart \
   --set monitoring.enable=true
 ```
 
-This will allow you to acces the services with the URL's:
+This will allow you to access the services with the URL's:
 - http://team22.192-168-56-90.sslip.io
 - http://team22-dev.192-168-56-90.sslip.io
 - http://prometheus.192-168-56-90.sslip.io
