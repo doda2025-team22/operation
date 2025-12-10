@@ -195,7 +195,3 @@
         cmd: istioctl install -y -f /home/vagrant/istio/istio-operator.yaml
       args:
         chdir: /home/vagrant/istio/
-    
-    - name: Apply gateway
-      ansible.builtin.command:
-        cmd: kubectl apply -f /home/vagrant/istio/istiogateway/gateway.yaml
