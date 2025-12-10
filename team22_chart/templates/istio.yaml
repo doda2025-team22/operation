@@ -1,20 +1,3 @@
-# Add IngressGateway
-apiVersion: networking.istio.io/v1beta1
-kind: Gateway
-metadata:
-  name: team22-gateway
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
-        - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
----
 # Add virtual service
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
