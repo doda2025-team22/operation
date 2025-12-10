@@ -2,6 +2,7 @@ global:
   domain: "192-168-56-90.sslip.io"
   stableSubdomain: "team22"
   prereleaseSubdomain: "team22-dev"
+  ingressGatewayName: team22-gateway
 
 ingress:
   className: nginx
