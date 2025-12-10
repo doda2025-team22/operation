@@ -8,7 +8,7 @@ spec:
     - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
     - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
   gateways:
-    - team22-gateway
+    - {{ .Values.global.ingressGatewayName }}
   http:
     - match:
         - uri:
