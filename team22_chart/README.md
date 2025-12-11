@@ -123,3 +123,5 @@ These credentials are the default credentials for the Grafana dashboard. You can
 ## For testing with Linux / In case of other errors
 First run ```minikube service list```.
 In the output, if you recieve urls for istio-system, copy the port number of the url associated with http/80 (the target port). 
+
+Use the link http://team22.192-168-56-90.sslip.io:{port number you just got}/sms/ or http://team22.192-168-56-90.sslip.io:{port number you just got}/sms/library-version.
