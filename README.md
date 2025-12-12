@@ -69,3 +69,19 @@ inside the `ansible` directory.
 ### Accessing Dashboard
 
 The playbook deploys the k8n dashboard to URL https://dashboard.192-168-56-90.sslip.io by default. This method allows you to access the dashboard without modifying your hosts file. Additionally as we use self-signed certificates, your browser will warn you about the certificate. You can add the certificate to your trusted certificates by clicking on the "Advanced" button and then "Add exception".
+
+
+### To run istio using curl use the following commands 
+Follow the steps above to setup minikube with istio and connect it to the application. 
+start up a minikube tunnel
+run the following command in a seperate terminal: 
+```bash
+for i in {0..20}; do 
+  curl -s -H "x-session-id: <keyword>" http://team22.192-168-56-90.sslip.io:<your_port_number>/sms/library-version | grep version; 
+done; 
+```
+Where the keywords for the sessions are: 
+- stable -> 0.0.1-SNAPSHOT
+- canary -> 0.0.1
+- Any other header will result in a 90/10 split for stable/canary versions 
+
