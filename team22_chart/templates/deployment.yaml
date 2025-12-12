@@ -8,7 +8,7 @@ metadata:
     app: model-service
     version: v1
 spec:
-  replicas: {{ .Values.modelservice.stable.replicaCount }}
+  replicas: { { .Values.modelservice.stable.replicaCount } }
   selector:
     matchLabels:
       app: model-service
@@ -24,7 +24,7 @@ spec:
         - name: model-service
           image: "{{ .Values.modelservice.stable.image.repository }}:{{ .Values.modelservice.stable.image.tag }}"
           ports:
-            - containerPort: {{ .Values.modelservice.stable.port }}
+            - containerPort: { { .Values.modelservice.stable.port } }
           env:
             - name: API_TIMEOUT_MS
               value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
@@ -72,7 +72,7 @@ metadata:
     app: app-service
     version: v1
 spec:
-  replicas: {{ .Values.app.stable.replicaCount }}
+  replicas: { { .Values.app.stable.replicaCount } }
   selector:
     matchLabels:
       app: app-service
@@ -88,7 +88,7 @@ spec:
         - name: app-service
           image: "{{ .Values.app.stable.image.repository }}:{{ .Values.app.stable.image.tag }}"
           ports:
-            - containerPort: {{ .Values.app.stable.port }}
+            - containerPort: { { .Values.app.stable.port } }
           env:
             - name: MODEL_HOST
               value: "http://model-service:{{ .Values.modelservice.stable.port }}"
@@ -102,7 +102,7 @@ metadata:
     app: app-service
     version: v2
 spec:
-  replicas: {{ .Values.app.canary.replicaCount }}
+  replicas: { { .Values.app.canary.replicaCount } }
   selector:
     matchLabels:
       app: app-service
@@ -118,7 +118,7 @@ spec:
         - name: app-service
           image: "{{ .Values.app.canary.image.repository }}:{{ .Values.app.canary.image.tag }}"
           ports:
-            - containerPort: {{ .Values.app.canary.port }}
+            - containerPort: { { .Values.app.canary.port } }
           env:
             - name: MODEL_HOST
               value: "http://model-service:{{ .Values.modelservice.canary.port }}"
