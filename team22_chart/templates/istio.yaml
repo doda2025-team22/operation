@@ -1,0 +1,64 @@
+# Add Gateway
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ .Values.global.ingressGatewayName }}
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
+        - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+---
+# Add virtual service
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: app-virtualservice
+spec:
+  hosts:
+    - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
+    - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+  gateways:
+    - istio-system/{{ .Values.global.ingressGatewayName }}
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: app-svc
+            subset: stable
+          weight: {{ .Values.app.stableWeight }}
+        - destination:
+            host: app-svc
+            subset: canary
+          weight: {{ .Values.app.canaryWeight }}
+---
+# Add destination rule
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: app-dr
+spec:
+  host: app-svc
+  trafficPolicy:
+    loadBalancer: 
+      consistentHash: 
+        httpHeaderName: x-user
+  subsets:
+    - name: stable
+      labels:
+        version: stable
+    - name: canary
+      labels:
+        version: canary
+
+
+
