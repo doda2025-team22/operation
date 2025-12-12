@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
         ctrl.vm.hostname = "ctrl"
         ctrl.vm.network "private_network", ip: "192.168.56.100"
         ctrl.vm.provider "virtualbox" do |vb|
-            vb.memory = 4096
+            vb.memory = 2046 # 4096
             vb.cpus = 2
         end
         ctrl.vm.provision "ansible" do |ansible|
@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
             node.vm.hostname = "node-#{i}"
             node.vm.network "private_network", ip: "192.168.56.#{100 + i}"
             node.vm.provider "virtualbox" do |vb|
-                vb.memory = 6114
+                vb.memory = 4096 # 6114
                 vb.cpus = 2
             end
                 node.vm.provision "ansible" do |ansible|
