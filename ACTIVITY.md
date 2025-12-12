@@ -81,3 +81,10 @@
 - Ada:
   This week I spent a great deal of time getting the charts runnign specifically on my laptop and faced a lot of issues because of memory constraints. I also worked on the prometheus section of A3.
   - https://github.com/doda2025-team22/operation/pull/41
+
+
+## Week 5 
+
+- Thomas: I started working on some local provisioning that could help speed up the vagrant provisioning. I also updated the readme in that time. It still needs some work but I made an intermediate PR for it. I also worked on the sticky sessions however I hit a snag there so im not creating a PR for it just yet.
+  - https://github.com/doda2025-team22/operation/pull/50
+  - https://github.com/doda2025-team22/operation/tree/ftb/sticky_sessions 
