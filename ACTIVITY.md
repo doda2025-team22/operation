@@ -87,4 +87,6 @@
 
 - Thomas: I started working on some local provisioning that could help speed up the vagrant provisioning. I also updated the readme in that time. It still needs some work but I made an intermediate PR for it. I also worked on the sticky sessions however I hit a snag there so im not creating a PR for it just yet.
   - https://github.com/doda2025-team22/operation/pull/50
-  - https://github.com/doda2025-team22/operation/tree/ftb/sticky_sessions 
+  - https://github.com/doda2025-team22/operation/tree/ftb/sticky_sessions
+ 
+- Ada: This week I worked on the monitoring that was missing from last week. It can be found here: https://github.com/doda2025-team22/app/pull/13 . Then on the lab we worked on some troubleshooting steps for Istio, which resulted in us adding it to the documentation here:https://github.com/doda2025-team22/operation/pull/51 . I also had to adjust paths used for the metrics here: https://github.com/doda2025-team22/operation/pull/48 .
