@@ -17,6 +17,8 @@ spec:
         - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
 ---
 # Add virtual service
+# https://faun.pub/consistent-hashing-and-httpmatch-route-with-istio-on-gke-https-redirect-8424b270184c 
+# The sticky session is happening here, rather than the destination rule, it seems to be the only way that it works. while also doing the 90/10 routing. Im panning on talking to the teacher rq to double check this. 
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -28,6 +30,22 @@ spec:
   gateways:
     - istio-system/{{ .Values.global.ingressGatewayName }}
   http:
+    - match: 
+      - headers: 
+          x-session-id: 
+            exact: stable 
+      route: 
+      - destination: 
+          host: app-svc
+          subset: stable
+    - match: 
+      - headers: 
+          x-session-id: 
+            exact: canary 
+      route: 
+      - destination: 
+          host: app-svc 
+          subset: canary
     - match:
         - uri:
             prefix: /
