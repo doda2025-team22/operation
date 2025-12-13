@@ -54,14 +54,24 @@
           - curl
           - gpg
         state: present
-    
+   
 
-    - name: Unzip helm
+    - name: Unzip helm AMD64
       become: true
       ansible.builtin.unarchive: 
         src: "./helm/helm-v3.19.2-linux-amd64.tar.gz"
         dest: /usr/local/bin
         extra_opts: [ --strip-components=1, --show-stored-names, linux-amd64/helm ] 
+      when: ansible_facts['architecture'] == "x86_64"
+
+    - name: Unzip helm ARM64
+      become: true
+      ansible.builtin.unarchive: 
+        src: "./helm/helm-v3.19.2-linux-arm64.tar.gz"
+        dest: /usr/local/bin
+        extra_opts: [ --strip-components=1, --show-stored-names, linux-arm64/helm ] 
+      when: ansible_facts['architecture'] == "aarch64"
+    
 
     # - name: Import Helm GPG key
     #   become: true
