@@ -20,8 +20,8 @@ app:
       tag: 1.1.latest
     replicaCount: 1
     port: 8080
-  canaryWeight: 50
-  stableWeight: 50
+  canaryWeight: 10
+  stableWeight: 90
 
 modelservice:
   image:
