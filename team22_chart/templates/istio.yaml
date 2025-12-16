@@ -1,4 +1,5 @@
-# Add Gateway
+---
+# Istio Gateway
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
@@ -15,10 +16,11 @@ spec:
       hosts:
         - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
         - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+{{- if .Values.grafana.enabled }}
+        - "{{ .Values.grafana.grafanaHost }}"
+{{- end }}
 ---
-# Add virtual service
-# https://faun.pub/consistent-hashing-and-httpmatch-route-with-istio-on-gke-https-redirect-8424b270184c 
-# The sticky session is happening here, rather than the destination rule, it seems to be the only way that it works. while also doing the 90/10 routing. Im panning on talking to the teacher rq to double check this. 
+# VirtualService for App (Canary/Stable routing)
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -59,7 +61,7 @@ spec:
             subset: canary
           weight: {{ .Values.app.canaryWeight }}
 ---
-# Add destination rule
+# DestinationRule for App (Stable/Canary subsets)
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
