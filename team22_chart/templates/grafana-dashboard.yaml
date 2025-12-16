@@ -1,0 +1,16 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-team22-dashboard
+  namespace: {{ .Release.Namespace }}
+  labels:
+    grafana_dashboard: "1"
+    release: "{{ .Values.monitoring.prometheusRelease }}"
+    monitoring: "true"
+data:
+  team22-app-metrics.json: |-
+{{ .Files.Get "grafana-dashboards/team22-app-metrics.json" | nindent 4 }}
+  team22-app-experimental.json: |-
+{{ .Files.Get "grafana-dashboards/team22-app-experimental.json" | nindent 4 }}
+{{- end }}
