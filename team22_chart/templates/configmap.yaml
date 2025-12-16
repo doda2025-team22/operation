@@ -1,3 +1,5 @@
+---
+# ConfigMap for Application Configuration
 apiVersion: v1
 kind: ConfigMap
 metadata:

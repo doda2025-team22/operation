@@ -1,83 +1,84 @@
-# Create a deployment for model-service
-apiVersion: apps/v1
-kind: Deployment
-metadata: 
-  name: model-service
-spec: 
-    replicas: {{ .Values.modelservice.replicaCount }}
-    selector:
-        matchLabels:
-            app: model-service # links to the template below
-    template:
-        metadata:
-            labels:
-                app: model-service
-        spec:
-            containers:
-            -   name: model-service
-                image: "{{ .Values.modelservice.image.repository }}:{{ .Values.modelservice.image.tag }}"
-                ports:
-                -   containerPort: {{ .Values.modelservice.port }}
-                env:
-                -   name: API_TIMEOUT_MS
-                    value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
-                -   name: FEATURE_FLAG_TEST
-                    value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
 ---
-# Create a deployment for app-service stable version
+# Deployment for Model Service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: app-service-stable
-    labels:
+  name: model-service
+spec:
+  replicas: {{ .Values.modelservice.replicaCount }}
+  selector:
+    matchLabels:
+      app: model-service
+  template:
+    metadata:
+      labels:
+        app: model-service
+    spec:
+      containers:
+        - name: model-service
+          image: "{{ .Values.modelservice.image.repository }}:{{ .Values.modelservice.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.modelservice.port }}
+          env:
+            - name: API_TIMEOUT_MS
+              value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+            - name: FEATURE_FLAG_TEST
+              value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+---
+# Deployment for App Service (Stable)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service-stable
+  labels:
+    app: app-service
+    version: stable
+spec:
+  replicas: {{ .Values.app.stable.replicaCount }}
+  selector:
+    matchLabels:
+      app: app-service
+      version: stable
+  template:
+    metadata:
+      labels:
         app: app-service
         version: stable
-spec:
-    replicas: {{ .Values.app.stable.replicaCount }}
-    selector:
-        matchLabels:
-            app: app-service
-            version: stable
-    template:
-        metadata:
-            labels:
-                app: app-service
-                version: stable
-        spec:
-            containers:
-            -   name: app-service
-                image: "{{ .Values.app.stable.image.repository }}:{{ .Values.app.stable.image.tag }}"
-                ports:
-                -   containerPort: {{ .Values.app.stable.port }}
-                env:
-                -   name: MODEL_HOST
-                    value: "http://model-svc:{{ .Values.modelservice.port }}"
+    spec:
+      containers:
+        - name: app-service
+          image: "{{ .Values.app.stable.image.repository }}:{{ .Values.app.stable.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.app.stable.port }}
+          env:
+            - name: MODEL_HOST
+              value: "http://model-svc:{{ .Values.modelservice.port }}"
 ---
-# Create a deployment for app-service canary version
+# Deployment for App Service (Canary)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: app-service-canary
-    labels:
+  name: app-service-canary
+  labels:
+    app: app-service
+    version: canary
+spec:
+  replicas: {{ .Values.app.canary.replicaCount }}
+  selector:
+    matchLabels:
+      app: app-service
+      version: canary
+  template:
+    metadata:
+      labels:
         app: app-service
         version: canary
-spec:
-    replicas: {{ .Values.app.canary.replicaCount }}
-    selector:
-        matchLabels:
-            app: app-service
-            version: canary
-    template:
-        metadata:
-            labels:
-                app: app-service
-                version: canary
-        spec:
-            containers:
-            -   name: app-service
-                image: "{{ .Values.app.canary.image.repository }}:{{ .Values.app.canary.image.tag }}"
-                ports:
-                -   containerPort: {{ .Values.app.canary.port }}
-                env:
-                -   name: MODEL_HOST
-                    value: "http://model-svc:{{ .Values.modelservice.port }}"
+    spec:
+      containers:
+        - name: app-service
+          image: "{{ .Values.app.canary.image.repository }}:{{ .Values.app.canary.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.app.canary.port }}
+          env:
+            - name: MODEL_HOST
+              value: "http://model-svc:{{ .Values.modelservice.port }}"

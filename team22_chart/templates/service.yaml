@@ -1,27 +1,32 @@
-# Create a Service for the fronend
-#! Still needs to communicate with the backend service apparently. Try to find the docs for it.
-apiVersion: v1
-kind: Service
-metadata:
-    name: app-svc
-spec:
-    type: ClusterIP
-    selector:
-        app: app-service
-    ports:
-        -   port: {{ .Values.app.stable.port }} # Exposed Port
-            targetPort: {{ .Values.app.stable.port }} # forward port
-
 ---
-# Create a Service for the backend
+# Service for App (Frontend)
 apiVersion: v1
 kind: Service
 metadata:
-    name: model-svc
+  name: app-svc
+  labels:
+    app: app
 spec:
-    type: ClusterIP
-    selector:
-        app: model-service
-    ports:
-        -   port: {{ .Values.modelservice.port }} # Exposed Port
-            targetPort: {{ .Values.modelservice.port }} # forward port
+  type: ClusterIP
+  selector:
+    app: app-service
+  ports:
+    - name: http
+      port: {{ .Values.app.stable.port }}
+      targetPort: {{ .Values.app.stable.port }}
+---
+# Service for Model Service (Backend)
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-svc
+  labels:
+    app: modelservice
+spec:
+  type: ClusterIP
+  selector:
+    app: model-service
+  ports:
+    - name: http
+      port: {{ .Values.modelservice.port }}
+      targetPort: {{ .Values.modelservice.port }}
