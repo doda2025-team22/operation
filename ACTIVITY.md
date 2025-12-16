@@ -92,3 +92,10 @@
 - Ada: This week I worked on the monitoring that was missing from last week. It can be found here: https://github.com/doda2025-team22/app/pull/13 . Then on the lab we worked on some troubleshooting steps for Istio, which resulted in us adding it to the documentation here:https://github.com/doda2025-team22/operation/pull/51 . I also had to adjust paths used for the metrics here: https://github.com/doda2025-team22/operation/pull/48 .
 
 - Gonenc: This week I worked on implementing the traffic management up until sticky management. The pr for this can be found here: https://github.com/doda2025-team22/operation/pull/49
+
+- Emre: Worked on the helm charts but nothing significant was contributed to the chart.
+
+## Week 6
+
+- Emre: Worked on teh helm chart and added the dashboard and the ingress for grafana. Also fixed a bug related to the prometheus metrics, now the metrics by default are easly discoverable by the grafana dashboard. Also added the documentation for the helm chart, explaining how to use it and what are the configurable values.
+  - https://github.com/doda2025-team22/operation/pull/58
