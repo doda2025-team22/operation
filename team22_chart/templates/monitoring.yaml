@@ -1,6 +1,6 @@
 {{- if .Values.monitoring.enabled }}
-
-# ServiceMonitor for App
+---
+# ServiceMonitor for App Service
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -8,6 +8,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     release: "{{ .Values.monitoring.prometheusRelease }}"
+    monitoring: "true"
 spec:
   selector:
     matchLabels:
@@ -17,7 +18,7 @@ spec:
       interval: 1s
       path: /sms/metrics
 ---
-# ServiceMonitor for model service
+# ServiceMonitor for Model Service
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -25,6 +26,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     release: "{{ .Values.monitoring.prometheusRelease }}"
+    monitoring: "true"
 spec:
   selector:
     matchLabels:
@@ -33,5 +35,4 @@ spec:
     - port: http
       interval: 1s
       path: /sms/metrics
-
 {{- end }}

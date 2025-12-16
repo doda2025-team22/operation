@@ -1,0 +1,22 @@
+{{- if and .Values.grafana.enabled .Values.monitoring.enabled }}
+---
+# VirtualService for Grafana
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: grafana-virtualservice
+spec:
+  hosts:
+    - "{{ .Values.grafana.grafanaHost }}"
+  gateways:
+    - istio-system/{{ .Values.global.ingressGatewayName }}
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: {{ .Release.Name }}-grafana
+            port:
+              number: 80
+{{- end }}

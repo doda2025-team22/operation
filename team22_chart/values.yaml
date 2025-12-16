@@ -1,12 +1,16 @@
+# Global configuration
 global:
-  domain: "192-168-56-90.sslip.io"
+  domain: "local"
   stableSubdomain: "team22"
   prereleaseSubdomain: "team22-dev"
   ingressGatewayName: team22-gateway
 
-ingress:
-  className: nginx
+config:
+  appConfig:
+    FEATURE_FLAG_TEST: "true"
+    API_TIMEOUT_MS: "5000"
 
+# Application configuration
 app:
   stable:
     image:
@@ -23,6 +27,7 @@ app:
   canaryWeight: 10
   stableWeight: 90
 
+# Model service configuration
 modelservice:
   image:
     repository: ghcr.io/doda2025-team22/model-service
@@ -30,16 +35,50 @@ modelservice:
   replicaCount: 1
   port: 8081
 
-config:
-  appConfig:
-    FEATURE_FLAG_TEST: "true"
-    API_TIMEOUT_MS: "5000"
 
+# Monitoring configuration
 monitoring:
   enabled: true
-  prometheusRelease: myprom
+  prometheusRelease: monitoring
 
+# kube-prometheus-stack subchart configuration
+kube-prometheus-stack:
+  # Enable Grafana from kube-prometheus-stack
+  grafana:
+    enabled: true
+    # Admin credentials loaded from secret (grafana-admin-secret)
+    admin:
+      existingSecret: grafana-admin-secret
+      userKey: admin-user
+      passwordKey: admin-password
+    service:
+      type: ClusterIP
+    persistence:
+      enabled: true
+      storageClassName: ""
+      size: 10Gi
+    sidecar:
+      datasources:
+        enabled: true
+        label: grafana_datasource
+        labelValue: "1"
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelector:
+        matchLabels:
+          release: monitoring
+      serviceMonitorNamespaceSelector: {}
+
+# Grafana configuration (for Istio routing)
+grafana:
+  enabled: true
+  grafanaHost: "grafana.local"
+
+# Secrets configuration
 secret:
   smtp:
     username: "usrnm"
     password: "pswrd"
+  grafana:
+    adminUser: "admin"
+    adminPassword: "admin"

@@ -1,4 +1,5 @@
-# Add Gateway
+---
+# Istio Gateway
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
@@ -15,8 +16,11 @@ spec:
       hosts:
         - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
         - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+{{- if .Values.grafana.enabled }}
+        - "{{ .Values.grafana.grafanaHost }}"
+{{- end }}
 ---
-# Add virtual service
+# VirtualService for App (Canary/Stable routing)
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -41,7 +45,7 @@ spec:
             subset: canary
           weight: {{ .Values.app.canaryWeight }}
 ---
-# Add destination rule
+# DestinationRule for App (Stable/Canary subsets)
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
