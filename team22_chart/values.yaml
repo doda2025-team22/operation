@@ -80,6 +80,10 @@ kube-prometheus-stack:
           release: monitoring
       serviceMonitorNamespaceSelector: {}
 
+ratelimit:
+  enable: true
+  smsPageRpm: 10
+
 # Grafana configuration (for Istio routing)
 grafana:
   enabled: true
