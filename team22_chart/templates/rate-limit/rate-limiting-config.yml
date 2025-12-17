@@ -7,10 +7,9 @@ data:
     domain: ratelimit
     descriptors:
       - key: PATH
-        value: "/sms"
         rate_limit:
           unit: minute
-          requests_per_unit: 10
+          requests_per_unit: {{ .Values.ratelimit.smsPageRpm }}
 #      - key: PATH
 #        rate_limit:
 #          unit: minute
