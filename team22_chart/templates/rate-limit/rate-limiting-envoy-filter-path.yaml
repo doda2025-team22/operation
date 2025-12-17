@@ -1,7 +1,8 @@
+{{- if .Values.ratelimit.enable }}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: global-ratelimit-rule
+  name: global-ratelimit-rule # this is for deciding what to send to the rate limiting service and when it is applied
   namespace: istio-system
 spec:
   workloadSelector:
@@ -13,7 +14,7 @@ spec:
         context: GATEWAY
         routeConfiguration:
           vhost:
-            name: "*"
+            name: "" # applying to all virtual hosts
             route:
               action: ANY
       patch:
@@ -21,6 +22,7 @@ spec:
         value:
           rate_limits:
             - actions:
-                - request_headers:
+                - request_headers: # send the path to service
                     header_name: ":path"
                     descriptor_key: "PATH"
+{{- end }}
