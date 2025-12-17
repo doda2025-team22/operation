@@ -10,7 +10,3 @@ data:
         rate_limit:
           unit: minute
           requests_per_unit: {{ .Values.ratelimit.smsPageRpm }}
-#      - key: PATH
-#        rate_limit:
-#          unit: minute
-#          requests_per_unit: 1000
