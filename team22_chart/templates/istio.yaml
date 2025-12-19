@@ -16,7 +16,7 @@ spec:
         - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
         - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
 ---
-# Add virtual service
+# Add virtual service for app
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -41,13 +41,46 @@ spec:
             subset: canary
           weight: {{ .Values.app.canaryWeight }}
 ---
-# Add destination rule
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: modelservice-virtualservice
+spec:
+  hosts:
+    - model-svc
+  http:
+    - route:
+        - destination:
+            host: model-svc
+            subset: stable
+          weight: {{ .Values.modelservice.stableWeight }}
+        - destination:
+            host: model-svc
+            subset: canary
+          weight: {{ .Values.modelservice.canaryWeight }}
+---
+# Add destination rule for app
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: app-dr
 spec:
   host: app-svc
+  subsets:
+    - name: stable
+      labels:
+        version: stable
+    - name: canary
+      labels:
+        version: canary
+---
+# Add destination rule for model-service
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: model-dr
+spec:
+  host: model-svc
   subsets:
     - name: stable
       labels:

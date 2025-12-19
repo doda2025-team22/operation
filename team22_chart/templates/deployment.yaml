@@ -1,23 +1,59 @@
-# Create a deployment for model-service
+# Create a deployment for model-service stable version
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: model-service
+  name: model-service-stable
+  labels:
+    app: model-service
+    version: stable
 spec: 
-    replicas: {{ .Values.modelservice.replicaCount }}
+    replicas: {{ .Values.modelservice.stable.replicaCount }}
     selector:
         matchLabels:
             app: model-service # links to the template below
+            version: stable
     template:
         metadata:
             labels:
                 app: model-service
+                version: stable
         spec:
             containers:
             -   name: model-service
-                image: "{{ .Values.modelservice.image.repository }}:{{ .Values.modelservice.image.tag }}"
+                image: "{{ .Values.modelservice.stable.image.repository }}:{{ .Values.modelservice.stable.image.tag }}"
                 ports:
-                -   containerPort: {{ .Values.modelservice.port }}
+                -   containerPort: {{ .Values.modelservice.stable.port }}
+                env:
+                -   name: API_TIMEOUT_MS
+                    value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+                -   name: FEATURE_FLAG_TEST
+                    value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+---
+# Create a deployment for model-service canary version
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: model-service-canary
+  labels:
+    app: model-service
+    version: canary
+spec: 
+    replicas: {{ .Values.modelservice.canary.replicaCount }}
+    selector:
+        matchLabels:
+            app: model-service # links to the template below
+            version: canary
+    template:
+        metadata:
+            labels:
+                app: model-service
+                version: canary
+        spec:
+            containers:
+            -   name: model-service
+                image: "{{ .Values.modelservice.canary.image.repository }}:{{ .Values.modelservice.canary.image.tag }}"
+                ports:
+                -   containerPort: {{ .Values.modelservice.canary.port }}
                 env:
                 -   name: API_TIMEOUT_MS
                     value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
@@ -51,7 +87,7 @@ spec:
                 -   containerPort: {{ .Values.app.stable.port }}
                 env:
                 -   name: MODEL_HOST
-                    value: "http://model-svc:{{ .Values.modelservice.port }}"
+                    value: "http://model-svc:{{ .Values.modelservice.stable.port }}"
 ---
 # Create a deployment for app-service canary version
 apiVersion: apps/v1
@@ -80,4 +116,4 @@ spec:
                 -   containerPort: {{ .Values.app.canary.port }}
                 env:
                 -   name: MODEL_HOST
-                    value: "http://model-svc:{{ .Values.modelservice.port }}"
+                    value: "http://model-svc:{{ .Values.modelservice.canary.port }}"
