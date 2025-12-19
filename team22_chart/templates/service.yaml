@@ -23,5 +23,5 @@ spec:
     selector:
         app: model-service
     ports:
-        -   port: {{ .Values.modelservice.port }} # Exposed Port
-            targetPort: {{ .Values.modelservice.port }} # forward port
+        -   port: {{ .Values.modelservice.stable.port }} # Exposed Port
+            targetPort: {{ .Values.modelservice.stable.port }} # forward port
