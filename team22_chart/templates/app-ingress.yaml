@@ -10,6 +10,22 @@ spec:
   gateways:
     - istio-system/{{ .Values.global.ingressGatewayName }}
   http:
+    - match: 
+      - headers: 
+          x-session-id: 
+            exact: stable 
+      route: 
+      - destination: 
+          host: app-svc
+          subset: stable
+    - match: 
+      - headers: 
+          x-session-id: 
+            exact: canary 
+      route: 
+      - destination: 
+          host: app-svc 
+          subset: canary
     - match:
         - uri:
             prefix: /
