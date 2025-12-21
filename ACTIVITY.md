@@ -97,5 +97,9 @@
 
 ## Week 6
 
+- Ada: Added rate limiting for the additional use case section for A4. Also made adjusted the trigger for releases on the app to make sure it is not accidentally triggered.
+  - https://github.com/doda2025-team22/app/pull/15
+  - https://github.com/doda2025-team22/operation/pull/59
+
 - Emre: Worked on teh helm chart and added the dashboard and the ingress for grafana. Also fixed a bug related to the prometheus metrics, now the metrics by default are easly discoverable by the grafana dashboard. Also added the documentation for the helm chart, explaining how to use it and what are the configurable values.
   - https://github.com/doda2025-team22/operation/pull/58
