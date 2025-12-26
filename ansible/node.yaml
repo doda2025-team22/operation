@@ -1,10 +1,10 @@
 - name: Kubernetes Node Setup
   hosts: nodes
   tasks:
-    - name: Wait for SSH to come up on node # get rid of initialization issues with the ssh
+    - name: Wait for SSH to come up on node
       wait_for_connection:
         timeout: 120
-    
+
     - name: Get Kubeadm Join Command
       ansible.builtin.command: kubeadm token create --print-join-command
       delegate_to: ctrl
