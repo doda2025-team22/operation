@@ -4,6 +4,8 @@
 
 .idea
 
+inventory.ini
+
 admin.conf
 
 # Created by https://www.toptal.com/developers/gitignore/api/vagrant,ansible,macos,windows,linux,visualstudiocode,intellij

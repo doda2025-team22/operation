@@ -33,41 +33,39 @@ Open http://localhost:8080/sms
 Troubleshooting Tips:
 - In case of errors pulling from the registry, please make sure your PAT is configured and you have logged into ghcr.io.
 
-## Steps to run the kubernetes cluster and the requirements for A2
-### Initialization
+## A2
 
-Make sure you have ssh keys set up on your device. The playbook will copy all the public keys present on your `~/.ssh` directory to the autorised keys of all the VM's
+### Steps to run the kubernetes cluster and the requirements for A2
 
-Also make sure to install the nessesary plugins for Ansible
-``` bash
-ansible-galaxy collection install kubernetes.core
-```
+1. Run `vagrant up` to create the kubernetes cluster.
+2. Run `ansible-playbook -u vagrant -i 192.168.56.100, finalization.yml` to deploy the kubernetes dashboard and ingress-nginx.
+3. Run `export KUBECONFIG=$PWD/admin.conf` on the root of the operation repository to set the KUBECONFIG environment variable.
+3. Run `kubectl get nodes` to see the nodes in the cluster.
 
-### Steps 1-3
+### General Setup Explanation
 
-These steps are present in the Vagrantfile; where the default box is specified, the nodes are created, their memory/CPU allocations and the worker node count are specified, and the private network addresses per node are generated dynamically, and an ansible provisioner is specified for each node with respect to the three ansible notebooks `general.yaml`, `ctrl.yaml` and `node.yaml` with tasks for both types of nodes, tasks for the ctrl node, and tasks for the worker nodes implemented respectively.
+Vagrantfile automaticly creates all the nessesary VM's and runs the ansible playbooks on them. The playbooks are located in the `ansible` directory. The playbooks are:
+- general.yaml: General setup for all nodes
+- ctrl.yaml: Setup for the controller node
+- node.yaml: Setup for the worker nodes
+- finalization.yaml: Finalization of the cluster setup
+- site.yaml: Site file that imports the other playbooks
 
-### Steps 4-12
+The `ansible` directory also contains the ssh public keys of the team members. These keys are copied to the `~/.ssh/authorized_keys` file of the VM's. The vagrints default key generation is disabled so make sure to add your own public key to the `ansible/keys` directory to ensure you can ssh into the VM's.
 
-These steps are present in the `general.yaml` ansible playbook. Specific documentation for each step regarding what they accomplish and which modules they use to do so can also be found in the "general.yaml" playbook.
+Inside the `ansible` directory you can the collections for the ansible playbooks. These collections are used to install the kubernetes tools and deploy the kubernetes dashboard and ingress-nginx. We have included the collections in the `ansible/collections` directory so you do not need to install them manually.
 
+The ansible playbook also copies the nessesary admin.conf file to the root of the operation repository so you can use kubectl to manage the cluster.
 
-### Ensure setting KUBECONFIG environment variable 
-```bash
-export KUBECONFIG=export KUBECONFIG=$PWD/admin.conf
-``` 
-Note: Ensure you are in the folder that has access to the admin.con. This should be operations root. 
-
-### Running finalization.yaml Manually
-
-The inventory file is generated automaticly and after running the vagrantfile at least one the inventory file will be saved inside the `.vagrant` folder. To run the `finalization.yaml` playbook manually do:
+When running `vagrant up` the playbooks that are defined inside the `site.yaml` file are run. This file imports the other playbooks and runs them in the correct order. When `vagrant up` is run, the inventory file is generated automaticly and saved inside the `ansible` directory. After this step you can run the `finalization.yaml` playbook manually to deploy the kubernetes dashboard and ingress-nginx using:
 
 ```bash
-ansible-playbook -u vagrant -i 192.168.56.100, ansible/finalization.yaml 
+ansible-playbook -u vagrant -i 192.168.56.100, finalization.yml
 ```
 
-For the finalisation playbook the ipadress of the controller is assumbed to be `192.168.56.100`. If you need to change this to get the VM's running make sure to update this on the file too or manually running this notebook might not work.
+inside the `ansible` directory.
+
 
 ### Accessing Dashboard
 
-The playbook deploys the k8n dashboard to URL https://dashboard.192-168-56-90.sslip.io
+The playbook deploys the k8n dashboard to URL https://dashboard.192-168-56-90.sslip.io by default. This method allows you to access the dashboard without modifying your hosts file. Additionally as we use self-signed certificates, your browser will warn you about the certificate. You can add the certificate to your trusted certificates by clicking on the "Advanced" button and then "Add exception".
