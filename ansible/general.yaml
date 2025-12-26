@@ -1,5 +1,6 @@
 - name: General setup for all nodes
   hosts: all
+  strategy: free
   become: true
   tasks:
     # Step 4: Register ssh keys
@@ -19,7 +20,7 @@
         user: vagrant
         state: present
         key: "{{ lookup('file', item)}}"
-      loop: "{{ lookup('fileglob', '~/.ssh/*.pub', wantlist = True) }}"
+      loop: "{{ lookup('fileglob', './keys/*.pub', wantlist = True) }}"
 
     # Step 5: Disable SWAP
     # Disables SWAP via 'swapoff -a" and removes swap from '/etc/fstab'
@@ -116,35 +117,22 @@
       ansible.builtin.apt:
         update_cache: true
 
-    - name: Setup Python
-      become: true
-      ansible.builtin.apt:
-        name:
-          - python3
-          - python3-kubernetes
-          - python3-openshift
-          - python3-yaml
-        state: present
-        update_cache: true
-
     # Step 10: Install k8 tools
     # Installs containerd-1.7.24, runc-1.1.12, kubelet-1.32.4, kubeadm-1.32.4, and kubectl-1.32.4.
     # Container runtime are downloaded seperately as they need to be downgraded and do not come from the kubernetes repo
     # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_module.html
-    - name: Install container runtime
-      ansible.builtin.apt:
-        name:
-          - containerd=1.7.24-0ubuntu1~24.04.2
-          - runc=1.1.12-0ubuntu3
-        state: present
-        allow_downgrade: true
-
     - name: Install kubernetes tools
       ansible.builtin.apt:
         name:
-          - kubelet=1.32.4-1.1
-          - kubeadm=1.32.4-1.1
-          - kubectl=1.32.4-1.1
+          - kubelet
+          - kubeadm
+          - kubectl
+          - runc
+          - containerd
+          - python3
+          - python3-kubernetes
+          - python3-openshift
+          - python3-yaml
         state: present
 
     # Step 11: Configure containerd
