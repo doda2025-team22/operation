@@ -103,3 +103,8 @@
 
 - Emre: Worked on teh helm chart and added the dashboard and the ingress for grafana. Also fixed a bug related to the prometheus metrics, now the metrics by default are easly discoverable by the grafana dashboard. Also added the documentation for the helm chart, explaining how to use it and what are the configurable values.
   - https://github.com/doda2025-team22/operation/pull/58
+
+## Week 7
+
+- Emre: Worked on streamlining and improving the A2 assignments. Most of the work went into streamlining the main deployment of the cluster and the vagrantfile. Also added some documentation to the readme.
+  - https://github.com/doda2025-team22/operation/pull/62
