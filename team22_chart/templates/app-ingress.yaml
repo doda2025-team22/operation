@@ -1,4 +1,4 @@
-# VirtualService for App (Canary/Stable routing)
+# Add virtual service for app
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -17,15 +17,52 @@ spec:
         - destination:
             host: app-svc
             subset: stable
-          weight: 100
+          weight: {{ .Values.app.stableWeight }}
+        - destination:
+            host: app-svc
+            subset: canary
+          weight: {{ .Values.app.canaryWeight }}
 ---
-# DestinationRule for App (Stable/Canary subsets)
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: modelservice-virtualservice
+spec:
+  hosts:
+    - model-svc
+  http:
+    - route:
+        - destination:
+            host: model-svc
+            subset: stable
+          weight: {{ .Values.modelservice.stableWeight }}
+        - destination:
+            host: model-svc
+            subset: canary
+          weight: {{ .Values.modelservice.canaryWeight }}
+---
+# Add destination rule for app
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: app-dr
 spec:
   host: app-svc
+  subsets:
+    - name: stable
+      labels:
+        version: stable
+    - name: canary
+      labels:
+        version: canary
+---
+# Add destination rule for model-service
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: model-dr
+spec:
+  host: model-svc
   subsets:
     - name: stable
       labels:

@@ -108,3 +108,14 @@
 
 - Emre: Worked on streamlining and improving the A2 assignments. Most of the work went into streamlining the main deployment of the cluster and the vagrantfile. Also added some documentation to the readme.
   - https://github.com/doda2025-team22/operation/pull/62
+
+## Week 8
+
+- Emre: Worked on A1 assignment polishing. Fixed the lib-version release workflow to be now fully standartised and for the other repos make them fully tag indipendent. Also for the app repo, added a version verifyer that checks if the changed `pom.xml` is actually has a new version of the application before building the jar and the container. Also added the old fixes Gonenc was working on after they became outdated due to breaking changes to the helm chart.
+  - https://github.com/doda2025-team22/lib-version/pull/7
+  - https://github.com/doda2025-team22/app/pull/16
+  - https://github.com/doda2025-team22/app/pull/17
+  - https://github.com/doda2025-team22/app/pull/18
+  - https://github.com/doda2025-team22/model-service/pull/15
+  - https://github.com/doda2025-team22/model-service/pull/16
+  - https://github.com/doda2025-team22/operation/pull/64
