@@ -28,5 +28,5 @@ spec:
     app: model-service
   ports:
     - name: http
-      port: {{ .Values.modelservice.port }}
-      targetPort: {{ .Values.modelservice.port }}
+      port: {{ .Values.modelservice.stable.port }}
+      targetPort: {{ .Values.modelservice.stable.port }}
