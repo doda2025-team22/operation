@@ -21,7 +21,7 @@ app:
   canary:
     image:
       repository: ghcr.io/doda2025-team22/app
-      tag: latest
+      tag: canary
     replicaCount: 1
     port: 8080
   canaryWeight: 10
@@ -38,7 +38,7 @@ modelservice:
   canary:
     image:
       repository: ghcr.io/doda2025-team22/model-service
-      tag: latest
+      tag: canary
     replicaCount: 1
     port: 8081
   canaryWeight: 10
