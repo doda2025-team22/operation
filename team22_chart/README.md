@@ -25,7 +25,7 @@ Then install the helm chart with:
 ```bash
 helm upgrade --install team22 ./team22_chart \
   --namespace team22 \
-  --create-namespace \
+  --create-namespace
 ```
 
 The values.yaml file is configured to use the local domain. You can change it to use a different domain by changing the global.domain value.
