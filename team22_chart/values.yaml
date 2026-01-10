@@ -51,6 +51,16 @@ monitoring:
   enabled: true
   prometheusRelease: monitoring
 
+alertmanager:
+  smtp:
+    host: "smtp.gmail.com:587"
+  from: "doda98124@gmail.com"
+  to: "doda98124@gmail.com"
+  authSecret:
+    name: team22-alertmanager-secrets
+    userKey: smtpUser
+    passKey: smtpPassword
+
 # kube-prometheus-stack subchart configuration
 kube-prometheus-stack:
   # Enable Grafana from kube-prometheus-stack
