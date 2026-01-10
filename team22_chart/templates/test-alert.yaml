@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Release.Name }}-rules
+  namespace: {{ .Release.Namespace }}
+  labels:
+    release: {{ .Release.Name }}
+#    app.kubernetes.io/instance: "{{ .Values.monitoring.prometheusRelease }}"
+#    app.kubernetes.io/managed-by: "Helm"
+spec:
+  groups:
+    - name: test.rules
+      rules:
+        - alert: TestEmail
+          expr: vector(1) # alert condition will always be true to make it fire all the time
+          for: 10s
+          labels:
+            severity: critical
+            service: test
+          annotations:
+            summary: "This is a test email from Prometheus/Alertmanager"
+            description: "Test alert to verify Alertmanager email notifications"
