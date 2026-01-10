@@ -15,6 +15,9 @@ spec:
       app: app
   endpoints:
     - port: http
+      relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_label_version]
+        targetLabel: version
       interval: 1s
       path: /sms/metrics
 ---
@@ -33,6 +36,9 @@ spec:
       app: modelservice
   endpoints:
     - port: http
+      relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_label_version]
+        targetLabel: version
       interval: 1s
       path: /sms/metrics
 {{- end }}
