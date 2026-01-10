@@ -51,15 +51,35 @@ monitoring:
   enabled: true
   prometheusRelease: monitoring
 
-alertmanager:
-  smtp:
-    host: "smtp.gmail.com:587"
-  from: "doda98124@gmail.com"
-  to: "doda98124@gmail.com"
-  authSecret:
-    name: team22-alertmanager-secrets
-    userKey: smtpUser
-    passKey: smtpPassword
+#alertmanager:
+#  enabled: true
+#  config:
+#    global:
+#      resolve_timeout: 5m
+#      smtp_smarthost: "smtp.gmail.com:587"
+#      smtp_from: "doda98124@gmail.com"
+#      smtp_auth_username_file: /etc/alertmanager/secrets/smtpUser
+#      smtp_auth_password_file: /etc/alertmanager/secrets/smtpPassword
+#      smtp_require_tls: true
+#
+#    route:
+#      receiver: team22-notifications
+#      group_by: [ "alertname","service" ]
+#      group_wait: 10s
+#      group_interval: 5m
+#
+#    receivers:
+#      - name: team22-notifications
+#        email_configs:
+#          - to: "doda98124@gmail.com"
+#  smtp:
+#    host: "smtp.gmail.com:587"
+#  from: "doda98124@gmail.com"
+#  to: "doda98124@gmail.com"
+#  authSecret:
+#    name: team22-alertmanager-secrets
+#    userKey: smtpUser
+#    passKey: smtpPassword
 
 # kube-prometheus-stack subchart configuration
 kube-prometheus-stack:
