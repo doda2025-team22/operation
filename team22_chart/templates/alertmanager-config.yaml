@@ -1,0 +1,46 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alertmanager-{{ .Values.monitoring.prometheusRelease }}
+  labels:
+    release: {{ .Values.monitoring.prometheusRelease }}
+stringData:
+  alertmanager.yaml: |
+    global:
+      # Wait 5 minutes until you disregard an alert after not receiving it
+      resolve_timeout: 5m
+
+      # smtp server configs
+      smtp_smarthost: "{{ .Values.alertmanager.smtp.host }}"
+      smtp_from: "{{ .Values.alertmanager.from }}"
+      smtp_auth_username_file: /etc/alertmanager/secrets/{{ .Values.alertmanager.authSecret.userKey }}
+      smtp_auth_password_file: /etc/alertmanager/secrets/{{ .Values.alertmanager.authSecret.passKey }}
+      smtp_require_tls: true
+
+
+    route:
+      # Default routing if no subdomain matches
+      receiver: "default"
+      group_by: ["alertname", "service"]
+      # Wait 10s before sending a notif to group similar alerts
+      group_wait: 10s
+      # Check up on a group every 5 minutes 
+      group_interval: 5m
+      # Get my attention every 24 hours if it is still broken
+      repeat_interval: 24h
+
+      routes:
+      # Send the alert to this receiver if the label matches, coming from the PrometheusRule
+      - receiver: "team22-notifications"
+        matchers:
+        - team="team22"
+
+    receivers:
+    - name: "default"
+
+    
+    - name: "team22-notifications"
+        email_configs:
+          - to: "{{ .Values.alertmanager.to }}"
+{{- end }}
