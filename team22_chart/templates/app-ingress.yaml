@@ -16,10 +16,14 @@ spec:
       route:
         - destination:
             host: app-svc
+            port:
+              number: 8080
             subset: stable
           weight: {{ .Values.app.stableWeight }}
         - destination:
             host: app-svc
+            port:
+              number: 8080
             subset: canary
           weight: {{ .Values.app.canaryWeight }}
 ---
