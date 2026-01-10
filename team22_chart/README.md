@@ -13,7 +13,7 @@ Make sure istio is installed on the host machine that is running the cluster.
 
 On MacOS you need to enable the minikube tunnel in a different terminal with:
 ```bash
-sudo minikube tunnel
+sudo -E minikube tunnel
 ```
 
 Update the helm chart with:
