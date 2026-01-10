@@ -121,5 +121,7 @@ These credentials are the default credentials for the Grafana dashboard. You can
 - If you see the error ``no stable upstream branch``, please wait a bit or refresh.
 
 ## For testing with Linux / In case of other errors
-First run ```minikube service list```.
+- Run ```minikube service list```.
 In the output, if you recieve urls for istio-system, copy the port number of the url associated with http/80 (the target port). 
+
+- If seeing the error "No healthy upstream", please run `kubectl get pods --all-namespaces` to make sure the needed containers are created before testing again.
