@@ -132,8 +132,8 @@ kube-prometheus-stack:
         resolve_timeout: 5m
         smtp_smarthost: "smtp.gmail.com:587"
         smtp_from: "doda98124@gmail.com"
-        smtp_auth_username: ${SMTP_USER}
-        smtp_auth_password: ${SMTP_PASSWORD}
+        smtp_auth_username: "doda98124@gmail.com"
+        smtp_auth_password: "ENTER_ACTUAL_PASSWORD"
         smtp_require_tls: true
       route:
         receiver: team22-notifications
