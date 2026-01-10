@@ -10,36 +10,65 @@ spec:
   gateways:
     - istio-system/{{ .Values.global.ingressGatewayName }}
   http:
-    - match:
-        - uri:
-            prefix: /
-      route:
-        - destination:
-            host: app-svc
-            subset: stable
-          weight: {{ .Values.app.stableWeight }}
-        - destination:
-            host: app-svc
-            subset: canary
-          weight: {{ .Values.app.canaryWeight }}
+      # 1) Users with canary=true cookie always go to v2
+      - match:
+          - headers:
+              cookie:
+                regex: "^(.*;)?(canary=true)(;.*)?$"
+        route:
+          - destination:
+              host: app-service
+              subset: v2
+      # 2) Users with canary=false cookie always go to v1
+      - match:
+          - headers:
+              cookie:
+                regex: "^(.*;)?(canary=false)(;.*)?$"
+        route:
+          - destination:
+              host: app-service
+              subset: v1
+      # 3) New users (no cookie): do 90/10 and SET the cookie
+      - route:
+          - destination:
+              host: app-service
+              subset: v1
+            weight: 90
+            headers:
+              response:
+                add:
+                  Set-Cookie: "canary=false; Path=/sms; Max-Age=3600"
+          - destination:
+              host: app-service
+              subset: v2
+            weight: 10
+            headers:
+              response:
+                add:
+                  Set-Cookie: "canary=true; Path=/sms; Max-Age=3600"
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: modelservice-virtualservice
+  name: model-service-virtualservice
 spec:
   hosts:
-    - model-svc
+    - model-service
+  gateways:
+    - mesh 
   http:
+    - match:
+      - sourceLabels:
+          version: v2
+      route:
+      - destination:
+          host: model-service
+          subset: v2
     - route:
-        - destination:
-            host: model-svc
-            subset: stable
-          weight: {{ .Values.modelservice.stableWeight }}
-        - destination:
-            host: model-svc
-            subset: canary
-          weight: {{ .Values.modelservice.canaryWeight }}
+      - destination:
+          host: model-service
+          subset: v1
+
 ---
 # Add destination rule for app
 apiVersion: networking.istio.io/v1beta1
@@ -47,14 +76,14 @@ kind: DestinationRule
 metadata:
   name: app-dr
 spec:
-  host: app-svc
+  host: app-service
   subsets:
-    - name: stable
+    - name: v1
       labels:
-        version: stable
-    - name: canary
+        version: v1
+    - name: v2
       labels:
-        version: canary
+        version: v2
 ---
 # Add destination rule for model-service
 apiVersion: networking.istio.io/v1beta1
@@ -62,11 +91,11 @@ kind: DestinationRule
 metadata:
   name: model-dr
 spec:
-  host: model-svc
+  host: model-service
   subsets:
-    - name: stable
+    - name: v1
       labels:
-        version: stable
-    - name: canary
+        version: v1
+    - name: v2
       labels:
-        version: canary
+        version: v2
