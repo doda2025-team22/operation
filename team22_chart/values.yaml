@@ -50,6 +50,16 @@ monitoring:
   enabled: true
   prometheusRelease: monitoring
 
+alertmanager:
+  smtp:
+    host: "smtp.gmail.com:587"
+  from: "doda98124@gmail.com"
+  to: "doda98124@gmail.com"
+  authSecret:
+    name: team22-alertmanager-secrets
+    userKey: smtpUser
+    passKey: smtpPassword
+
 # kube-prometheus-stack subchart configuration
 kube-prometheus-stack:
   # Enable Grafana from kube-prometheus-stack
@@ -74,11 +84,17 @@ kube-prometheus-stack:
         label: grafana_dashboard
         labelValue: "1"
   prometheus:
+    enabled: true
     prometheusSpec:
       serviceMonitorSelector:
         matchLabels:
           release: monitoring
       serviceMonitorNamespaceSelector: {}
+  alertmanager:
+    enabled: true
+    alertmanagerSpec:
+      secrets:
+        - team22-alertmanager-secrets
 
 ratelimit:
   enable: true
@@ -92,6 +108,7 @@ grafana:
 # Secrets configuration
 secret:
   smtp:
+    # these are mock values, the actual password and username for smtp is configured as a kubernetes secret
     username: "usrnm"
     password: "pswrd"
   grafana:
