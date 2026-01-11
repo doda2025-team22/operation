@@ -115,25 +115,14 @@ kube-prometheus-stack:
     alertmanagerSpec:
       replicas: 1
       secrets:
-        - team22-alertmanager-secrets
-      env:
-        - name: SMTP_USER
-          valueFrom:
-            secretKeyRef:
-              name: team22-alertmanager-secrets
-              key: smtpUser
-        - name: SMTP_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: team22-alertmanager-secrets
-              key: smtpPassword
+        - smtp-secret
     config:
       global:
         resolve_timeout: 5m
         smtp_smarthost: "smtp.gmail.com:587"
         smtp_from: "doda98124@gmail.com"
         smtp_auth_username: "doda98124@gmail.com"
-        smtp_auth_password: "ENTER_ACTUAL_PASSWORD"
+        smtp_auth_password_file: /etc/alertmanager/secrets/smtp-secret/password
         smtp_require_tls: true
       route:
         receiver: team22-notifications
@@ -160,9 +149,9 @@ grafana:
 # Secrets configuration
 secret:
   smtp:
-    # these are mock values, the actual password and username for smtp is configured as a kubernetes secret
-    username: "usrnm"
-    password: "pswrd"
+    # these are placeholder values, the actual password for smtp is configured as a secret
+    username: "doda98124@gmail.com"
+    password: "ENTER_SECRET"
   grafana:
     adminUser: "admin"
     adminPassword: "admin"
