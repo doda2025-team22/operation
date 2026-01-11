@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 30,
+  "id": 22,
   "links": [],
   "panels": [
     {
@@ -26,44 +26,11 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "This shows the 2 versions average latency when calling the model services and the amount it takes to get a response.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -84,37 +51,51 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 7,
+        "w": 8,
         "x": 0,
         "y": 0
       },
       "id": 3,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "editorMode": "code",
-          "expr": "sum(rate(model_call_duration_seconds_sum[5m])) / sum(rate(model_call_duration_seconds_count[5m]))",
-          "legendFormat": "__auto",
+          "editorMode": "builder",
+          "expr": "sum(rate(model_call_duration_seconds_sum{version=\"v1\"}[5m])) / (sum(rate(model_call_duration_seconds_count{version=\"v1\"}[5m])))",
+          "legendFormat": "v1",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "sum(rate(model_call_duration_seconds_sum{version=\"v2\"}[5m])) / (sum(rate(model_call_duration_seconds_count{version=\"v2\"}[5m])))",
+          "hide": false,
+          "legendFormat": "v2",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Average latency",
-      "type": "timeseries"
+      "title": "Average latency per version",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -137,9 +118,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
-        "w": 12,
-        "x": 12,
+        "h": 14,
+        "w": 10,
+        "x": 8,
         "y": 0
       },
       "id": 4,
@@ -191,14 +172,14 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "editorMode": "code",
-          "expr": "sum by (le) (rate(http_request_duration_seconds_bucket[5m]))",
+          "editorMode": "builder",
+          "expr": "sum by(le) (rate(http_request_duration_seconds_bucket{version=\"v2\"}[5m]))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Model Request Histogram",
+      "title": "Model Request Histogram v2",
       "type": "heatmap"
     },
     {
@@ -264,10 +245,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 7,
+        "w": 8,
         "x": 0,
-        "y": 8
+        "y": 7
       },
       "id": 2,
       "options": {
@@ -286,12 +267,13 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "editorMode": "code",
+          "editorMode": "builder",
           "exemplar": false,
-          "expr": "histogram_quantile(0.50, sum by (le) (rate(model_call_duration_seconds_bucket[5m])))",
+          "expr": "histogram_quantile(0.5, sum by(le) (rate(model_call_duration_seconds_bucket{version=\"v1\"}[5m])))",
           "format": "heatmap",
           "instant": false,
-          "legendFormat": "__auto",
+          "interval": "",
+          "legendFormat": "v1 p50",
           "range": true,
           "refId": "A"
         },
@@ -300,11 +282,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "editorMode": "code",
-          "expr": "histogram_quantile(0.90, sum by (le) (rate(model_call_duration_seconds_bucket[5m])))",
+          "editorMode": "builder",
+          "expr": "histogram_quantile(0.9, sum by(le) (rate(model_call_duration_seconds_bucket{version=\"v1\"}[5m])))",
           "hide": false,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "v1 p90",
           "range": true,
           "refId": "B"
         },
@@ -313,13 +295,52 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(model_call_duration_seconds_bucket[5m])))",
+          "editorMode": "builder",
+          "expr": "histogram_quantile(0.95, sum by(le) (rate(model_call_duration_seconds_bucket{version=\"v1\"}[5m])))",
           "hide": false,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "v1 p95",
           "range": true,
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "histogram_quantile(0.5, sum by(le) (rate(model_call_duration_seconds_bucket{version=\"v2\"}[5m])))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "v2 p50",
+          "range": true,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "histogram_quantile(0.9, sum by(le) (rate(model_call_duration_seconds_bucket{version=\"v2\"}[5m])))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "v2 p90",
+          "range": true,
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "histogram_quantile(0.95, sum by(le) (rate(model_call_duration_seconds_bucket{version=\"v2\"}[5m])))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "v2 p95",
+          "range": true,
+          "refId": "F"
         }
       ],
       "title": "Request latency percentiles (p50/p90/p95)",
@@ -353,10 +374,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 24,
+        "h": 7,
+        "w": 18,
         "x": 0,
-        "y": 16
+        "y": 14
       },
       "id": 1,
       "options": {
@@ -380,8 +401,8 @@
             "uid": "prometheus"
           },
           "editorMode": "builder",
-          "expr": "total_guess_counter",
-          "legendFormat": "Total Succesfull Requests",
+          "expr": "total_guess_counter{version=\"v1\"}",
+          "legendFormat": "Total Succesfull Requests V1",
           "range": true,
           "refId": "A"
         },
@@ -391,7 +412,19 @@
             "uid": "prometheus"
           },
           "editorMode": "builder",
-          "expr": "cached_guess_counter",
+          "expr": "total_guess_counter{version=\"v2\"}",
+          "hide": false,
+          "legendFormat": "Total Succesfull Requests V2",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "cached_guess_counter{version=\"v2\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Requests from Cache",
@@ -399,13 +432,13 @@
           "refId": "B"
         }
       ],
-      "title": "New panel",
+      "title": "Responces",
       "type": "gauge"
     }
   ],
   "preload": false,
   "schemaVersion": 42,
-  "tags": [],
+  "tags": ["team22", "app"],
   "templating": {
     "list": []
   },

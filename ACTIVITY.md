@@ -122,3 +122,12 @@
   - https://github.com/doda2025-team22/model-service/pull/15
   - https://github.com/doda2025-team22/model-service/pull/16
   - https://github.com/doda2025-team22/operation/pull/64
+
+## Week 9
+
+- Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
+  - https://github.com/doda2025-team22/operation/pull/64
+  - https://github.com/doda2025-team22/operation/pull/65
+  - https://github.com/doda2025-team22/app/pull/23
+  - https://github.com/doda2025-team22/app/pull/24
+  - https://github.com/doda2025-team22/app/pull/25

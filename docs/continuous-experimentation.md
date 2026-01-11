@@ -45,3 +45,28 @@ These are the metrics that will be used to test the hypothesis:
 | `model_call_duration_seconds` | Histogram distribution of model backend call duration in seconds | Both |
 | `cached_guess_counter` | Total number of cached guesses served | `canary-release` |
 
+
+## Traffic Routing
+
+The stable and the canary versions of the app are given to the user using `istio` traffic touring with a 90/10 split. To ensure we always serve the new-new and the old-old versions we use istio sidecar injection and istio mesh services with cookies to validate whitch version to serve to the user.
+
+## Desicion process
+
+For this expermiment our hypothesis is clear and we have 2 conditions we need to achive for us to decide to promote the canary version. Those are:
+
+- Have a latency reduction of at least 30% when requesting classification on the same text.
+- Have at least 90% of the repeated request be responded from the cache.
+
+## Experiment
+
+The experiment was run on Firefox using 2 different containers. One of the browser containers had the canary flag set as true and the other one didn't. On each instance we made 30 requests split into 3 different queries. Each query was a paragrah of 5 sencences and they where ran back to back randomly swiching between `ham` and `spam` in each one.
+
+After running the experiments, we observed the affects on the grafana dashboard.
+
+## Results
+
+![Grafana dashboard used to evaluate experiment](./images/experimental-dash.png "Experimental dashboard")
+
+We observed that the avarage latency between the `v1`(stable) and `v2`(canary) where more than 50% lower on the canary version. Also that more than 90% of the canary requests where responded from the cache. 
+
+With this result we can confirm our hypotheses and make the desicion to promote the canary version.
