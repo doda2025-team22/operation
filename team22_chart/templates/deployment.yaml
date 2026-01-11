@@ -8,7 +8,7 @@ metadata:
     app: model-service
     version: stable
 spec:
-  replicas: {{ .Values.modelservice.stable.replicaCount }}
+  replicas: { { .Values.modelservice.stable.replicaCount } }
   selector:
     matchLabels:
       app: model-service
@@ -17,12 +17,13 @@ spec:
       labels:
         app: model-service
         version: stable
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - name: model-service
           image: "{{ .Values.modelservice.stable.image.repository }}:{{ .Values.modelservice.stable.image.tag }}"
           ports:
-            - containerPort: {{ .Values.modelservice.stable.port }}
+            - containerPort: { { .Values.modelservice.stable.port } }
           env:
             - name: API_TIMEOUT_MS
               value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
@@ -32,33 +33,33 @@ spec:
 # Create a deployment for model-service canary version
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: model-service-canary
   labels:
     app: model-service
     version: canary
-spec: 
-    replicas: {{ .Values.modelservice.canary.replicaCount }}
-    selector:
-        matchLabels:
-            app: model-service # links to the template below
-            version: canary
-    template:
-        metadata:
-            labels:
-                app: model-service
-                version: canary
-        spec:
-            containers:
-            -   name: model-service
-                image: "{{ .Values.modelservice.canary.image.repository }}:{{ .Values.modelservice.canary.image.tag }}"
-                ports:
-                -   containerPort: {{ .Values.modelservice.canary.port }}
-                env:
-                -   name: API_TIMEOUT_MS
-                    value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
-                -   name: FEATURE_FLAG_TEST
-                    value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+spec:
+  replicas: { { .Values.modelservice.canary.replicaCount } }
+  selector:
+    matchLabels:
+      app: model-service # links to the template below
+      version: canary
+  template:
+    metadata:
+      labels:
+        app: model-service
+        version: canary
+    spec:
+      containers:
+        - name: model-service
+          image: "{{ .Values.modelservice.canary.image.repository }}:{{ .Values.modelservice.canary.image.tag }}"
+          ports:
+            - containerPort: { { .Values.modelservice.canary.port } }
+          env:
+            - name: API_TIMEOUT_MS
+              value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+            - name: FEATURE_FLAG_TEST
+              value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
 ---
 # Deployment for App Service (Stable)
 apiVersion: apps/v1
@@ -69,7 +70,7 @@ metadata:
     app: app-service
     version: stable
 spec:
-  replicas: {{ .Values.app.stable.replicaCount }}
+  replicas: { { .Values.app.stable.replicaCount } }
   selector:
     matchLabels:
       app: app-service
@@ -79,12 +80,13 @@ spec:
       labels:
         app: app-service
         version: stable
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - name: app-service
           image: "{{ .Values.app.stable.image.repository }}:{{ .Values.app.stable.image.tag }}"
           ports:
-            - containerPort: {{ .Values.app.stable.port }}
+            - containerPort: { { .Values.app.stable.port } }
           env:
             - name: MODEL_HOST
               value: "http://model-svc:{{ .Values.modelservice.stable.port }}"
@@ -98,7 +100,7 @@ metadata:
     app: app-service
     version: canary
 spec:
-  replicas: {{ .Values.app.canary.replicaCount }}
+  replicas: { { .Values.app.canary.replicaCount } }
   selector:
     matchLabels:
       app: app-service
@@ -108,12 +110,13 @@ spec:
       labels:
         app: app-service
         version: canary
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - name: app-service
           image: "{{ .Values.app.canary.image.repository }}:{{ .Values.app.canary.image.tag }}"
           ports:
-            - containerPort: {{ .Values.app.canary.port }}
+            - containerPort: { { .Values.app.canary.port } }
           env:
             - name: MODEL_HOST
               value: "http://model-svc:{{ .Values.modelservice.canary.port }}"
