@@ -17,6 +17,8 @@ spec:
       labels:
         app: model-service
         version: stable
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - name: model-service
@@ -48,6 +50,8 @@ spec:
             labels:
                 app: model-service
                 version: canary
+            annotations:
+              sidecar.istio.io/inject: "true"
         spec:
             containers:
             -   name: model-service
@@ -79,6 +83,8 @@ spec:
       labels:
         app: app-service
         version: stable
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - name: app-service
@@ -108,6 +114,8 @@ spec:
       labels:
         app: app-service
         version: canary
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - name: app-service
