@@ -128,3 +128,4 @@
 
 - Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
   - https://github.com/doda2025-team22/operation/pull/68
+test
