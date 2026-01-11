@@ -104,6 +104,9 @@
 - Emre: Worked on teh helm chart and added the dashboard and the ingress for grafana. Also fixed a bug related to the prometheus metrics, now the metrics by default are easly discoverable by the grafana dashboard. Also added the documentation for the helm chart, explaining how to use it and what are the configurable values.
   - https://github.com/doda2025-team22/operation/pull/58
 
+- Gonenc: Worked on implementing adding a canary version for the backend in addition to the frontend:
+  - https://github.com/doda2025-team22/operation/pull/60
+
 ## Week 7
 
 - Emre: Worked on streamlining and improving the A2 assignments. Most of the work went into streamlining the main deployment of the cluster and the vagrantfile. Also added some documentation to the readme.
@@ -122,3 +125,6 @@
   - https://github.com/doda2025-team22/model-service/pull/15
   - https://github.com/doda2025-team22/model-service/pull/16
   - https://github.com/doda2025-team22/operation/pull/64
+
+- Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
+  - https://github.com/doda2025-team22/operation/pull/68
