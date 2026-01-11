@@ -50,36 +50,6 @@ monitoring:
   enabled: true
   prometheusRelease: monitoring
 
-#alertmanager:
-#  enabled: true
-#  config:
-#    global:
-#      resolve_timeout: 5m
-#      smtp_smarthost: "smtp.gmail.com:587"
-#      smtp_from: "doda98124@gmail.com"
-#      smtp_auth_username_file: /etc/alertmanager/secrets/smtpUser
-#      smtp_auth_password_file: /etc/alertmanager/secrets/smtpPassword
-#      smtp_require_tls: true
-#
-#    route:
-#      receiver: team22-notifications
-#      group_by: [ "alertname","service" ]
-#      group_wait: 10s
-#      group_interval: 5m
-#
-#    receivers:
-#      - name: team22-notifications
-#        email_configs:
-#          - to: "doda98124@gmail.com"
-#  smtp:
-#    host: "smtp.gmail.com:587"
-#  from: "doda98124@gmail.com"
-#  to: "doda98124@gmail.com"
-#  authSecret:
-#    name: team22-alertmanager-secrets
-#    userKey: smtpUser
-#    passKey: smtpPassword
-
 # kube-prometheus-stack subchart configuration
 kube-prometheus-stack:
   # Enable Grafana from kube-prometheus-stack
@@ -111,9 +81,10 @@ kube-prometheus-stack:
           release: monitoring
       serviceMonitorNamespaceSelector: {}
   alertmanager:
-    enabled: true
+    enabled: false
     alertmanagerSpec:
       replicas: 1
+      # app-password for email provider is loaded from a secret
       secrets:
         - smtp-secret
     config:
@@ -151,7 +122,7 @@ secret:
   smtp:
     # these are placeholder values, the actual password for smtp is configured as a secret
     username: "doda98124@gmail.com"
-    password: "ENTER_SECRET"
+    password: "ENTER_PASSWORD"
   grafana:
     adminUser: "admin"
     adminPassword: "admin"
