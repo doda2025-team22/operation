@@ -108,6 +108,9 @@
 
 - Emre: Worked on streamlining and improving the A2 assignments. Most of the work went into streamlining the main deployment of the cluster and the vagrantfile. Also added some documentation to the readme.
   - https://github.com/doda2025-team22/operation/pull/62
+ 
+- Ada: Worked on polishing the ratelimiting, some things had to be adjusted with improvements made to the project. I also configured the alertmanager and established the smtp server connection via using secret and also makig a project email.
+  - https://github.com/doda2025-team22/operation/pull/66 
 
 ## Week 8
 
