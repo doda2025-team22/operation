@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ratelimit-config
+data:
+  config.yaml: |
+    domain: ratelimit
+    descriptors:
+      - key: PATH
+        rate_limit:
+          unit: minute
+          requests_per_unit: {{ .Values.ratelimit.smsPageRpm }}
