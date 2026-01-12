@@ -76,13 +76,18 @@ Follow the steps above to setup minikube with istio and connect it to the applic
 start up a minikube tunnel
 run the following command in a seperate terminal: 
 ```bash
-for i in {0..20}; do    
-    curl -s -H "Host: team22.local" -H "x-session-id: canary" http://192.168.49.2:<port number>/sms/library-version | grep version;  
-done; 
-
+curl -v \
+  -H "Host: team22.local" \
+  -c cookies.txt \
+  http://192.168.49.2:<port number>/sms/library-version
 ```
-Where the keywords for the sessions are: 
-- stable -> 0.0.1-SNAPSHOT
-- canary -> 0.0.1
-- Any other header will result in a 90/10 split for stable/canary versions 
-
+This command saves your cookie to a .txt file which you can pass along with the next command: 
+```bash
+for i in {1..10}; do
+  curl -s \
+    -H "Host: team22.local" \
+    -b cookies.txt \
+    http://192.168.49.2:30911/sms/library-version | grep version
+done
+```
+A stable version results is version 0.05, while a canary version results in 0.0.1
