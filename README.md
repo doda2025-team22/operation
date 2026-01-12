@@ -76,9 +76,10 @@ Follow the steps above to setup minikube with istio and connect it to the applic
 start up a minikube tunnel
 run the following command in a seperate terminal: 
 ```bash
-for i in {0..20}; do 
-  curl -s -H "x-session-id: <keyword>" http://team22.192-168-56-90.sslip.io:<your_port_number>/sms/library-version | grep version; 
+for i in {0..20}; do    
+    curl -s -H "Host: team22.local" -H "x-session-id: canary" http://192.168.49.2:<port number>/sms/library-version | grep version;  
 done; 
+
 ```
 Where the keywords for the sessions are: 
 - stable -> 0.0.1-SNAPSHOT
