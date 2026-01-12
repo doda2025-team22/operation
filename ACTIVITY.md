@@ -108,7 +108,9 @@
 
 - Emre: Worked on teh helm chart and added the dashboard and the ingress for grafana. Also fixed a bug related to the prometheus metrics, now the metrics by default are easly discoverable by the grafana dashboard. Also added the documentation for the helm chart, explaining how to use it and what are the configurable values.
   - https://github.com/doda2025-team22/operation/pull/58
-  - Thomas: Worked on the sticky session branch agin, becasue I merged late and ended up with a bunch of conflicts. I also started working on the Report that is part of assignment 4, however that is not in a PR just yet.
+
+- Thomas: Worked on the sticky session branch agin, becasue I merged late and ended up with a bunch of conflicts. I also started working on the Report that is part of assignment 4, however that is not in a PR just yet.
+  - https://github.com/doda2025-team22/operation/pull/56
 
 ## Week 7
 
@@ -118,6 +120,9 @@
 
 - Ada: Worked on polishing the ratelimiting, some things had to be adjusted with improvements made to the project. I also configured the alertmanager and established the smtp server connection via using secret and also makig a project email.
   - https://github.com/doda2025-team22/operation/pull/66
+
+- Thomas: This week I spent more time on working on the project documentation, finishing a second draft with the general abstract overview of the Kubernetes and Istio setup. The I also spent some time running the clusters to try and access the dashboards to get some figures and better insight however with little luck. No worthwhile contribution for a PR yet, so i added the main commit.
+  - https://github.com/doda2025-team22/operation/commit/69583e7bf0f3a63a28b35df8b4f46353fbc80fe8
 
 ## Week 8
 
