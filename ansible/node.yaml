@@ -2,8 +2,8 @@
   hosts: nodes
   tasks:
     - name: Wait for SSH to come up on node
-      wait_for_connection:
-        timeout: 120
+      ansible.builtin.wait_for_connection:
+        timeout: 60
 
     - name: Get Kubeadm Join Command
       ansible.builtin.command: kubeadm token create --print-join-command
@@ -12,6 +12,6 @@
 
     - name: Join Node
       become: true
-      ansible.builtin.command:
+      ansible.builtin.shell:
         cmd: "{{ join_command.stdout }}"
         creates: /etc/kubernetes/kubelet.conf
