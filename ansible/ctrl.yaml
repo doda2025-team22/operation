@@ -4,7 +4,11 @@
     - name: Initialize Kubernetes Control Plane
       become: true
       ansible.builtin.command:
-        cmd: kubeadm init --apiserver-advertise-address=192.168.56.100 --node-name ctrl --pod-network-cidr=10.244.0.0/16
+        cmd: >
+          kubeadm init
+          --apiserver-advertise-address=192.168.56.100
+          --node-name ctrl
+          --pod-network-cidr=10.244.0.0/16
         creates: /etc/kubernetes/admin.conf
 
     - name: Create directories for persistence
@@ -42,36 +46,33 @@
         mode: "0644"
 
     - name: Apply Kube-flannel Network Configuration
-      ansible.builtin.command: kubectl apply -f /home/vagrant/kube-flannel.yml
-
-    - name: Install Helm Dependencies
-      become: true
-      ansible.builtin.apt:
-        name:
-          - debian-keyring
-          - debian-archive-keyring
-          - apt-transport-https
-          - curl
-          - gpg
+      kubernetes.core.k8s:
         state: present
+        src: /home/vagrant/kube-flannel.yml
 
-    - name: Unzip helm AMD64
+    - name: Add Helm APT GPG key
+      ansible.builtin.shell: |
+        curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey \
+        | gpg --dearmor -o /usr/share/keyrings/helm.gpg
+      args:
+        creates: /usr/share/keyrings/helm.gpg
       become: true
-      ansible.builtin.unarchive:
-        src: "./helm/helm-v3.19.2-linux-amd64.tar.gz"
-        dest: /usr/local/bin
-        extra_opts:
-          [--strip-components=1, --show-stored-names, linux-amd64/helm]
-      when: ansible_facts['architecture'] == "x86_64"
 
-    - name: Unzip helm ARM64
+    - name: Add Helm APT repository
+      ansible.builtin.apt_repository:
+        repo: >
+          deb [signed-by=/usr/share/keyrings/helm.gpg]
+          https://packages.buildkite.com/helm-linux/helm-debian/any/ any main
+        filename: helm-stable-debian
+        state: present
       become: true
-      ansible.builtin.unarchive:
-        src: "./helm/helm-v3.19.2-linux-arm64.tar.gz"
-        dest: /usr/local/bin
-        extra_opts:
-          [--strip-components=1, --show-stored-names, linux-arm64/helm]
-      when: ansible_facts['architecture'] == "aarch64"
+
+    - name: Install helm package
+      ansible.builtin.apt:
+        name: helm
+        state: present
+        update_cache: true
+      become: true
 
     - name: Install Helm Diff plugin
       kubernetes.core.helm_plugin:
