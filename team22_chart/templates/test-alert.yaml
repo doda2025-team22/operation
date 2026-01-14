@@ -31,10 +31,10 @@ spec:
             description: "This is used to judge the timespan for the real alert to fire, purely for testing."
         - alert: TooManyGuesses
           expr: increase(total_guess_counter[30s])>5
-          for: 1m
+          for: 30s
           labels:
             severity: critical
             service: app
           annotations:
-            summary: "This fires when more than 5 guesses within 30s are made for 1 minute straight"
+            summary: "This fires when more than 5 guesses within 30s are made for 30s (for easier testing) straight"
             description: "Test to detect unusual behavior that might overload the model service"
