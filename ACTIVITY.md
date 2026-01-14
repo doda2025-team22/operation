@@ -45,10 +45,11 @@
   Worked on all steps of 1.1, which the entire team did as well. The final PR can can be found as https://github.com/doda2025-team22/operation/pull/26 and my individual branch can be found as https://github.com/doda2025-team22/operation/tree/gt/1.1; also worked on step 20: https://github.com/doda2025-team22/operation/pull/33
 
 - Ada:
-  Also worked on all steps of 1.1, along with the entire team. The branch with my individual process can eb found in: https://github.com/doda2025-team22/lib-version/tree/at/provisioning, the changes were moved to operation later. The final PR can be found in: https://github.com/doda2025-team22/operation/pull/26. Additionally, I made some alterations to the base playbooks which can be found in: https://github.com/doda2025-team22/operation/pull/28 , https://github.com/doda2025-team22/operation/pull/30 ,  and https://github.com/doda2025-team22/operation/pull/29. I additionally worked on step 22 on A2, which can be found in: https://github.com/doda2025-team22/operation/pull/32
+  Also worked on all steps of 1.1, along with the entire team. The branch with my individual process can eb found in: https://github.com/doda2025-team22/lib-version/tree/at/provisioning, the changes were moved to operation later. The final PR can be found in: https://github.com/doda2025-team22/operation/pull/26. Additionally, I made some alterations to the base playbooks which can be found in: https://github.com/doda2025-team22/operation/pull/28 , https://github.com/doda2025-team22/operation/pull/30 , and https://github.com/doda2025-team22/operation/pull/29. I additionally worked on step 22 on A2, which can be found in: https://github.com/doda2025-team22/operation/pull/32
 
 - Emre:
   Worked on 1.2 and 1.3 for A2 and integrated Gonenc's 1.1 for the rest of the assingments. Also helped Gonenc do Metallb, Ada with nginx ingress and implemented k8n dashboard. For last weeks assingment changed the repos app and model-service to make them version tag indipendent and also implemented some fixes to make it a higher grade version. Also fixed an issue related to versioning of app jar file.
+
   - https://github.com/doda2025-team22/operation/pull/36
   - https://github.com/doda2025-team22/operation/pull/26
   - https://github.com/doda2025-team22/app/pull/12
@@ -57,38 +58,41 @@
   - https://github.com/doda2025-team22/model-service/pull/12
   - https://github.com/doda2025-team22/model-service/pull/11
 
-  Thomas: 
-    I worked on steps 1.1 alongside the team. I started work on steps 22 and 23 but encountered system errors preventing me from finishing them.
-    - https://github.com/doda2025-team22/operation/tree/ftb/a2-1.1
+  Thomas:
+  I worked on steps 1.1 alongside the team. I started work on steps 22 and 23 but encountered system errors preventing me from finishing them.
 
+  - https://github.com/doda2025-team22/operation/tree/ftb/a2-1.1
 
 ## Week 4
 
-- Thomas: 
-    This week i was tasked with the migration of the docker compose files to a kubernetes setup. I also took the time to work on an error that was still present in A1. 
-    - https://github.com/doda2025-team22/operation/pull/38 
-    - https://github.com/doda2025-team22/lib-version/pull/6 
+- Thomas:
+  This week i was tasked with the migration of the docker compose files to a kubernetes setup. I also took the time to work on an error that was still present in A1.
+
+  - https://github.com/doda2025-team22/operation/pull/38
+  - https://github.com/doda2025-team22/lib-version/pull/6
 
 - Gonenc:
   Worked on creating a helm chart and then putting the kubernetes migration into the helm chart, as well as implementing (minimal) ConfigMag and Secret playbooks:
+
   - https://github.com/doda2025-team22/operation/pull/39
   - https://github.com/doda2025-team22/operation/pull/40
 
 - Emre:
   Worked limitedly on the grafana dashboard but due to lack of implementation of monitoring only deployed it to an ip adress. Also fixed an issue from the A2 where vagrantfile was incorrecly provisioning the nodes. Also added a basic version of istio to the k8n cluster. Also did networking for the ingress controller so it will use the clusters default instead of hardcoding a ingress.
+
   - https://github.com/doda2025-team22/operation/pull/44
 
 - Ada:
   This week I spent a great deal of time getting the charts runnign specifically on my laptop and faced a lot of issues because of memory constraints. I also worked on the prometheus section of A3.
   - https://github.com/doda2025-team22/operation/pull/41
 
-
-## Week 5 
+## Week 5
 
 - Thomas: I started working on some local provisioning that could help speed up the vagrant provisioning. I also updated the readme in that time. It still needs some work but I made an intermediate PR for it. I also worked on the sticky sessions, they currently only work with curl and you will be defaultet to a 90/10 split on the browser or without any correct heading.
+
   - https://github.com/doda2025-team22/operation/pull/50
   - https://github.com/doda2025-team22/operation/pull/56
- 
+
 - Ada: This week I worked on the monitoring that was missing from last week. It can be found here: https://github.com/doda2025-team22/app/pull/13 . Then on the lab we worked on some troubleshooting steps for Istio, which resulted in us adding it to the documentation here:https://github.com/doda2025-team22/operation/pull/51 . I also had to adjust paths used for the metrics here: https://github.com/doda2025-team22/operation/pull/48 .
 
 - Gonenc: This week I worked on implementing the traffic management up until sticky management. The pr for this can be found here: https://github.com/doda2025-team22/operation/pull/49
@@ -98,6 +102,7 @@
 ## Week 6
 
 - Ada: Added rate limiting for the additional use case section for A4. Also made adjusted the trigger for releases on the app to make sure it is not accidentally triggered.
+
   - https://github.com/doda2025-team22/app/pull/15
   - https://github.com/doda2025-team22/operation/pull/59
 
@@ -106,14 +111,20 @@
 
 - Gonenc: Worked on implementing adding a canary version for the backend in addition to the frontend:
   - https://github.com/doda2025-team22/operation/pull/60
+- Thomas: Worked on the sticky session branch agin, becasue I merged late and ended up with a bunch of conflicts. I also started working on the Report that is part of assignment 4, however that is not in a PR just yet.
+  - https://github.com/doda2025-team22/operation/pull/56
 
 ## Week 7
 
 - Emre: Worked on streamlining and improving the A2 assignments. Most of the work went into streamlining the main deployment of the cluster and the vagrantfile. Also added some documentation to the readme.
+
   - https://github.com/doda2025-team22/operation/pull/62
- 
+
 - Ada: Worked on polishing the ratelimiting, some things had to be adjusted with improvements made to the project. I also configured the alertmanager and established the smtp server connection via using secret and also makig a project email.
-  - https://github.com/doda2025-team22/operation/pull/66 
+  - https://github.com/doda2025-team22/operation/pull/66
+
+- Thomas: This week I spent more time on working on the project documentation, finishing a second draft with the general abstract overview of the Kubernetes and Istio setup. The I also spent some time running the clusters to try and access the dashboards to get some figures and better insight however with little luck. No worthwhile contribution for a PR yet, so i added the main commit.
+  - https://github.com/doda2025-team22/operation/commit/69583e7bf0f3a63a28b35df8b4f46353fbc80fe8
 
 ## Week 8
 
@@ -128,3 +139,12 @@
 
 - Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
   - https://github.com/doda2025-team22/operation/pull/69
+## Week 9
+
+- Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
+  - https://github.com/doda2025-team22/operation/pull/64
+  - https://github.com/doda2025-team22/operation/pull/65
+  - https://github.com/doda2025-team22/app/pull/23
+  - https://github.com/doda2025-team22/app/pull/24
+  - https://github.com/doda2025-team22/app/pull/25
+  

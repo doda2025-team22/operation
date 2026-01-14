@@ -3,21 +3,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-service-stable
+  name: model-service-v1
   labels:
     app: model-service
-    version: stable
+    version: v1
 spec:
   replicas: {{ .Values.modelservice.stable.replicaCount }}
   selector:
     matchLabels:
       app: model-service
+      version: v1
   template:
     metadata:
       labels:
         app: model-service
-        version: stable
-      annotations:
+        version: v1
         sidecar.istio.io/inject: "true"
     spec:
       containers:
@@ -35,23 +35,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: model-service-canary
+  name: model-service-v2
   labels:
     app: model-service
-    version: canary
+    version: v2
 spec: 
     replicas: {{ .Values.modelservice.canary.replicaCount }}
     selector:
         matchLabels:
             app: model-service # links to the template below
-            version: canary
+            version: v2
     template:
         metadata:
             labels:
                 app: model-service
-                version: canary
-            annotations:
-              sidecar.istio.io/inject: "true"
+                version: v2
+                sidecar.istio.io/inject: "true"
         spec:
             containers:
             -   name: model-service
@@ -68,22 +67,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-service-stable
+  name: app-service-v1
   labels:
     app: app-service
-    version: stable
+    version: v1
 spec:
   replicas: {{ .Values.app.stable.replicaCount }}
   selector:
     matchLabels:
       app: app-service
-      version: stable
+      version: v1
   template:
     metadata:
       labels:
         app: app-service
-        version: stable
-      annotations:
+        version: v1
         sidecar.istio.io/inject: "true"
     spec:
       containers:
@@ -93,28 +91,27 @@ spec:
             - containerPort: {{ .Values.app.stable.port }}
           env:
             - name: MODEL_HOST
-              value: "http://model-svc:{{ .Values.modelservice.stable.port }}"
+              value: "http://model-service:{{ .Values.modelservice.stable.port }}"
 ---
 # Deployment for App Service (Canary)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-service-canary
+  name: app-service-v2
   labels:
     app: app-service
-    version: canary
+    version: v2
 spec:
   replicas: {{ .Values.app.canary.replicaCount }}
   selector:
     matchLabels:
       app: app-service
-      version: canary
+      version: v2
   template:
     metadata:
       labels:
         app: app-service
-        version: canary
-      annotations:
+        version: v2
         sidecar.istio.io/inject: "true"
     spec:
       containers:
@@ -124,4 +121,4 @@ spec:
             - containerPort: {{ .Values.app.canary.port }}
           env:
             - name: MODEL_HOST
-              value: "http://model-svc:{{ .Values.modelservice.canary.port }}"
+              value: "http://model-service:{{ .Values.modelservice.canary.port }}"

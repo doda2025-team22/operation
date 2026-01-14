@@ -4,7 +4,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: app-monitor-sm
+  name: app-service-monitor-sm
   namespace: {{ .Release.Namespace }}
   labels:
     release: "{{ .Values.monitoring.prometheusRelease }}"
@@ -12,27 +12,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: app
+      app: app-service
   endpoints:
     - port: http
-      interval: 1s
-      path: /sms/metrics
----
-# ServiceMonitor for Model Service
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: modelservice-monitor-sm
-  namespace: {{ .Release.Namespace }}
-  labels:
-    release: "{{ .Values.monitoring.prometheusRelease }}"
-    monitoring: "true"
-spec:
-  selector:
-    matchLabels:
-      app: modelservice
-  endpoints:
-    - port: http
+      relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_label_version]
+        targetLabel: version
       interval: 1s
       path: /sms/metrics
 {{- end }}

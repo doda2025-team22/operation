@@ -1,6 +1,6 @@
 services:
   model-service:
-    image: ghcr.io/doda2025-team22/model-service:latest
+    image: ghcr.io/doda2025-team22/model-service:canary
     restart: unless-stopped
     environment:
       - BACKEND_PORT=8081
@@ -13,7 +13,7 @@ services:
       - sms-app-network
 
   app-service:
-    image: ghcr.io/doda2025-team22/app:latest
+    image: ghcr.io/doda2025-team22/app:canary
     restart: unless-stopped
     environment:
       - FRONTEND_PORT=8080
