@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Release.Name }}-rules
+  namespace: {{ .Release.Namespace }}
+  labels:
+    release: {{ .Release.Name }}
+#    app.kubernetes.io/instance: "{{ .Values.monitoring.prometheusRelease }}"
+#    app.kubernetes.io/managed-by: "Helm"
+spec:
+  groups:
+    - name: test.rules
+      rules:
+        - alert: TooManyGuesses
+          expr: increase(total_guess_counter[30s])>5
+#          expr: vector(1)
+          for: 30s
+          labels:
+            severity: critical
+            service: app
+          annotations:
+            summary: "This is a test email from Prometheus/Alertmanager"
+            description: "Test alert to verify Alertmanager email notifications"
