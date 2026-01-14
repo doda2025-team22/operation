@@ -38,9 +38,10 @@ Troubleshooting Tips:
 ### Steps to run the kubernetes cluster and the requirements for A2
 
 1. Run `vagrant up` to create the kubernetes cluster.
-2. Run `ansible-playbook -u vagrant -i 192.168.56.100, finalization.yml` to deploy the kubernetes dashboard and ingress-nginx.
-3. Run `export KUBECONFIG=$PWD/admin.conf` on the root of the operation repository to set the KUBECONFIG environment variable.
-3. Run `kubectl get nodes` to see the nodes in the cluster.
+2. Run `export KUBECONFIG=$PWD/admin.conf` on the root of the operation repository to set the KUBECONFIG environment variable.
+3. Run `ssh-add ~/.ssh/id_rsa` to add your SSH key to the agent.
+4. Run `ansible-playbook -u vagrant -i 192.168.56.100, finalization.yaml` inside /ansible to deploy the kubernetes dashboard and ingress-nginx.
+5. Run `kubectl get nodes` to see the nodes in the cluster.
 
 ### General Setup Explanation
 
