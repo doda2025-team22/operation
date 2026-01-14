@@ -141,7 +141,9 @@
 
   - Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
     - https://github.com/doda2025-team22/operation/pull/69
-    - The coding changes were improved upon by Emre in another branch/pr
+    - The coding changes can be observed in the commit below:
+      - https://github.com/doda2025-team22/operation/pull/69/commits/5936fec625c5855999d1f8f243128afe05583ce9
+    - These changes were improved upon by Emre in another branch/pr.
 
 ## Week 9
 
