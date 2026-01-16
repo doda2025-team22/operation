@@ -44,18 +44,18 @@ The 'Completed?' field is annoted with '✓' for Sufficient and above to indicat
 | | A corresponding Alert is raised in any type of channel (e.g., via email). | [✓] |  |  |
 | | The deployment files and the source code must not contain credentials (e.g., SMTP passwords).(Instead, require pre-deployed Secret s and use them through environment variables.) | [✓] |  |  |
 | **Grafana** |  |  |  |  |
-| Insufficient | |  |  |  |
+| Insufficient | |  |  | There are 2 dashboards defined (inside /grafana-dashboards) that are nontrivial. |
 | | No dashboard is defined or it is trivial. | [X] |  |  |
-| Poor | |  |  |  |
+| Poor | |  |  | The dashboards are complete, and can be imported without errors. |
 | | A serious dashboard attempt exists, but it is incomplete or can only be imported with errors. | [X] |  |  |
-| Sufficient | |  |  |  |
-| | A basic Grafana dashboard exists that illustrates all app-specific metrics. | [ ] |  |  |
-| | A second Grafana dashboard exists that supports the experimental decision of A4. | [ ] |  |  |
-| | Both dashboards are defined in a JSON file and can be manually imported in the Web UI. | [ ] |  |  |
-| | The operations repository contains a README.md that explains the manual installation (if required). | [ ] |  |  |
-| Good | | |  |  |
-| | The basic dashboard contains at least two diﬀerent visualizations that are not just time series. (For example, a visual Gauge representation or a bar chart for Histograms.) | [ ] |  |  |
-| | The basic dashboard employs variable timeframe selectors to parameterize the queries. | [ ] |  |  |
-| | The basic dashboard applies functions (like rate or avg ) to enhance the plots. | [ ] |  |  |
-| Excellent | | |  |  |
-| | Both Grafana dashboards are automatically installed by the central Helm chart. | [ ] |  |  |
+| Sufficient | |  |  | There are 2 dashboards which are defined in JSON files, with one of them supporting the experimental decision of A4 inside '/grafana-dashboards' |
+| | A basic Grafana dashboard exists that illustrates all app-specific metrics. | [✓] |  |  |
+| | A second Grafana dashboard exists that supports the experimental decision of A4. | [✓] |  |  |
+| | Both dashboards are defined in a JSON file and can be manually imported in the Web UI. | [✓] |  |  |
+| | The operations repository contains a README.md that explains the manual installation (if required). | [✓] |  | Not required |
+| Good | | |  | The basic dashboard has Gauges (spam_guess_gauge, total_guess_counter), time series (Predictions / min, Average SMS length) and a bar chart (SMS length histogram), while the experimental dashboard has stat (Average latency per version), a heatmap (Model Request Histogram v2), and a timeseries (Request latency percentiles). rate() and histogram_quantile() used, and time.from and time.to are utilized.|
+| | The basic dashboard contains at least two diﬀerent visualizations that are not just time series. (For example, a visual Gauge representation or a bar chart for Histograms.) | [✓] |  |  |
+| | The basic dashboard employs variable timeframe selectors to parameterize the queries. | [✓] |  |  |
+| | The basic dashboard applies functions (like rate or avg ) to enhance the plots. | [✓] |  |  |
+| Excellent | | |  | The dashboards are automatically installed through the helm chart, via  grafana-dashboard.yaml and grafana-ingress.yaml |
+| | Both Grafana dashboards are automatically installed by the central Helm chart. | [✓] |  |  |
