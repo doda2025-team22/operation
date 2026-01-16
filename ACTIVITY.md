@@ -153,4 +153,6 @@
   - https://github.com/doda2025-team22/app/pull/23
   - https://github.com/doda2025-team22/app/pull/24
   - https://github.com/doda2025-team22/app/pull/25
+
+- Gonenc: Graded Assignment 3: https://github.com/doda2025-team22/operation/pull/77
   
