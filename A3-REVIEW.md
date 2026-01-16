@@ -1,8 +1,7 @@
 # A3 Review Document
 
 ## How to review?
-enter description here
-
+The 'Completed?' field is annoted with '✓' for Sufficient and above to indicate that the requirement has been met, and 'X' for Poor and below in order to indicate that the assignment does NOT contain Insufficient/Poor characteristics. The description field provides a description of why the team thinks the requirement has been met, alongside how one can check these requirements.
 
 ## Rubric Checklist
 | Rubric item level | Rubric item | Completed? | Link | Description |
@@ -26,27 +25,37 @@ enter description here
 | | All VMs mount the same shared VirtualBox folder as /mnt/shared into the VM. | [X] |  |  |
 | | The deployed application mounts this path as a hostPath Volume into at least one Deployment. | [X] |  |  |
 | **App Monitoring** |  |  |  |  |
-| Insufficient | The app defines less than three metrics or Prometheus does not automatically collect the values. | [ ] |  |  |
-| Poor | The app metrics are lacking an example for either Gauge or Counter. | [ ] |  |  |
-| | The app metrics are exposed through a framework (create the /metrics endpoints yourself) | [ ] |  |  |
-| Sufficient | The app has 3+ app-specific and UI-related metrics for reasoning about user behavior or the perception of the app from the perspective of users. | [ ] |  |  |
-| | The metrics are automatically discovered and collected by Prometheus through ServiceMonitor. | [ ] |  |  |
-| | The content of the /metrics endpoint is created by yourself (not by a library). | [ ] |  |  |
-| | All aspects are installed through the central Helm chart. | [ ] |  |  |
-| | The /metrics endpoint of the frontend-service is reachable through the Ingress. (This is a measure to support grading of setups with separate containers for the web UI and the API gateway.) | [ ] |  |  |
-| Good |The exposed metrics include a Gauge , a Counter , and an app-specific Histogram metric. | [ ] |  |  |
-| | Each metric type has at least one example, in which the metric is broken down with labels. | [ ] |  |  |
-| Excellent | An AlertManager is configured with at least one non-trivial PrometheusRule. | [ ] |  |  |
-| | A corresponding Alert is raised in any type of channel (e.g., via email). | [ ] |  |  |
-| | The deployment files and the source code must not contain credentials (e.g., SMTP passwords).(Instead, require pre-deployed Secret s and use them through environment variables.) | [ ] |  |  |
+| Insufficient | |  |  | The app defines three metrics (Gauge, Counter, Histogram) that Prometheus picks up automatically. |
+| | The app defines less than three metrics or Prometheus does not automatically collect the values. | [X] |  |  |
+| Poor | |  |  | There are indeed examples of both Gauge and Counter metrics for the frontend. We also have our own endpoint instead of utillizing a framework. |
+| | The app metrics are lacking an example for either Gauge or Counter. | [X] |  |  |
+| | The app metrics are exposed through a framework (create the /metrics endpoints yourself) | [X] |  |  |
+| Sufficient | |  |  | The first 4 points can be observed by running 'kubectl get servicemonitor -n team22' and 'kubectl describe servicemonitor app-service -n team22', and the last point can be observed by running 'curl http://team22.local/sms/metrics'.|
+| | The app has 3+ app-specific and UI-related metrics for reasoning about user behavior or the perception of the app from the perspective of users. | [✓] |  |  |
+| | The metrics are automatically discovered and collected by Prometheus through ServiceMonitor. | [✓] |  |  |
+| | The content of the /metrics endpoint is created by yourself (not by a library). | [✓] |  |  |
+| | All aspects are installed through the central Helm chart. | [✓] |  |  |
+| | The /metrics endpoint of the frontend-service is reachable through the Ingress. (This is a measure to support grading of setups with separate containers for the web UI and the API gateway.) | [✓] |  |  |
+| Good | |  |  | There are indeed examples of Gauge,  Counter, and (app-specific) Histogram metrics with each containing an example. This can be observed from the output of running: 'curl http://team22.local/sms/metrics'|
+| |The exposed metrics include a Gauge , a Counter , and an app-specific Histogram metric. | [✓] |  |  |
+| | Each metric type has at least one example, in which the metric is broken down with labels. | [✓] |  |  |
+| Excellent | |  |  | Can be observed in 'test-alert.yaml', in case of Alert we do indeed get an email. The email's credentials (or any other credentials for that matter of fact) are not hardcoded into the helm chart. |
+| | An AlertManager is configured with at least one non-trivial PrometheusRule. | [✓] |  |  |
+| | A corresponding Alert is raised in any type of channel (e.g., via email). | [✓] |  |  |
+| | The deployment files and the source code must not contain credentials (e.g., SMTP passwords).(Instead, require pre-deployed Secret s and use them through environment variables.) | [✓] |  |  |
 | **Grafana** |  |  |  |  |
-| Insufficient | No dashboard is defined or it is trivial. | [ ] |  |  |
-| Poor | A serious dashboard attempt exists, but it is incomplete or can only be imported with errors. | [ ] |  |  |
-| Sufficient | A basic Grafana dashboard exists that illustrates all app-specific metrics. | [ ] |  |  |
+| Insufficient | |  |  |  |
+| | No dashboard is defined or it is trivial. | [X] |  |  |
+| Poor | |  |  |  |
+| | A serious dashboard attempt exists, but it is incomplete or can only be imported with errors. | [X] |  |  |
+| Sufficient | |  |  |  |
+| | A basic Grafana dashboard exists that illustrates all app-specific metrics. | [ ] |  |  |
 | | A second Grafana dashboard exists that supports the experimental decision of A4. | [ ] |  |  |
 | | Both dashboards are defined in a JSON file and can be manually imported in the Web UI. | [ ] |  |  |
 | | The operations repository contains a README.md that explains the manual installation (if required). | [ ] |  |  |
-| Good | The basic dashboard contains at least two diﬀerent visualizations that are not just time series. (For example, a visual Gauge representation or a bar chart for Histograms.) | [ ] |  |  |
+| Good | | |  |  |
+| | The basic dashboard contains at least two diﬀerent visualizations that are not just time series. (For example, a visual Gauge representation or a bar chart for Histograms.) | [ ] |  |  |
 | | The basic dashboard employs variable timeframe selectors to parameterize the queries. | [ ] |  |  |
 | | The basic dashboard applies functions (like rate or avg ) to enhance the plots. | [ ] |  |  |
-| Excellent | Both Grafana dashboards are automatically installed by the central Helm chart. | [ ] |  |  |
+| Excellent | | |  |  |
+| | Both Grafana dashboards are automatically installed by the central Helm chart. | [ ] |  |  |
