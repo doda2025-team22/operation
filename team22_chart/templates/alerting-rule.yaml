@@ -20,15 +20,6 @@ spec:
           annotations:
             summary: "This is a test email from Prometheus/Alertmanager"
             description: "Test alert to verify Alertmanager email notifications"
-        - alert: TooManyGuessesTester
-          expr: vector(1) # alert condition will always be true to make it fire all the time
-          for: 1m
-          labels:
-            severity: warning
-            service: test
-          annotations:
-            summary: "This is a test email from Prometheus/Alertmanager"
-            description: "This is used to judge the timespan for the real alert to fire, purely for testing."
         - alert: TooManyGuesses
           expr: increase(total_guess_counter[30s])>5
           for: 30s
