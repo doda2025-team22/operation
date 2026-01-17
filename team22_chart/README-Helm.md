@@ -1,5 +1,5 @@
-## Usage
-For testing we use Minikube. Start the cluster with:
+## Cluster Setup
+For testing with Minikube, start the cluster with:
 ```bash
 minikube start --driver=docker --cpus=4 --memory=8192
 ```
@@ -15,7 +15,7 @@ On MacOS you need to enable the minikube tunnel in a different terminal with:
 ```bash
 sudo minikube tunnel
 ```
-
+## Installation
 Update the helm chart with:
 ```bash
 helm dependency update ./team22_chart
