@@ -151,9 +151,10 @@ helm upgrade --install team22 ./team22_chart \
 --namespace team22 \
 --set kube-prometheus-stack.alertmanager.enabled=true \
 --set kube-prometheus-stack.alertmanager.config.global.smtp_auth_username=<your_gmail_address> \
+--set kube-prometheus-stack.alertmanager.config.global.smtp_from=<your_gmail_address> \
 --set secret.smtp.password=<your-app-password> \
 --create-namespace
 ```
 The password field can be filled with an [app password](https://myaccount.google.com/apppasswords). Please keep in mind that in some cases it takes time for the pod to initialize, so check first its status via  `kubectl get pods -n team22 ` before testing any further.
 
-You can additionally configure the `kube-prometheus-stack.alertmanager.config.receivers[].email_configs[].to` field to configure which email address recieves the alerting emails. Currently for testing, we fire a test alert that should be received upon startup.
+You can additionally configure the `kube-prometheus-stack.alertmanager.config.receivers[].email_configs[].to` field to configure which email address receives the alerting emails. Apart from our test alarm, our alert fires when more than 5 guesses (as in clicking the button to get a response form the model) within 30s are made for 30s straight. In a real production environment, we acknowledge that these limits should be more relaxed, but for easier testing and the purposes of our project we decided this was ideal.
