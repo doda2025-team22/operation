@@ -16,9 +16,9 @@ The 'Completed?' field is annoted with '✓' for Sufficient and above to indicat
 | | The relevant deployment files contain at least a working Deployment and a working Service. | [✓] |  |  |
 | | The app is accessed through an Ingress. (The cluster provisioning creates a suitable IngressController.) | [✓] |  |  |
 | | All aspects are installed through the central Helm chart. | [✓] |  |  |
-| Good | |  |  |  |
-| | The deployed application defines the location of the model service through an environment variable. | [~] |  | URL not fully hard coded, but service name is. (model-service) |
-| | The model service can be relocated just by changing the Kubernetes config. (For example, changing the name of the service or the port on which it is running.) | [X] |  | Again, model service name is hard coded. |
+| Good | |  |  | Model service name is configurable from the helm chart values.yaml, which can be set while installing the helm chart. |
+| | The deployed application defines the location of the model service through an environment variable. | [✓] |  |  |
+| | The model service can be relocated just by changing the Kubernetes config. (For example, changing the name of the service or the port on which it is running.) | [~] |  | Model service name is not hard coded anymore, but changing ports does not work. |
 | | The deployed application successfully uses a ConfigMap and a Secret. (Define one to show that you know how, even though your application might not need one.) | [~] |  | We indeed have one but don't fully "use" it, should reference configmap.yaml instead of values.yaml configmap vars. |
 | | The hostname/URL of the app can be changed through the value.xml of the Helm chart. (To support grading, I want to be able to pick the URLs that I use to access the stable/pre-release versions.) | [✓] |  |  |
 | Excellent | |  |  |  |
