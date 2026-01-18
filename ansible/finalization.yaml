@@ -7,7 +7,9 @@
         src: "./istio/istio-1.25.2-linux-amd64.tar.gz"
         dest: /usr/local/bin
         extra_opts:
-          [--strip-components=2, --show-stored-names, istio-1.25.2/bin/istioctl]
+          - --strip-components=2
+          - --show-stored-names
+          - istio-1.25.2/bin/istioctl
       when: ansible_facts['architecture'] == "x86_64"
 
     - name: Retrieve Istio binary ARM64
@@ -16,7 +18,9 @@
         src: "./istio/istio-1.25.2-linux-arm64.tar.gz"
         dest: /usr/local/bin
         extra_opts:
-          [--strip-components=2, --show-stored-names, istio-1.25.2/bin/istioctl]
+          - --strip-components=2
+          - --show-stored-names
+          - istio-1.25.2/bin/istioctl
       when: ansible_facts['architecture'] == "aarch64"
 
     - name: Add ingress-nginx chart repo
@@ -57,30 +61,33 @@
         - l2advertisement.yml
 
     - name: Apply MetalLB CRDs
-      ansible.builtin.command:
-        cmd: kubectl apply -f metallb-native.yaml
-      args:
-        chdir: ~/metallb/
+      kubernetes.core.k8s:
+        state: present
+        src: ~/metallb/metallb-native.yaml
 
-    - name: Wait step
-      ansible.builtin.command:
-        cmd: kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=120s
-      register: metallb_wait
-      retries: 5
-      delay: 10
-      until: metallb_wait.rc == 0
+    - name: Wait for MetalLB controller pods to be Ready
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Pod
+        namespace: metallb-system
+        label_selectors:
+          - app=metallb
+          - component=controller
+        wait: true
+        wait_condition:
+          type: Ready
+          status: "True"
+        wait_timeout: 60
 
     - name: Add IPAddressPool
-      ansible.builtin.command:
-        cmd: kubectl apply -f ippool.yml
-      args:
-        chdir: ~/metallb/
+      kubernetes.core.k8s:
+        state: present
+        src: ~/metallb/ippool.yml
 
     - name: Configure L2Advertisement
-      ansible.builtin.command:
-        cmd: kubectl apply -f l2advertisement.yml
-      args:
-        chdir: ~/metallb/
+      kubernetes.core.k8s:
+        state: present
+        src: ~/metallb/l2advertisement.yml
 
     - name: Add kubernetes-dashboard Helm repo
       kubernetes.core.helm_repository:
@@ -137,10 +144,10 @@
             ingressClassName: nginx
             tls:
               - hosts:
-                  - dashboard.192-168-56-90.sslip.io
+                  - dashboard.local
                 secretName: dashboard-tls
             rules:
-              - host: "dashboard.192-168-56-90.sslip.io"
+              - host: "dashboard.local"
                 http:
                   paths:
                     - path: /
@@ -182,8 +189,15 @@
                       type: LoadBalancer
                       loadBalancerIP: 192.168.56.91
 
+    - name: Check if Istio control plane is installed
+      kubernetes.core.k8s_info:
+        api_version: apps/v1
+        kind: Deployment
+        namespace: istio-system
+        name: istiod
+      register: istio_deploy
+
     - name: Install Istio control plane
       ansible.builtin.command:
         cmd: istioctl install -y -f /home/vagrant/istio/istio-operator.yaml
-      args:
-        chdir: /home/vagrant/istio/
+      when: istio_deploy.resources | length == 0

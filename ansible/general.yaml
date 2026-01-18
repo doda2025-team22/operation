@@ -1,6 +1,5 @@
 - name: General setup for all nodes
   hosts: all
-  strategy: free
   become: true
   tasks:
     # Step 4: Register ssh keys
@@ -26,10 +25,15 @@
     # Disables SWAP via 'swapoff -a" and removes swap from '/etc/fstab'
     # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/command_module.html and
     # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/lineinfile_module.html
-    - name: Disable SWAP
-      ansible.builtin.command: swapoff -a
-      register: swap_status
+    - name: Check if any swap is enabled
+      ansible.builtin.command: swapon --noheadings
+      register: swap_state
       changed_when: false
+
+    - name: Disable SWAP if enabled
+      ansible.builtin.command: swapoff -a
+      when: swap_state.stdout != ""
+      become: true
 
     - name: Remove SWAP
       ansible.builtin.lineinfile:
@@ -90,6 +94,8 @@
     - name: Manage hosts
       ansible.builtin.blockinfile:
         path: /etc/hosts
+        marker: "# {mark} k8s cluster hosts"
+        create: true
         block: |
           192.168.56.100 ctrl
           {% for i in range(1, worker_count + 1) %}
@@ -121,18 +127,33 @@
     # Installs containerd-1.7.24, runc-1.1.12, kubelet-1.32.4, kubeadm-1.32.4, and kubectl-1.32.4.
     # Container runtime are downloaded seperately as they need to be downgraded and do not come from the kubernetes repo
     # Uses: https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_module.html
+
+    - name: Install containerd and runc
+      ansible.builtin.apt:
+        name:
+          - runc=1.1.12-0ubuntu3
+          - containerd=1.7.24-0ubuntu1~24.04.2
+        state: present
+        allow_downgrade: true
+
     - name: Install kubernetes tools
       ansible.builtin.apt:
         name:
-          - kubelet
-          - kubeadm
-          - kubectl
-          - runc
-          - containerd
+          - kubelet=1.32.4-1.1
+          - kubeadm=1.32.4-1.1
+          - kubectl=1.32.4-1.1
+        state: present
+        allow_downgrade: true
+
+    - name: Install Python3 and pip3
+      ansible.builtin.apt:
+        name:
           - python3
+          - python3-pip
           - python3-kubernetes
-          - python3-openshift
           - python3-yaml
+          - python3-jsonpatch
+          - python3-openshift
         state: present
 
     # Step 11: Configure containerd
@@ -164,6 +185,7 @@
         owner: root
         group: root
         mode: "0644"
+        force: false # Do not overwrite if file exists
 
     - name: Disable AppArmor
       ansible.builtin.lineinfile:
