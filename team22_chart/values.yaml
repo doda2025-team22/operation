@@ -29,6 +29,7 @@ app:
 
 # Model service configuration
 modelservice:
+  host: "model-service"
   stable:
     image:
       repository: ghcr.io/doda2025-team22/model-service
