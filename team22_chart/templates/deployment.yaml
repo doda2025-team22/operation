@@ -91,7 +91,7 @@ spec:
             - containerPort: {{ .Values.app.stable.port }}
           env:
             - name: MODEL_HOST
-              value: "http://model-service:{{ .Values.modelservice.stable.port }}"
+              value: "http://{{ .Values.modelservice.host }}:{{ .Values.modelservice.stable.port }}"
 ---
 # Deployment for App Service (Canary)
 apiVersion: apps/v1
@@ -121,4 +121,4 @@ spec:
             - containerPort: {{ .Values.app.canary.port }}
           env:
             - name: MODEL_HOST
-              value: "http://model-service:{{ .Values.modelservice.canary.port }}"
+              value: "http://{{ .Values.modelservice.host }}:{{ .Values.modelservice.canary.port }}"
