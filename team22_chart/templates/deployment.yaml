@@ -29,9 +29,15 @@ spec:
             - containerPort: {{ .Values.modelservice.stable.port }}
           env:
             - name: API_TIMEOUT_MS
-              value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: API_TIMEOUT_MS
             - name: FEATURE_FLAG_TEST
-              value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: FEATURE_FLAG_TEST
             - name: PORT
               value: "{{ .Values.modelservice.stable.port }}"
 ---
@@ -65,9 +71,15 @@ spec:
                 -   containerPort: {{ .Values.modelservice.canary.port }}
                 env:
                 -   name: API_TIMEOUT_MS
-                    value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
+                    valueFrom:
+                      configMapKeyRef:
+                        name: app-config
+                        key: API_TIMEOUT_MS
                 -   name: FEATURE_FLAG_TEST
-                    value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+                    valueFrom:
+                      configMapKeyRef:
+                        name: app-config
+                        key: FEATURE_FLAG_TEST
                 -   name: PORT
                     value: "{{ .Values.modelservice.canary.port }}"
 ---
