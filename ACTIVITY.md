@@ -149,6 +149,11 @@
     - https://github.com/doda2025-team22/operation/pull/78
     - https://github.com/doda2025-team22/operation/pull/76
 
+  - Thomas: Worked on f11 of a1, specifically creating the branch releases. Then I moved on to writing up the documentation for the extension.md followed by fixing the rest of the deployment documentation although i noticed that it still needs more work.
+    - https://github.com/doda2025-team22/operation/pull/83
+    - https://github.com/doda2025-team22/lib-version/pull/8
+
+
 ## Week 9
 
 - Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
