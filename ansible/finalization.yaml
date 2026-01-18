@@ -1,6 +1,28 @@
 - name: Finalizing the Cluster Setup
   hosts: controller, 192.168.56.100
   tasks:
+    - name: Retrieve Istio binary AMD64
+      become: true
+      ansible.builtin.unarchive:
+        src: "./istio/istio-1.25.2-linux-amd64.tar.gz"
+        dest: /usr/local/bin
+        extra_opts:
+          - --strip-components=2
+          - --show-stored-names
+          - istio-1.25.2/bin/istioctl
+      when: ansible_facts['architecture'] == "x86_64"
+
+    - name: Retrieve Istio binary ARM64
+      become: true
+      ansible.builtin.unarchive:
+        src: "./istio/istio-1.25.2-linux-arm64.tar.gz"
+        dest: /usr/local/bin
+        extra_opts:
+          - --strip-components=2
+          - --show-stored-names
+          - istio-1.25.2/bin/istioctl
+      when: ansible_facts['architecture'] == "aarch64"
+
     - name: Add ingress-nginx chart repo
       kubernetes.core.helm_repository:
         name: ingress-nginx

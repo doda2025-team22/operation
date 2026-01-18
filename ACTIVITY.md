@@ -144,3 +144,7 @@
   - https://github.com/doda2025-team22/app/pull/24
   - https://github.com/doda2025-team22/app/pull/25
   
+## Week 10
+
+- Emre: Did the final fixes for A2.
+  - https://github.com/doda2025-team22/operation/pull/73
