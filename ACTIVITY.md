@@ -154,7 +154,10 @@
   - https://github.com/doda2025-team22/app/pull/24
   - https://github.com/doda2025-team22/app/pull/25
 
-- Gonenc: Graded Assignment 3: https://github.com/doda2025-team22/operation/pull/77
+- Gonenc: Graded assignment 3, and worked on meeting all the requirements for Good on Kubernetes Usage:
+  - https://github.com/doda2025-team22/operation/pull/77
+  - https://github.com/doda2025-team22/operation/pull/80
+
 - Ada: THis week, I finished the alerting, making them rely on the metrics we have exposed before. Also, I polished A4, making sure there is a central source of documentation.
   - https://github.com/doda2025-team22/operation/pull/78
   - https://github.com/doda2025-team22/operation/pull/76
