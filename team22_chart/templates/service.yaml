@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: model-service
+  name: {{ .Values.modelservice.host }}
   labels:
     app: model-service
 spec:
