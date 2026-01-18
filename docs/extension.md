@@ -1,0 +1,1 @@
+Currently, the entire project architecture is categorized under a single namespace, team22. This means that all of the deployments, services and dashboards are present under a single application namespace, with no clear seperation disallowing a clear overview of the situation.
