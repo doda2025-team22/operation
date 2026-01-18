@@ -145,6 +145,10 @@
       - https://github.com/doda2025-team22/operation/pull/69/commits/5936fec625c5855999d1f8f243128afe05583ce9
     - These changes were improved upon by Emre in another branch/pr.
 
+  - Ada: THis week, I finished the alerting, making them rely on the metrics we have exposed before. Also, I polished A4, making sure there is a central source of documentation.
+    - https://github.com/doda2025-team22/operation/pull/78
+    - https://github.com/doda2025-team22/operation/pull/76
+
 ## Week 9
 
 - Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
@@ -158,7 +162,5 @@
   - https://github.com/doda2025-team22/operation/pull/77
   - https://github.com/doda2025-team22/operation/pull/80
 
-- Ada: THis week, I finished the alerting, making them rely on the metrics we have exposed before. Also, I polished A4, making sure there is a central source of documentation.
-  - https://github.com/doda2025-team22/operation/pull/78
-  - https://github.com/doda2025-team22/operation/pull/76
+
   
