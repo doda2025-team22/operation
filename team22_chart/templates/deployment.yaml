@@ -19,6 +19,8 @@ spec:
         app: model-service
         version: v1
         sidecar.istio.io/inject: "true"
+      annotations:
+        sidecar.istio.io/includeInboundPorts: "{{ .Values.modelservice.stable.port }}"
     spec:
       containers:
         - name: model-service
@@ -30,6 +32,8 @@ spec:
               value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
             - name: FEATURE_FLAG_TEST
               value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+            - name: PORT
+              value: "{{ .Values.modelservice.stable.port }}"
 ---
 # Create a deployment for model-service canary version
 apiVersion: apps/v1
@@ -51,6 +55,8 @@ spec:
                 app: model-service
                 version: v2
                 sidecar.istio.io/inject: "true"
+            annotations:
+              sidecar.istio.io/includeInboundPorts: "{{ .Values.modelservice.canary.port }}"
         spec:
             containers:
             -   name: model-service
@@ -62,6 +68,8 @@ spec:
                     value: "{{ .Values.config.appConfig.API_TIMEOUT_MS }}"
                 -   name: FEATURE_FLAG_TEST
                     value: "{{ .Values.config.appConfig.FEATURE_FLAG_TEST }}"
+                -   name: PORT
+                    value: "{{ .Values.modelservice.canary.port }}"
 ---
 # Deployment for App Service (Stable)
 apiVersion: apps/v1
