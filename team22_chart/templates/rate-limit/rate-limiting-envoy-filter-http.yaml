@@ -27,7 +27,7 @@ spec:
             domain: ratelimit
             failure_mode_deny: true # will block if service is down
             timeout: 10s
-            rate_limit_service: # specify where the rate limit service is under here
+            rate_limit_service: # specify where therehe rate limit service is under 
               grpc_service:
                 envoy_grpc:
                   cluster_name: outbound|8081||ratelimit.team22.svc.cluster.local
