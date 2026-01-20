@@ -13,7 +13,7 @@ Make sure istio is installed on the host machine that is running the cluster.
 
 On MacOS you need to enable the minikube tunnel in a different terminal with:
 ```bash
-sudo minikube tunnel
+sudo -E minikube tunnel
 ```
 
 Update the helm chart with:
@@ -45,6 +45,17 @@ Just make sure to have the tunnle running and also add it to your hosts file.
 127.0.0.1 team22-dev.local
 127.0.0.1 grafana.local
 ```
+### Port Forwarding
+To utilize port forwarding in order to test the application, run:
+```bash
+kubectl -n istio-system port-forward svc/istio-ingressgateway 8080:80
+```
+and keep it open in a terminal. Then you can access:
+- http://team22.local:8080
+- http://team22-dev.local:8080
+- http://grafana.local:8080/
+
+For the application, add '/sms/' to the end of the URL (after the port).
 
 ## Configurable Helm Chart Values
 
