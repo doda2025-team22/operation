@@ -126,7 +126,7 @@
   - https://github.com/doda2025-team22/app/pull/18
   - https://github.com/doda2025-team22/model-service/pull/15
   - https://github.com/doda2025-team22/model-service/pull/16
-  - https://github.com/doda2025-team22/operation/pull/64
+  - https://github.com/doda2025-team22/operation/pull/70
   - https://github.com/doda2025-team22/operation/pull/64
   - https://github.com/doda2025-team22/operation/pull/65
   - https://github.com/doda2025-team22/app/pull/23
