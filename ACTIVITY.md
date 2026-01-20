@@ -1,6 +1,6 @@
 # Contributions
 
-### Week 1
+### Week 1 (Nov 10-16)
 
 - Eduardo: Attended to lectures and went to the practical on thursday where tasks were assigned.
 - Gonenc: Attended to lectures and went to the practical on thursday where tasks were assigned.
@@ -8,7 +8,7 @@
 - Emre: Addended the lab.
 - Thomas: Attended the lectures and lab.
 
-### Week 2
+### Week 2 (Nov 17-23)
 
 - Eduardo:
   Worked on task F8 for github actions https://github.com/doda2025-team22/model-service/pull/3 and https://github.com/doda2025-team22/app/pull/5
@@ -39,7 +39,7 @@
   - https://github.com/doda2025-team22/lib-version/pull/4
   - https://github.com/doda2025-team22/lib-version/pull/5
 
-### Week 3
+### Week 3 (Nov 24-30)
 
 - Gonenc:
   Worked on all steps of 1.1, which the entire team did as well. The final PR can can be found as https://github.com/doda2025-team22/operation/pull/26 and my individual branch can be found as https://github.com/doda2025-team22/operation/tree/gt/1.1; also worked on step 20: https://github.com/doda2025-team22/operation/pull/33
@@ -63,7 +63,7 @@
 
   - https://github.com/doda2025-team22/operation/tree/ftb/a2-1.1
 
-## Week 4
+## Week 4 (Dec 1-7)
 
 - Thomas:
   This week i was tasked with the migration of the docker compose files to a kubernetes setup. I also took the time to work on an error that was still present in A1.
@@ -86,7 +86,7 @@
   This week I spent a great deal of time getting the charts runnign specifically on my laptop and faced a lot of issues because of memory constraints. I also worked on the prometheus section of A3.
   - https://github.com/doda2025-team22/operation/pull/41
 
-## Week 5
+## Week 5 (Dec 8-14)
 
 - Thomas: I started working on some local provisioning that could help speed up the vagrant provisioning. I also updated the readme in that time. It still needs some work but I made an intermediate PR for it. I also worked on the sticky sessions, they currently only work with curl and you will be defaultet to a 90/10 split on the browser or without any correct heading.
 
@@ -99,7 +99,7 @@
 
 - Emre: Worked on the helm charts but nothing significant was contributed to the chart.
 
-## Week 6
+## Week 6 (Dec 15-21)
 
 - Ada: Added rate limiting for the additional use case section for A4. Also made adjusted the trigger for releases on the app to make sure it is not accidentally triggered.
 
@@ -117,7 +117,7 @@
 - Thomas: Worked on the sticky session branch agin, becasue I merged late and ended up with a bunch of conflicts. I also started working on the Report that is part of assignment 4, however that is not in a PR just yet.
   - https://github.com/doda2025-team22/operation/pull/56
 
-## Week 7
+## Week 7 (Jan 5-11)
 
 - Emre: This is the activity for holiday time contrib + week 7. Worked on A1 assignment polishing. Fixed the lib-version release workflow to be now fully standartised and for the other repos make them fully tag indipendent. Also for the app repo, added a version verifyer that checks if the changed `pom.xml` is actually has a new version of the application before building the jar and the container. Also added the old fixes Gonenc was working on after they became outdated due to breaking changes to the helm chart (Holiday time contrib). Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
   - https://github.com/doda2025-team22/lib-version/pull/7
@@ -139,16 +139,20 @@
 - Thomas: This week I spent more time on working on the project documentation, finishing a second draft with the general abstract overview of the Kubernetes and Istio setup. The I also spent some time running the clusters to try and access the dashboards to get some figures and better insight however with little luck. No worthwhile contribution for a PR yet, so i added the main commit.
   - https://github.com/doda2025-team22/operation/commit/69583e7bf0f3a63a28b35df8b4f46353fbc80fe8
 
-## Week 8
-
-  - Emre: Did the final fixes for A2.
-    - https://github.com/doda2025-team22/operation/pull/73
-
-  - Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
+- Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
     - https://github.com/doda2025-team22/operation/pull/69
     - The coding changes can be observed in the commit below:
       - https://github.com/doda2025-team22/operation/pull/69/commits/5936fec625c5855999d1f8f243128afe05583ce9
     - These changes were improved upon by Emre in another branch/pr.
+
+## Week 8 (Jan 12-18)
+
+  - Emre: Did the final fixes for A2.
+    - https://github.com/doda2025-team22/operation/pull/73
+
+  - Gonenc: Graded assignment 3, and worked on meeting all the requirements for Good on Kubernetes Usage:
+    - https://github.com/doda2025-team22/operation/pull/77
+    - https://github.com/doda2025-team22/operation/pull/80
 
   - Ada: THis week, I finished the alerting, making them rely on the metrics we have exposed before. Also, I polished A4, making sure there is a central source of documentation.
     - https://github.com/doda2025-team22/operation/pull/78
@@ -159,11 +163,8 @@
     - https://github.com/doda2025-team22/lib-version/pull/8
 
 
-## Week 9
+## Week 9 (Jan 19-25)
 
-- Gonenc: Graded assignment 3, and worked on meeting all the requirements for Good on Kubernetes Usage:
-  - https://github.com/doda2025-team22/operation/pull/77
-  - https://github.com/doda2025-team22/operation/pull/80
 
   
-## Week 10
+## Week 10 (Jan 26-27)
