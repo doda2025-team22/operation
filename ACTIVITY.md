@@ -108,6 +108,7 @@
 
 - Emre: Worked on teh helm chart and added the dashboard and the ingress for grafana. Also fixed a bug related to the prometheus metrics, now the metrics by default are easly discoverable by the grafana dashboard. Also added the documentation for the helm chart, explaining how to use it and what are the configurable values.
   - https://github.com/doda2025-team22/operation/pull/58
+  - https://github.com/doda2025-team22/operation/pull/62
 
 - Gonenc: Worked on implementing adding a canary version for the backend in addition to the frontend:
   - https://github.com/doda2025-team22/operation/pull/60
@@ -118,9 +119,14 @@
 
 ## Week 7
 
-- Emre: Worked on streamlining and improving the A2 assignments. Most of the work went into streamlining the main deployment of the cluster and the vagrantfile. Also added some documentation to the readme.
-
-  - https://github.com/doda2025-team22/operation/pull/62
+- Emre: Worked on A1 assignment polishing. Fixed the lib-version release workflow to be now fully standartised and for the other repos make them fully tag indipendent. Also for the app repo, added a version verifyer that checks if the changed `pom.xml` is actually has a new version of the application before building the jar and the container. Also added the old fixes Gonenc was working on after they became outdated due to breaking changes to the helm chart.
+  - https://github.com/doda2025-team22/lib-version/pull/7
+  - https://github.com/doda2025-team22/app/pull/16
+  - https://github.com/doda2025-team22/app/pull/17
+  - https://github.com/doda2025-team22/app/pull/18
+  - https://github.com/doda2025-team22/model-service/pull/15
+  - https://github.com/doda2025-team22/model-service/pull/16
+  - https://github.com/doda2025-team22/operation/pull/64
 
 - Ada: Worked on polishing the ratelimiting, some things had to be adjusted with improvements made to the project. I also configured the alertmanager and established the smtp server connection via using secret and also makig a project email.
   - https://github.com/doda2025-team22/operation/pull/66
@@ -130,14 +136,12 @@
 
 ## Week 8
 
-- Emre: Worked on A1 assignment polishing. Fixed the lib-version release workflow to be now fully standartised and for the other repos make them fully tag indipendent. Also for the app repo, added a version verifyer that checks if the changed `pom.xml` is actually has a new version of the application before building the jar and the container. Also added the old fixes Gonenc was working on after they became outdated due to breaking changes to the helm chart.
-  - https://github.com/doda2025-team22/lib-version/pull/7
-  - https://github.com/doda2025-team22/app/pull/16
-  - https://github.com/doda2025-team22/app/pull/17
-  - https://github.com/doda2025-team22/app/pull/18
-  - https://github.com/doda2025-team22/model-service/pull/15
-  - https://github.com/doda2025-team22/model-service/pull/16
-  - https://github.com/doda2025-team22/operation/pull/64
+  - Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
+    - https://github.com/doda2025-team22/operation/pull/64
+    - https://github.com/doda2025-team22/operation/pull/65
+    - https://github.com/doda2025-team22/app/pull/23
+    - https://github.com/doda2025-team22/app/pull/24
+    - https://github.com/doda2025-team22/app/pull/25
 
   - Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
     - https://github.com/doda2025-team22/operation/pull/69
@@ -156,20 +160,12 @@
 
 ## Week 9
 
-- Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
-  - https://github.com/doda2025-team22/operation/pull/64
-  - https://github.com/doda2025-team22/operation/pull/65
-  - https://github.com/doda2025-team22/app/pull/23
-  - https://github.com/doda2025-team22/app/pull/24
-  - https://github.com/doda2025-team22/app/pull/25
-
 - Gonenc: Graded assignment 3, and worked on meeting all the requirements for Good on Kubernetes Usage:
   - https://github.com/doda2025-team22/operation/pull/77
   - https://github.com/doda2025-team22/operation/pull/80
 
+- Emre: Did the final fixes for A2.
+  - https://github.com/doda2025-team22/operation/pull/73
 
   
 ## Week 10
-
-- Emre: Did the final fixes for A2.
-  - https://github.com/doda2025-team22/operation/pull/73
