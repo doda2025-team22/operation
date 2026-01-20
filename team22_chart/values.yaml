@@ -74,11 +74,43 @@ kube-prometheus-stack:
         label: grafana_dashboard
         labelValue: "1"
   prometheus:
+    enabled: true
     prometheusSpec:
       serviceMonitorSelector:
         matchLabels:
           release: monitoring
       serviceMonitorNamespaceSelector: {}
+  alertmanager:
+    enabled: false
+    alertmanagerSpec:
+      replicas: 1
+      # app-password for email provider is loaded from a secret
+      secrets:
+        - smtp-secret
+    config:
+      global:
+        resolve_timeout: 5m
+        smtp_smarthost: "smtp.gmail.com:587"
+        smtp_from: "doda98124@gmail.com"
+        smtp_auth_username: "doda98124@gmail.com"
+        smtp_auth_password_file: /etc/alertmanager/secrets/smtp-secret/password
+        smtp_require_tls: true
+      route:
+        receiver: team22-notifications
+        group_by: [ "alertname","service" ]
+        group_wait: 10s
+        group_interval: 5m
+      receivers:
+        - name: "null"
+        - name: "Watchdog"
+        - name: team22-notifications
+          email_configs:
+            - to: "doda98124@gmail.com"
+
+
+ratelimit:
+  enable: true
+  smsPageRpm: 10
 
 # Grafana configuration (for Istio routing)
 grafana:
@@ -88,8 +120,9 @@ grafana:
 # Secrets configuration
 secret:
   smtp:
-    username: "usrnm"
-    password: "pswrd"
+    # these are placeholder values, the actual password for smtp is configured as a secret
+    username: "doda98124@gmail.com"
+    password: "ENTER_PASSWORD"
   grafana:
     adminUser: "admin"
     adminPassword: "admin"

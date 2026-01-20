@@ -61,49 +61,66 @@ For the application, add '/sms/' to the end of the URL (after the port).
 
 Below are the editable values found in `values.yaml`. You can override these values at install/upgrade time using `--set key=value` or by providing your own YAML file with `-f my-values.yaml`.
 
-| Key | Default Value | Description |
-|-----|---------------|-------------|
-| `global.domain` | `"local"` | Base domain for all hosts. |
-| `global.stableSubdomain` | `"team22"` | Subdomain for the stable environment. |
-| `global.prereleaseSubdomain` | `"team22-dev"` | Subdomain for the prerelease (canary) environment. |
-| `global.ingressGatewayName` | `team22-gateway` | The Istio ingress gateway name. |
-| `config.appConfig.FEATURE_FLAG_TEST` | `"true"` | Example feature flag for application. |
-| `config.appConfig.API_TIMEOUT_MS` | `"5000"` | API timeout in milliseconds. |
-| `app.stable.image.repository` | `ghcr.io/doda2025-team22/app` | Stable app image repository. |
-| `app.stable.image.tag` | `latest` | Stable app image tag. |
-| `app.stable.replicaCount` | `1` | Number of stable app replicas. |
-| `app.stable.port` | `8080` | Port for stable app. |
-| `app.canary.image.repository` | `ghcr.io/doda2025-team22/app` | Canary app image repository. |
-| `app.canary.image.tag` | `canary` | Canary app image tag. |
-| `app.canary.replicaCount` | `1` | Number of canary app replicas. |
-| `app.canary.port` | `8080` | Port for canary app. |
-| `app.canaryWeight` | `10` | Traffic percentage to send to canary. |
-| `app.stableWeight` | `90` | Traffic percentage to send to stable. |
-| `modelservice.image.repository` | `ghcr.io/doda2025-team22/model-service` | Model service image repository. |
-| `modelservice.image.tag` | `latest` | Model service image tag. |
-| `modelservice.replicaCount` | `1` | Number of model service replicas. |
-| `modelservice.port` | `8081` | Port for model service. |
-| `monitoring.enabled` | `true` | Enable monitoring with Prometheus and Grafana. |
-| `monitoring.prometheusRelease` | `monitoring` | Helm release name for Prometheus. |
-| `kube-prometheus-stack.grafana.enabled` | `true` | Enable Grafana via kube-prometheus-stack. |
-| `kube-prometheus-stack.grafana.admin.existingSecret` | `grafana-admin-secret` | Secret name for Grafana admin credentials. |
-| `kube-prometheus-stack.grafana.admin.userKey` | `admin-user` | Secret key for Grafana admin username. |
-| `kube-prometheus-stack.grafana.admin.passwordKey` | `admin-password` | Secret key for Grafana admin password. |
-| `kube-prometheus-stack.grafana.service.type` | `ClusterIP` | Grafana service type. |
-| `kube-prometheus-stack.grafana.persistence.enabled` | `true` | Enable persistent storage for Grafana. |
-| `kube-prometheus-stack.grafana.persistence.storageClassName` | `""` | Storage class for Grafana persistence. |
-| `kube-prometheus-stack.grafana.persistence.size` | `10Gi` | Grafana PVC size. |
-| `kube-prometheus-stack.grafana.sidecar.datasources.enabled` | `true` | Enable sidecar datasource provisioning. |
-| `kube-prometheus-stack.grafana.sidecar.datasources.label` | `grafana_datasource` | Label for sidecar datasource. |
-| `kube-prometheus-stack.grafana.sidecar.datasources.labelValue` | `"1"` | Value for sidecar datasource label. |
-| `kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorSelector.matchLabels.release` | `monitoring` | Release label for service monitor. |
-| `kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorNamespaceSelector` | `{}` | Namespace selector for service monitor. |
-| `grafana.enabled` | `true` | Enable Grafana routing in Istio. |
-| `grafana.grafanaHost` | `"grafana.local"` | Host for Grafana UI ingress. |
-| `secret.smtp.username` | `"usrnm"` | SMTP username. |
-| `secret.smtp.password` | `"pswrd"` | SMTP password. |
-| `secret.grafana.adminUser` | `"admin"` | Admin username for Grafana (used if not using a secret). |
-| `secret.grafana.adminPassword` | `"admin"` | Admin password for Grafana (used if not using a secret). |
+| Key | Default Value                                    | Description                                                                                                                         |
+|-----|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `global.domain` | `"local"`                                        | Base domain for all hosts.                                                                                                          |
+| `global.stableSubdomain` | `"team22"`                                       | Subdomain for the stable environment.                                                                                               |
+| `global.prereleaseSubdomain` | `"team22-dev"`                                   | Subdomain for the prerelease (canary) environment.                                                                                  |
+| `global.ingressGatewayName` | `team22-gateway`                                 | The Istio ingress gateway name.                                                                                                     |
+| `config.appConfig.FEATURE_FLAG_TEST` | `"true"`                                         | Example feature flag for application.                                                                                               |
+| `config.appConfig.API_TIMEOUT_MS` | `"5000"`                                         | API timeout in milliseconds.                                                                                                        |
+| `app.stable.image.repository` | `ghcr.io/doda2025-team22/app`                    | Stable app image repository.                                                                                                        |
+| `app.stable.image.tag` | `latest`                                         | Stable app image tag.                                                                                                               |
+| `app.stable.replicaCount` | `1`                                              | Number of stable app replicas.                                                                                                      |
+| `app.stable.port` | `8080`                                           | Port for stable app.                                                                                                                |
+| `app.canary.image.repository` | `ghcr.io/doda2025-team22/app`                    | Canary app image repository.                                                                                                        |
+| `app.canary.image.tag` | `canary`                                         | Canary app image tag.                                                                                                               |
+| `app.canary.replicaCount` | `1`                                              | Number of canary app replicas.                                                                                                      |
+| `app.canary.port` | `8080`                                           | Port for canary app.                                                                                                                |
+| `app.canaryWeight` | `10`                                             | Traffic percentage to send to canary.                                                                                               |
+| `app.stableWeight` | `90`                                             | Traffic percentage to send to stable.                                                                                               |
+| `modelservice.image.repository` | `ghcr.io/doda2025-team22/model-service`          | Model service image repository.                                                                                                     |
+| `modelservice.image.tag` | `latest`                                         | Model service image tag.                                                                                                            |
+| `modelservice.replicaCount` | `1`                                              | Number of model service replicas.                                                                                                   |
+| `modelservice.port` | `8081`                                           | Port for model service.                                                                                                             |
+| `monitoring.enabled` | `true`                                           | Enable monitoring with Prometheus and Grafana.                                                                                      |
+| `monitoring.prometheusRelease` | `monitoring`                                     | Helm release name for Prometheus.                                                                                                   |
+| `kube-prometheus-stack.grafana.enabled` | `true`                                           | Enable Grafana via kube-prometheus-stack.                                                                                           |
+| `kube-prometheus-stack.grafana.admin.existingSecret` | `grafana-admin-secret`                           | Secret name for Grafana admin credentials.                                                                                          |
+| `kube-prometheus-stack.grafana.admin.userKey` | `admin-user`                                     | Secret key for Grafana admin username.                                                                                              |
+| `kube-prometheus-stack.grafana.admin.passwordKey` | `admin-password`                                 | Secret key for Grafana admin password.                                                                                              |
+| `kube-prometheus-stack.grafana.service.type` | `ClusterIP`                                      | Grafana service type.                                                                                                               |
+| `kube-prometheus-stack.grafana.persistence.enabled` | `true`                                           | Enable persistent storage for Grafana.                                                                                              |
+| `kube-prometheus-stack.grafana.persistence.storageClassName` | `""`                                             | Storage class for Grafana persistence.                                                                                              |
+| `kube-prometheus-stack.grafana.persistence.size` | `10Gi`                                           | Grafana PVC size.                                                                                                                   |
+| `kube-prometheus-stack.grafana.sidecar.datasources.enabled` | `true`                                           | Enable sidecar datasource provisioning.                                                                                             |
+| `kube-prometheus-stack.grafana.sidecar.datasources.label` | `grafana_datasource`                             | Label for sidecar datasource.                                                                                                       |
+| `kube-prometheus-stack.grafana.sidecar.datasources.labelValue` | `"1"`                                            | Value for sidecar datasource label.                                                                                                 |
+| `kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorSelector.matchLabels.release` | `monitoring`                                     | Release label for service monitor.                                                                                                  |
+| `kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorNamespaceSelector` | `{}`                                             | Namespace selector for service monitor.                                                                                             |
+| `kube-prometheus-stack.alertmanager.enabled` | `false`                                          | Enables deployment of Alertmanager as part of the kube-prometheus-stack.                                                            |
+| `kube-prometheus-stack.alertmanager.alertmanagerSpec.replicas` | `1`                                              | Number of Alertmanager pod replicas to run. Controls high availability.                                                             |
+| `kube-prometheus-stack.alertmanager.alertmanagerSpec.secrets` | `["smtp-secret"]`                                | List of Kubernetes Secrets mounted into the Alertmanager pod. Used to provide sensitive data such as SMTP credentials.              |
+| `kube-prometheus-stack.alertmanager.config.global.resolve_timeout` | `5m`                                             | How long Alertmanager waits before marking an alert as resolved after it stops firing.                                              |
+| `kube-prometheus-stack.alertmanager.config.global.smtp_smarthost` | `"smtp.gmail.com:587"`                           | Address of the SMTP server used to send email notifications.                                                                        |
+| `kube-prometheus-stack.alertmanager.config.global.smtp_from` | `"doda98124@gmail.com"`                          | Email address that Alertmanager uses as the sender of notification emails.                                                          |
+| `kube-prometheus-stack.alertmanager.config.global.smtp_auth_username` | `"doda98124@gmail.com"`                          | Username used to authenticate with the SMTP server. Usually the email address itself for Gmail.                                     |
+| `kube-prometheus-stack.alertmanager.config.global.smtp_auth_password_file` | `/etc/alertmanager/secrets/smtp-secret/password` | Path to a file inside the Alertmanager pod that contains the SMTP password. This file is provided by a mounted Kubernetes Secret.   |
+| `kube-prometheus-stack.alertmanager.config.global.smtp_require_tls` | `true`                                           | Forces Alertmanager to use TLS when connecting to the SMTP server. Required for Gmail.                                              |
+| `kube-prometheus-stack.alertmanager.config.route.receiver` | `team22-notifications`                           | Default receiver that all alerts are sent to unless overridden by routing rules.                                                    |
+| `kube-prometheus-stack.alertmanager.config.route.group_by` | `["alertname","service"]`                        | Labels used to group multiple alerts into a single notification. Alerts with the same values for these labels are batched together. |
+| `kube-prometheus-stack.alertmanager.config.route.group_wait` | `10s`                                            | How long Alertmanager waits before sending the first notification for a new alert group.                                            |
+| `kube-prometheus-stack.alertmanager.config.route.group_interval` | `5m`                                             | Minimum time between notifications for the same group of alerts.                                                                    |
+| `kube-prometheus-stack.alertmanager.config.receivers[].name` | `"team22-notifications"`                         | Name of a notification receiver. This is referenced by routing rules.                                                               |
+| `kube-prometheus-stack.alertmanager.config.receivers[].email_configs[].to` | `"doda98124@gmail.com"`                          | Email address that will receive alert notifications from this receiver.                                                             |
+| `kube-prometheus-stack.alertmanager.config.receivers[].name` | `"null"`                                         | Special receiver that discards alerts if needed.                                                                                    |
+| `kube-prometheus-stack.alertmanager.config.receivers[].name` | `"Watchdog"`                                     | Receiver that handles the built-in Watchdog alert.                                                                                  |
+| `grafana.enabled` | `true`                                           | Enable Grafana routing in Istio.                                                                                                    |
+| `grafana.grafanaHost` | `"grafana.local"`                                | Host for Grafana UI ingress.                                                                                                        |
+| `secret.smtp.username` | `"doda98124@gmail.com"`                          | SMTP username.                                                                                                                      |
+| `secret.smtp.password` | `"ENTER_PASSWORD"`                               | SMTP password, app password gotten from teh email providers.                                                                        |
+| `secret.grafana.adminUser` | `"admin"`                                        | Admin username for Grafana (used if not using a secret).                                                                            |
+| `secret.grafana.adminPassword` | `"admin"`                                        | Admin password for Grafana (used if not using a secret).                                                                            |
 
 You can override any value using the following syntax:
 ```bash
@@ -132,5 +149,22 @@ These credentials are the default credentials for the Grafana dashboard. You can
 - If you see the error ``no stable upstream branch``, please wait a bit or refresh.
 
 ## For testing with Linux / In case of other errors
-First run ```minikube service list```.
+- Run ```minikube service list```.
 In the output, if you recieve urls for istio-system, copy the port number of the url associated with http/80 (the target port). 
+
+- If seeing the error "No healthy upstream", please run `kubectl get pods --all-namespaces` to make sure the needed containers are created before testing again.
+
+## Testing Alerting (will be moved to the review doc)
+The Alertmanager pod is configured under `kube-prometheus-stack.alertmanager` in `values.yaml`. 
+Alerts are sent via emails, which need a username and password for the SMTP server authentication. You can configure different servers, but default setup is for Gmail so you can use the following command:
+```
+helm upgrade --install team22 ./team22_chart \                               
+--namespace team22 \
+--set kube-prometheus-stack.alertmanager.enabled=true \
+--set kube-prometheus-stack.alertmanager.config.global.smtp_auth_username=<your_gmail_address> \
+--set secret.smtp.password=<your-app-password> \
+--create-namespace
+```
+The password field can be filled with an [app password](https://myaccount.google.com/apppasswords). Please keep in mind that in some cases it takes time for the pod to initialize, so check first its status via  `kubectl get pods -n team22 ` before testing any further.
+
+You can additionally configure the `kube-prometheus-stack.alertmanager.config.receivers[].email_configs[].to` field to configure which email address recieves the alerting emails. Currently for testing, we fire a test alert that should be received upon startup.

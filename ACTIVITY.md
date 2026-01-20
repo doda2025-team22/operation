@@ -111,6 +111,8 @@
 
 - Gonenc: Worked on implementing adding a canary version for the backend in addition to the frontend:
   - https://github.com/doda2025-team22/operation/pull/60
+  - Improved upon by Emre in another branch/pr
+  
 - Thomas: Worked on the sticky session branch agin, becasue I merged late and ended up with a bunch of conflicts. I also started working on the Report that is part of assignment 4, however that is not in a PR just yet.
   - https://github.com/doda2025-team22/operation/pull/56
 
@@ -137,8 +139,21 @@
   - https://github.com/doda2025-team22/model-service/pull/16
   - https://github.com/doda2025-team22/operation/pull/64
 
-- Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
-  - https://github.com/doda2025-team22/operation/pull/69
+  - Gonenc: Solved issues/bugs in order to allow deploying the application into custom provisioned cluster:
+    - https://github.com/doda2025-team22/operation/pull/69
+    - The coding changes can be observed in the commit below:
+      - https://github.com/doda2025-team22/operation/pull/69/commits/5936fec625c5855999d1f8f243128afe05583ce9
+    - These changes were improved upon by Emre in another branch/pr.
+
+  - Ada: THis week, I finished the alerting, making them rely on the metrics we have exposed before. Also, I polished A4, making sure there is a central source of documentation.
+    - https://github.com/doda2025-team22/operation/pull/78
+    - https://github.com/doda2025-team22/operation/pull/76
+
+  - Thomas: Worked on f11 of a1, specifically creating the branch releases. Then I moved on to writing up the documentation for the extension.md followed by fixing the rest of the deployment documentation although i noticed that it still needs more work.
+    - https://github.com/doda2025-team22/operation/pull/83
+    - https://github.com/doda2025-team22/lib-version/pull/8
+
+
 ## Week 9
 
 - Emre: Nearly finished up the experimentation. Made some changes to app related to its CI deployment. Now the new version building gets trigered when the app version is updated from SNAPSHOT to normal release number using mvn. Also fixed an bug present inside the CI. Additionaly added sticky sessions based on the work done by Thomas as after some changes to the helm package a rewrite was needed. Added cookies to ensure version served to the user between the stable and the canary release does not change. 
@@ -147,4 +162,10 @@
   - https://github.com/doda2025-team22/app/pull/23
   - https://github.com/doda2025-team22/app/pull/24
   - https://github.com/doda2025-team22/app/pull/25
+
+- Gonenc: Graded assignment 3, and worked on meeting all the requirements for Good on Kubernetes Usage:
+  - https://github.com/doda2025-team22/operation/pull/77
+  - https://github.com/doda2025-team22/operation/pull/80
+
+
   

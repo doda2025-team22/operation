@@ -1,0 +1,36 @@
+{{- if .Values.ratelimit.enable }}
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: global-ratelimit-filter
+  namespace: istio-system
+spec:
+  workloadSelector:
+    labels:
+      istio: ingressgateway
+  configPatches:
+    - applyTo: HTTP_FILTER # this is for configuring where the rate-limit service lives
+      match:
+        context: GATEWAY
+        listener:
+          filterChain:
+            filter:
+              name: "envoy.filters.network.http_connection_manager"
+              subFilter:
+                name: "envoy.filters.http.router"
+      patch:
+        operation: INSERT_BEFORE # filtering is happening before it reaches the app
+        value:
+          name: envoy.filters.http.ratelimit
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimit
+            domain: ratelimit
+            failure_mode_deny: true # will block if service is down
+            timeout: 10s
+            rate_limit_service: # specify where therehe rate limit service is under 
+              grpc_service:
+                envoy_grpc:
+                  cluster_name: outbound|8081||ratelimit.team22.svc.cluster.local
+                  authority: ratelimit.team22.svc.cluster.local
+              transport_api_version: V3
+{{- end }}
