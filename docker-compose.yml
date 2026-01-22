@@ -1,10 +1,18 @@
 services:
   model-service:
+<<<<<<< HEAD
     image: ghcr.io/doda2025-team22/model-service:${CONTAINER_TAG}
     restart: unless-stopped
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
       - OUTPUT_DIR=${OUTPUT_DIR}
+=======
+    image: ${MODEL_IMAGE} 
+    restart: unless-stopped
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+      - OUTPUT_DIR=/app/output
+>>>>>>> a137560 (Docker update, should work well now)
     volumes:
       - ./model:/app/output
     ports:
@@ -13,7 +21,11 @@ services:
       - sms-app-network
 
   app-service:
+<<<<<<< HEAD
     image: ghcr.io/doda2025-team22/app:${CONTAINER_TAG}
+=======
+    image: ${APP_IMAGE} 
+>>>>>>> a137560 (Docker update, should work well now)
     restart: unless-stopped
     environment:
       - FRONTEND_PORT=${FRONTEND_PORT}
