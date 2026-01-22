@@ -29,7 +29,7 @@ git clone git@github.com:doda2025-team22/operation.git
 
 cd operation
 
-docker compose up
+docker compose --env-file <.env or .env_test> up 
 ```
 
 Open http://localhost:8080/sms
