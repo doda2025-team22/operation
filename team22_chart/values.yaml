@@ -120,7 +120,7 @@ ratelimit:
 # Grafana configuration (for Istio routing)
 grafana:
   enabled: true
-  grafanaHost: "grafana.local"
+  grafanaHost: "grafana.test"
 
 # Prometheus config for Istio routing
 prometheus:
