@@ -2,9 +2,13 @@
 
 Below we outline the main components of the application, as well as sections related to different assignments. 
 
-Apart from the general setup instructions on this document, we link additional docs outlining how our features map to the assignments for easier reviewing:
+Apart from the general setup instructions on this document, we link additional docs outlining how our features map to the assignments for easier reviewing, some also contain self-filled rubrics for easier reviewing and also self-assessment.
 - [Assignment 3](docs/A3-REVIEW.md)
 - [Assignment 4](docs/A4-Review.md)
+- [Experimentation](docs/continuous-experimentation.md)
+- [Deployment](docs/deployment.md)
+- [Extension](docs/extension.md)
+- [Helm-specific instructions](team22_chart/README-Helm.md)
 
 ## Architecture
 
