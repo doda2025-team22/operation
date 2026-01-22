@@ -16,6 +16,7 @@ spec:
       hosts:
         - "{{ .Values.global.stableSubdomain }}.{{ .Values.global.domain }}"
         - "{{ .Values.global.prereleaseSubdomain }}.{{ .Values.global.domain }}"
+        - "{{ .Values.prometheus.prometheusHost }}"
 {{- if .Values.grafana.enabled }}
         - "{{ .Values.grafana.grafanaHost }}"
 {{- end }}
