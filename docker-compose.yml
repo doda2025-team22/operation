@@ -8,7 +8,7 @@ services:
     volumes:
       - ./model:/app/output
     ports:
-      - "8081:8081"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     networks:
       - sms-app-network
 
@@ -19,7 +19,7 @@ services:
       - FRONTEND_PORT=${FRONTEND_PORT}
       - MODEL_HOST=${MODEL_HOST}
     ports:
-      - "8080:8080"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     networks:
       - sms-app-network
 
