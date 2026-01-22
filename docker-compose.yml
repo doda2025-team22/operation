@@ -12,7 +12,11 @@ services:
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
       - OUTPUT_DIR=/app/output
+<<<<<<< HEAD
 >>>>>>> a137560 (Docker update, should work well now)
+=======
+      - DEFAULT_MODEL_URL=${DEFAULT_MODEL_URL}
+>>>>>>> 9384c64 (F10 fix, made the url changable and connected to the latest released trained model)
     volumes:
       - ./model:/app/output
     ports:
