@@ -122,6 +122,10 @@ grafana:
   enabled: true
   grafanaHost: "grafana.local"
 
+# Prometheus config for Istio routing
+prometheus:
+  prometheusHost: "prometheus.local"
+
 # Secrets configuration
 secret:
   smtp:

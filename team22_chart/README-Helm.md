@@ -36,14 +36,16 @@ If you are using a different cluster, you can access the application at the foll
 - http://team22.local
 - http://team22-dev.local
 - http://grafana.local
+- http://prometheus.local
 
-Just make sure to have the tunnle running and also add it to your hosts file.
+Just make sure to have the tunnel running and also add it to your hosts file.
 
 ```text
 # sudo nano /etc/hosts
 127.0.0.1 team22.local
 127.0.0.1 team22-dev.local
 127.0.0.1 grafana.local
+127.0.0.1 prometheus.local
 ```
 
 ## Configurable Helm Chart Values
