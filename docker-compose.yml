@@ -1,10 +1,10 @@
 services:
   model-service:
-    image: ghcr.io/doda2025-team22/model-service:canary
+    image: ghcr.io/doda2025-team22/model-service:${CONTAINER_TAG}
     restart: unless-stopped
     environment:
-      - BACKEND_PORT=8081
-      - OUTPUT_DIR=/app/output
+      - BACKEND_PORT=${BACKEND_PORT}
+      - OUTPUT_DIR=${OUTPUT_DIR}
     volumes:
       - ./model:/app/output
     ports:
@@ -13,11 +13,11 @@ services:
       - sms-app-network
 
   app-service:
-    image: ghcr.io/doda2025-team22/app:canary
+    image: ghcr.io/doda2025-team22/app:${CONTAINER_TAG}
     restart: unless-stopped
     environment:
-      - FRONTEND_PORT=8080
-      - MODEL_HOST=http://model-service:8081
+      - FRONTEND_PORT=${FRONTEND_PORT}
+      - MODEL_HOST=${MODEL_HOST}
     ports:
       - "8080:8080"
     networks:
