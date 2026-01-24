@@ -165,6 +165,7 @@
 
 ## Week 9 (Jan 19-25)
 
-
+  - Emre: Some minor tweaks to a1 and a2 and also added .env file for maximum points for a1. Vagrant file also made a bit better
+    - https://github.com/doda2025-team22/operation/pull/91
   
 ## Week 10 (Jan 26-27)
