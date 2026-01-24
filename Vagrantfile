@@ -6,16 +6,12 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "bento/ubuntu-24.04"
 
-    config.vm.synced_folder ".", "/vagrant", disabled: true
-
     config.vm.define "ctrl" do |ctrl|
         ctrl.vm.hostname = "ctrl"
         ctrl.vm.network "private_network", ip: "192.168.56.100", netmask: "255.255.255.0", adapter: 2
         ctrl.vm.provider "virtualbox" do |vb|
             vb.name = "ctrl"
             vb.linked_clone = true
-            vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
-            vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
             vb.memory = 4096 # 6144
             vb.cpus = 2
         end
@@ -28,8 +24,6 @@ Vagrant.configure("2") do |config|
             node.vm.provider "virtualbox" do |vb|
                 vb.name = "node-#{i}"
                 vb.linked_clone = true
-                vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
-                vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
                 vb.memory = 6114
                 vb.cpus = 2
             end
