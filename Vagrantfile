@@ -6,6 +6,12 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "bento/ubuntu-24.04"
 
+    config.vm.synced_folder "./data", "/mnt/shared", 
+        create: true, 
+        owner: "vagrant", 
+        group: "vagrant", 
+        mount_options: ["dmode=775,fmode=664"]
+    
     config.vm.define "ctrl" do |ctrl|
         ctrl.vm.hostname = "ctrl"
         ctrl.vm.network "private_network", ip: "192.168.56.100", netmask: "255.255.255.0", adapter: 2
