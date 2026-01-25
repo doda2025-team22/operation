@@ -45,7 +45,6 @@ modelservice:
   canaryWeight: 10
   stableWeight: 90
 
-
 # Monitoring configuration
 monitoring:
   enabled: true
@@ -98,7 +97,7 @@ kube-prometheus-stack:
         smtp_require_tls: true
       route:
         receiver: team22-notifications
-        group_by: [ "alertname","service" ]
+        group_by: ["alertname", "service"]
         group_wait: 10s
         group_interval: 5m
         routes:
@@ -112,7 +111,6 @@ kube-prometheus-stack:
           email_configs:
             - to: "doda98124@gmail.com"
 
-
 ratelimit:
   enable: true
   smsPageRpm: 10
@@ -120,7 +118,7 @@ ratelimit:
 # Grafana configuration (for Istio routing)
 grafana:
   enabled: true
-  grafanaHost: "grafana.test"
+  grafanaHost: "grafana.local"
 
 # Prometheus config for Istio routing
 prometheus:
