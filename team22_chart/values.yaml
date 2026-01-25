@@ -133,3 +133,7 @@ secret:
   grafana:
     adminUser: "admin"
     adminPassword: "admin"
+
+sharedStorage:
+  enabled: true
+  hostPath: /mnt/shared
