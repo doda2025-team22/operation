@@ -22,11 +22,23 @@ spec:
       annotations:
         sidecar.istio.io/includeInboundPorts: "{{ .Values.modelservice.stable.port }}"
     spec:
+      volumes:
+        {{- if .Values.sharedStorage.enabled }}
+        - name: shared-storage
+          hostPath:
+            path: {{ .Values.sharedStorage.hostPath }}
+            type: DirectoryOrCreate
+          {{- end }}
       containers:
         - name: model-service
           image: "{{ .Values.modelservice.stable.image.repository }}:{{ .Values.modelservice.stable.image.tag }}"
           ports:
             - containerPort: {{ .Values.modelservice.stable.port }}
+          volumeMounts:
+            {{- if .Values.sharedStorage.enabled }}
+            - name: shared-storage
+              mountPath: /data/shared
+              {{- end }}
           env:
             - name: API_TIMEOUT_MS
               valueFrom:
