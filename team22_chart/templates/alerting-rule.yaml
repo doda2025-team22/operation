@@ -16,7 +16,7 @@ spec:
           for: 10s
           labels:
             severity: warning
-            service: test
+            service: app
           annotations:
             summary: "This is a test email from Prometheus/Alertmanager"
             description: "Test alert to verify Alertmanager email notifications"
