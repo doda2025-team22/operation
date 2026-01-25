@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "bento/ubuntu-24.04"
 
-    config.vm.synced_folder "./data", "/mnt/shared", 
+    config.vm.synced_folder "./shared", "/mnt/shared", 
         create: true, 
         owner: "vagrant", 
         group: "vagrant", 
