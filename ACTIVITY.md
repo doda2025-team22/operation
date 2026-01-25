@@ -167,5 +167,9 @@
 
   - Emre: Some minor tweaks to a1 and a2 and also added .env file for maximum points for a1. Vagrant file also made a bit better
     - https://github.com/doda2025-team22/operation/pull/91
+
+  - Thomas: This week I worked on my part of the presentation slides. I also worked on updating a1 to work with the configured ports, and match up the grading standards.
+      - https://github.com/doda2025-team22/model-service/pull/18
+      - https://github.com/doda2025-team22/operation/pull/90
   
 ## Week 10 (Jan 26-27)
