@@ -16,14 +16,14 @@ The 'Completed?' field is annoted with '✓' for Sufficient and above to indicat
 | | The relevant deployment files contain at least a working Deployment and a working Service. | [✓] |  |  |
 | | The app is accessed through an Ingress. (The cluster provisioning creates a suitable IngressController.) | [✓] |  |  |
 | | All aspects are installed through the central Helm chart. | [✓] |  |  |
-| Good | |  |  | Model service name is configurable from the helm chart values.yaml, which can be set while installing the helm chart. You can find seperate use cases for a ConfigMap and Secret each: with ConfigMap being defined in configmap.yaml and then being used from that file in deployment.yaml via valueFrom/configMapKeyRef, and Secret in secret.yaml. Since the goal is to showcase our knowledge of the use of these, a seperate valueFrom/configMapKeyRef clause for Secret was not utilized.|
+| Good | |  |  | Model service name and port are configurable from the helm chart values.yaml, which can be set while installing the helm chart. You can find seperate use cases for a ConfigMap and Secret each: with ConfigMap being defined in configmap.yaml and then being used from that file in deployment.yaml via valueFrom/configMapKeyRef, and Secret in secret.yaml. Since the goal is to showcase our knowledge of the use of these, a seperate valueFrom/configMapKeyRef clause for Secret was not utilized for Deployments.|
 | | The deployed application defines the location of the model service through an environment variable. | [✓] |  |  |
-| | The model service can be relocated just by changing the Kubernetes config. (For example, changing the name of the service or the port on which it is running.) | [~] |  | Model service name is not hard coded anymore, but changing ports does not work. Port is hardcoded inside 'serve_model.py' so we most likely need a new release to address this issue. |
+| | The model service can be relocated just by changing the Kubernetes config. (For example, changing the name of the service or the port on which it is running.) | [✓] |  |  |
 | | The deployed application successfully uses a ConfigMap and a Secret. (Define one to show that you know how, even though your application might not need one.) | [✓] |  |  |
 | | The hostname/URL of the app can be changed through the value.xml of the Helm chart. (To support grading, I want to be able to pick the URLs that I use to access the stable/pre-release versions.) | [✓] |  |  |
-| Excellent | |  |  |  |
-| | All VMs mount the same shared VirtualBox folder as /mnt/shared into the VM. | [X] |  |  |
-| | The deployed application mounts this path as a hostPath Volume into at least one Deployment. | [X] |  |  |
+| Excellent | |  |  | On provision, Vagrant generates a '/shared' directory inside '/operation' (if it does not already exist). Currently, this folder is mounted for only Deployment model-service-v1, observed in deployment.yaml. Furthermore, the hostPath as well as whether or not hosting should be enabled/disabled (enabled by default) can be set from values.yaml, while downloading the helm chart (sharedStorage.hostPath, sharedStorage.enabled) |
+| | All VMs mount the same shared VirtualBox folder as /mnt/shared into the VM. | [✓] |  |  |
+| | The deployed application mounts this path as a hostPath Volume into at least one Deployment. | [✓] |  |  |
 | **App Monitoring** |  |  |  |  |
 | Insufficient | |  |  | The app defines three metrics (Gauge, Counter, Histogram) that Prometheus picks up automatically. |
 | | The app defines less than three metrics or Prometheus does not automatically collect the values. | [X] |  |  |
