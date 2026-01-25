@@ -171,5 +171,8 @@
   - Thomas: This week I worked on my part of the presentation slides. I also worked on updating a1 to work with the configured ports, and match up the grading standards.
       - https://github.com/doda2025-team22/model-service/pull/18
       - https://github.com/doda2025-team22/operation/pull/90
+
+  - Gonenc: This week, I worked on improving my previous work from https://github.com/doda2025-team22/operation/pull/80 as it fulfilled all requirements for Good, but not Excellent. Finalized A3/Kubernetes Usage to (hopefully) have met all points to get Excellent:
+      - https://github.com/doda2025-team22/operation/pull/93
   
 ## Week 10 (Jan 26-27)
