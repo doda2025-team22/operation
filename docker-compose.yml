@@ -1,22 +1,11 @@
 services:
   model-service:
-<<<<<<< HEAD
     image: ghcr.io/doda2025-team22/model-service:${CONTAINER_TAG}
     restart: unless-stopped
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
-      - OUTPUT_DIR=${OUTPUT_DIR}
-=======
-    image: ${MODEL_IMAGE} 
-    restart: unless-stopped
-    environment:
-      - BACKEND_PORT=${BACKEND_PORT}
       - OUTPUT_DIR=/app/output
-<<<<<<< HEAD
->>>>>>> a137560 (Docker update, should work well now)
-=======
       - DEFAULT_MODEL_URL=${DEFAULT_MODEL_URL}
->>>>>>> 9384c64 (F10 fix, made the url changable and connected to the latest released trained model)
     volumes:
       - ./model:/app/output
     ports:
@@ -25,11 +14,7 @@ services:
       - sms-app-network
 
   app-service:
-<<<<<<< HEAD
     image: ghcr.io/doda2025-team22/app:${CONTAINER_TAG}
-=======
-    image: ${APP_IMAGE} 
->>>>>>> a137560 (Docker update, should work well now)
     restart: unless-stopped
     environment:
       - FRONTEND_PORT=${FRONTEND_PORT}
