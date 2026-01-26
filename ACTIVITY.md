@@ -174,5 +174,12 @@
 
   - Gonenc: This week, I worked on improving my previous work from https://github.com/doda2025-team22/operation/pull/80 as it fulfilled all requirements for Good, but not Excellent. Finalized A3/Kubernetes Usage to (hopefully) have met all points to get Excellent:
       - https://github.com/doda2025-team22/operation/pull/93
+   
+  - Ada: This week I worked on cleaning up the project. I exposed the prometheus dashboard to be accessible without port-forwarding for easier testing. I cleaned the deployment and extension proposal docs, as well as adding a visualisation. I also made the versions clear on the ui for easier testing of sticky sessions.
+     - https://github.com/doda2025-team22/operation/pull/95
+     - https://github.com/doda2025-team22/operation/pull/89
+     - https://github.com/doda2025-team22/operation/pull/88
+     - https://github.com/doda2025-team22/app/pull/29
+     -  https://github.com/doda2025-team22/app/pull/27
   
 ## Week 10 (Jan 26-27)
