@@ -47,7 +47,7 @@ Just make sure to have the tunnel running and also add it to your hosts file.
 127.0.0.1 grafana.local
 127.0.0.1 prometheus.local
 ```
-
+Istio resources used for traffic management can be found under team22_chart/templates. Ingress Gateway name can be configured via `global.ingressGatewayName` along with other [fields](../team22_chart/README-Helm.md#configurable-helm-chart-values).
 ## Configurable Helm Chart Values
 
 Below are the editable values found in `values.yaml`. You can override these values at install/upgrade time using `--set key=value` or by providing your own YAML file with `-f my-values.yaml`.
@@ -145,7 +145,7 @@ In the output, if you recieve urls for istio-system, copy the port number of the
 
 - If seeing the error "No healthy upstream", please run `kubectl get pods --all-namespaces` to make sure the needed containers are created before testing again.
 
-## Testing Alerting (will be moved to the review doc)
+## Testing Alerting
 The Alertmanager pod is configured under `kube-prometheus-stack.alertmanager` in `values.yaml`. 
 Alerts are sent via emails, which need a username and password for the SMTP server authentication. You can configure different servers, but default setup is for Gmail so you can use the following command:
 ```
@@ -160,3 +160,29 @@ helm upgrade --install team22 ./team22_chart \
 The password field can be filled with an [app password](https://myaccount.google.com/apppasswords). Please keep in mind that in some cases it takes time for the pod to initialize, so check first its status via  `kubectl get pods -n team22 ` before testing any further.
 
 You can additionally configure the `kube-prometheus-stack.alertmanager.config.receivers[].email_configs[].to` field to configure which email address receives the alerting emails. Apart from our test alarm, our alert fires when more than 5 guesses (as in clicking the button to get a response form the model) within 30s are made for 30s straight. In a real production environment, we acknowledge that these limits should be more relaxed, but for easier testing and the purposes of our project we decided this was ideal.
+
+### Sticky Sessions
+After installation, you can check which version the request was assigned to based on the "You are in the stable version" or the "You are in the canary version" texts in the sms page. Multiple requests made to the page will result in the same version. PLease clear your cookies if you want to test another version.
+
+### Continuous Experimentation
+Please refer to the [detailed experimentation docs](../docs/continuous-experimentation.md)
+
+### Rate Limiting
+More than 10 requests made in 1 minute to the application will be limited and will result in a 429. This parameter can be configured via `ratelimit.smsPageRpm` in `values.yaml`.
+
+To test this functionality, please make sure that `ratelimit.enable=true`.
+You can either manually test it by refreshing the page after booting up the application, or via using the script below:
+```
+for i in {1..15}; do                                                
+  code=$(curl -s -o /dev/null -w "%{http_code}" \
+    http://team22.local) 
+  echo "Request $i → $code"
+done
+```
+Disclaimer: Depending on your setup, if the requests take too long, the number in which the limiting occurs can slightly shift because of the 1-minute sliding window. If this is the case, it can be clearer to test it from a browser.
+
+As can be seen, requests after the 10th are globally limited. The configurations can be found under templates/rate-limit.
+- `rate-limiting-config.yml` -> the ConfigMap where we specify the constraint
+- `rate-limiting-envoy-filter-http.yaml` -> the EnvoyFilter used to establish connection to the rate-limiting service
+- `rate-limiting-envoy-filter-path.yaml` -> the EnvoyFilter used to configure what is sent to the service and when the rule is applied
+- `rate-limiting-service.yaml` -> the resources used to keep track of the amount of requests, gotten from [Istio docs](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/).
