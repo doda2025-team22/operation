@@ -1,48 +1,6 @@
 # A4 Review Document
 
-Istio resources used for traffic management can be found under team22_chart/templates. Ingress Gateway name can be configured via `global.ingressGatewayName` along with other [fields](../team22_chart/README-Helm.md#configurable-helm-chart-values).
 
-### Sticky Sessions
-After installation, run the following command in a separate terminal:
-```bash
-curl -v \
-  -H "Host: team22.local" \
-  -c cookies.txt \
-  http://192.168.49.2:<port number>/sms/library-version
-```
-This command saves your cookie to a .txt file which you can pass along with the next command:
-```bash
-for i in {1..10}; do
-  curl -s \
-    -H "Host: team22.local" \
-    -b cookies.txt \
-    http://192.168.49.2:<port number>/sms/library-version | grep version
-done
-```
-A stable version results is version 0.05, while a canary version results in 0.0.1.
-
-### Continuous Experimentation
-Please refer to the [detailed experimentation docs](../docs/continuous-experimentation.md)
-
-### Rate Limiting
-More than 10 requests made in 1 minute to the application will be limited and will result in a 429. This parameter can be configured via `ratelimit.smsPageRpm` in `values.yaml`. 
-
-To test this functionality, please make sure that `ratelimit.enable=true`.
-You can either manually test it by refreshing the page after booting up the application, or via using the script below:
-```
-for i in {1..15}; do                                                
-  code=$(curl -s -o /dev/null -w "%{http_code}" \
-    http://team22.local) 
-  echo "Request $i → $code"
-done
-```
-Disclaimer: Depending on your setup, if the requests take too long, the number in which the limiting occurs can slightly shift because of the 1-minute sliding window. If this is the case, it can be clearer to test it from a browser.
-
-As can be seen, requests after the 10th are globally limited. The configurations can be found under templates/rate-limit. 
-- `rate-limiting-config.yml` -> the ConfigMap where we specify the constraint
-- `rate-limiting-envoy-filter-http.yaml` -> the EnvoyFilter used to establish connection to the rate-limiting service
-- `rate-limiting-envoy-filter-path.yaml` -> the EnvoyFilter used to configure what is sent to the service and when the rule is applied
-- `rate-limiting-service.yaml` -> the resources used to keep track of the amount of requests, gotten from [Istio docs](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/).
 ## Rubric Checklist
 | Rubric item level | Rubric item | Completed? | Location?                                                                  | Description                                                |
 |-------------------|-------------|------------|----------------------------------------------------------------------------|------------------------------------------------------------|
