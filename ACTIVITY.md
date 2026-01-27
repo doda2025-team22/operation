@@ -183,3 +183,6 @@
      -  https://github.com/doda2025-team22/app/pull/27
   
 ## Week 10 (Jan 26-27)
+
+  - Emre: Made small changes to operations. Made it smaller for submission and added a note on the README
+    - https://github.com/doda2025-team22/operation/pull/97
