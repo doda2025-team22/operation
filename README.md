@@ -51,6 +51,8 @@ Troubleshooting Tips:
 4. Run `ansible-playbook -u vagrant -i 192.168.56.100, ./ansible/finalization.yaml` to deploy the kubernetes dashboard and ingress-nginx.
 5. Run `kubectl get nodes` to see the nodes in the cluster.
 
+> Note: If there is an issue related to the kuberneties dependency for ansible, run `ansible-galaxy collection install -r ansible/collections/requirements.yml -p ansible/collections --force` command. This will install the enssesary ansible dependencies.
+
 ### General Setup Explanation
 
 Vagrantfile automaticly creates all the nessesary VM's and runs the ansible playbooks on them. The playbooks are located in the `ansible` directory. The playbooks are:
